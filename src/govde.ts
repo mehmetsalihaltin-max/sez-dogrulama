@@ -71,7 +71,7 @@ const ISTEM = (iddia: string, tarih: string) =>
   `Search in English and in the local language of the place. Answer with a JSON array only. Each item: ` +
   `{"url": source page, "alinti": one full sentence copied character for character from that page, in the page's language, ` +
   `naming the place, "ceviri": its Turkish translation, "dil": one of ${Object.keys(DILLER).join(", ")}}. ` +
-  `Include only sources that report this same event; when the claim names a cause, the sentence must state that same cause. If nothing supports the claim return [].`;
+  `Use aviation authorities, airlines, aviation press or news outlets, never tourism, immigration, freight marketing or blog pages. Include only sources that report this same event; when the claim names a cause, the sentence must state that same cause. If nothing supports the claim return [].`;
 
 /** Dogrulanan cumleleri kapinin bildigi aday + karar bicimine cevirir; son karari yine kapi verir. */
 export async function govdeKanitlari(iddia: string, tarih: string): Promise<{ adaylar: Aday[]; kararlar: Omit<ModelKarari, "id">[]; red: GovdeRed[] }> {

@@ -81,6 +81,35 @@ export async function ulkeBul(ad: string) {
 
 export const merkez = (f: any): Nokta => geoCentroid(f) as Nokta;
 
+/** Demoda iki hat: gercek ucus izi Flightradar24 ekranindan elle okundu, noktalar yaklasiktir. */
+export const KAYITLI_IZLER: Record<string, { ucus: string; tarih: string; noktalar: Nokta[] }> = {
+  "LAX-DXB": {
+    ucus: "EK216",
+    tarih: "2026-10-31",
+    noktalar: [
+      [-118.41, 33.94], [-113, 39], [-104, 46], [-92, 52], [-80, 56.5], [-62, 60], [-43, 62], [-28, 63], [-15, 62],
+      [-5, 59.5], [8, 56], [12, 51], [15, 48], [24, 45], [31, 43.5], [37, 41.2], [41, 39], [44, 36.5], [45, 33], [47, 30],
+      [50, 27.5], [55.36, 25.25],
+    ],
+  },
+  "SIN-DPS": {
+    ucus: "SQ938",
+    tarih: "2026-11-01",
+    noktalar: [[103.99, 1.36], [104.6, 0.8], [104.6, 0.25], [105.4, -0.1], [112, -5.2], [113.4, -6.3], [114.5, -6.9], [115.17, -8.75]],
+  },
+};
+
+/** Seyrek noktalari sik hatta acar: ulke ve uzaklik hesabi noktalar arasinda da dogru calissin. */
+export function hatAc(noktalar: Nokta[], adim = 6): Nokta[] {
+  const hat: Nokta[] = [];
+  for (let i = 0; i + 1 < noktalar.length; i++) {
+    const f = geoInterpolate(noktalar[i], noktalar[i + 1]);
+    for (let k = 0; k < adim; k++) hat.push(f(k / adim) as Nokta);
+  }
+  hat.push(noktalar[noktalar.length - 1]);
+  return hat;
+}
+
 export function buyukDaire(a: Nokta, b: Nokta, n = 64): Nokta[] {
   const f = geoInterpolate(a, b);
   return Array.from({ length: n + 1 }, (_, i) => f(i / n) as Nokta);
@@ -109,6 +138,23 @@ export async function yerBul(ad: string, ulke: string): Promise<Nokta | null> {
     if (geoContains(u, p)) return p;
   }
   return null;
+}
+
+/** Rotanin bir ulkenin icinde kalan parcalari: kapali hava sahasi kesisimi modelden degil sinir verisinden hesaplanir. */
+export async function ulkedekiParcalar(rota: Nokta[], ulke: string): Promise<Nokta[][]> {
+  const u = await ulkeBul(ulke);
+  if (!u) return [];
+  const parcalar: Nokta[][] = [];
+  let simdiki: Nokta[] = [];
+  for (const p of rota) {
+    if (geoContains(u, p)) simdiki.push(p);
+    else if (simdiki.length) {
+      parcalar.push(simdiki);
+      simdiki = [];
+    }
+  }
+  if (simdiki.length) parcalar.push(simdiki);
+  return parcalar;
 }
 
 export const rotayaUzaklikKm = (p: Nokta, rota: Nokta[]) =>

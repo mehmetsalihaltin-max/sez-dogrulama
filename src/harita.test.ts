@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buyukDaire, csvSatiri, havalimaniCoz, rotayaUzaklikKm, ucusUlkeleri, ulkeBul, type Nokta } from "./harita.ts";
+import { KAYITLI_IZLER, buyukDaire, csvSatiri, hatAc, havalimaniCoz, rotayaUzaklikKm, ucusUlkeleri, ulkeBul, ulkedekiParcalar, type Nokta } from "./harita.ts";
 import { durumVer, gurultuMu, iliskiVer, pencereKur } from "./rota.ts";
 
 test("tirnakli virgul alani bolmez", () => {
@@ -31,6 +31,20 @@ test("Istanbul-Erbil rotasinin gectigi ulkeler kodla bulunur", async () => {
   assert.ok(u.includes("Iraq"), u.join());
 });
 
+test("hat ulkeden gecerse parca verir, gecmezse bos doner", async () => {
+  const hat = buyukDaire(IST, EBL, 256);
+  const p = await ulkedekiParcalar(hat, "Iraq");
+  assert.equal(p.length, 1);
+  assert.ok(p[0].length > 2);
+  assert.deepEqual(await ulkedekiParcalar(hat, "Japan"), []);
+});
+
+test("EK216 izi Iran ve Rusya disindan, Turkiye ve Irak uzerinden gider", async () => {
+  const u = await ucusUlkeleri(hatAc(KAYITLI_IZLER["LAX-DXB"].noktalar));
+  for (const v of ["Canada", "Turkey", "Iraq"]) assert.ok(u.includes(v), u.join());
+  for (const y of ["Iran", "Russia"]) assert.equal(u.includes(y), false, u.join());
+});
+
 test("rotaya uzaklik kilometre verir", () => {
   const d = rotayaUzaklikKm([28.74, 42.27], [IST]);
   assert.ok(d > 105 && d < 118, String(d));
@@ -39,6 +53,11 @@ test("rotaya uzaklik kilometre verir", () => {
 test("ulke adi buyuk kucuk harften bagimsiz bulunur", async () => {
   assert.equal((await ulkeBul("iraq"))?.properties.name, "Iraq");
   assert.equal(await ulkeBul("Narnia"), undefined);
+});
+
+test("kapali hava sahasi kesisimi en ustte gelir, kanitsiz bilgi kesisim sayilmaz", () => {
+  assert.equal(durumVer([{ seviye: "teyitli", iliski: "koridorda" }], [{ seviye: "kismen" }]), "hava-sahasi-kesisimi");
+  assert.equal(durumVer([{ seviye: "teyitli", iliski: "koridorda" }], []), "koridorda-teyitli");
 });
 
 test("kanit yoksa guvenli denmez, bulgu yok denir", () => {
@@ -55,7 +74,8 @@ test("rotadan uzak teyitli olay rota riski sayilmaz (Dera vakasi)", () => {
 });
 
 test("yeri bilinmeyen olay koridora yazilmaz, rotanin gectigi hava sahasi kapanirsa yazilir", () => {
-  assert.equal(iliskiVer({ tur: "ulke", km: null, rotaVar: true, havaSahasiRotada: false }), "konum-genel");
+  assert.equal(iliskiVer({ tur: "ulke", km: null, rotaVar: true, havaSahasiRotada: false, ulkeRotada: true }), "konum-genel");
+  assert.equal(iliskiVer({ tur: "ulke", km: null, rotaVar: true, havaSahasiRotada: false, ulkeRotada: false }), "bolgesel");
   assert.equal(iliskiVer({ tur: "ulke", km: null, rotaVar: true, havaSahasiRotada: true }), "koridorda");
   assert.equal(iliskiVer({ tur: "nokta", km: null, rotaVar: false, havaSahasiRotada: false }), "ulke-ici");
 });

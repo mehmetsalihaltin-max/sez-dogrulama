@@ -41,6 +41,9 @@ button:disabled{opacity:.5;cursor:progress}
 .harita{position:relative;background:var(--deniz);border-right:1px solid var(--murekkep);min-height:0;overflow:hidden}
 svg{display:block;width:100%;height:100%}
 .ag{fill:none;stroke:var(--cizgi);stroke-width:.5;stroke-dasharray:2 4}
+.kure{fill:color-mix(in srgb,var(--murekkep) 7%,var(--kagit));stroke:var(--murekkep);stroke-width:1}
+.kapali{fill:none;stroke:var(--sinyal);stroke-width:5;stroke-dasharray:8 6;stroke-linecap:butt}
+.imad{font:600 14px Plex,sans-serif;fill:var(--murekkep);paint-order:stroke;stroke:var(--deniz);stroke-width:4px;pointer-events:none}
 .kara{fill:var(--kara);stroke:color-mix(in srgb,var(--murekkep) 38%,var(--kagit));stroke-width:.5}
 .gecilen{fill:color-mix(in srgb,var(--murekkep) 22%,var(--kagit))}
 .olcek{stroke:var(--murekkep);stroke-width:2;fill:none}
@@ -49,13 +52,13 @@ svg{display:block;width:100%;height:100%}
 .ciz{animation:ciz 1.2s ease-out both}
 @keyframes ciz{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 .uc{fill:var(--kagit);stroke:var(--murekkep);stroke-width:2}
-.ucad{font:600 14px Plex,sans-serif;fill:var(--murekkep);paint-order:stroke;stroke:var(--deniz);stroke-width:4px}
+.ucad{font:600 16px Plex,sans-serif;fill:var(--murekkep);paint-order:stroke;stroke:var(--deniz);stroke-width:4px}
 .imi circle{stroke:var(--kagit);stroke-width:2;transition:r .15s}
 .imi text{font:600 12px Plex,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .imi{cursor:pointer}
 .imi .dokun{fill:transparent;stroke:none;r:22px}
 .bag{stroke:var(--murekkep);stroke-width:1}
-.gosterge{position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1);background:var(--kagit);border:1px solid var(--cizgi);font-size:12px}
+.gosterge{position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1);background:var(--kagit);border:1px solid var(--cizgi);font-size:14px}
 .gosterge[hidden]{display:none}
 .gosterge span{display:flex;gap:var(--s1);align-items:center}
 .gosterge i{width:12px;height:12px;border-radius:50%;border:2px solid var(--sinyal)}
@@ -70,7 +73,7 @@ svg{display:block;width:100%;height:100%}
 .s-teyitli circle{fill:var(--sinyal)}.s-teyitli text{fill:#fff}
 .s-kismen circle,.s-tek-kaynak circle,.s-celiskili circle{fill:var(--kagit);stroke:var(--sinyal)}.s-kismen text,.s-tek-kaynak text,.s-celiskili text{fill:var(--sinyal)}
 .s-kanit-yok circle{fill:var(--kagit);stroke:var(--soluk)}.s-kanit-yok text{fill:var(--soluk)}
-.dipnot{position:absolute;left:var(--s2);bottom:var(--s1);max-width:60%;margin:0;font-size:12px;color:var(--soluk)}
+.dipnot{font-size:14px;color:var(--soluk);margin:0 0 var(--s3);padding:var(--s1) var(--s2);border-left:2px solid var(--sinyal)}
 .ray{overflow:auto;padding:var(--s3);min-height:0}
 .acilis p{font:500 24px/1.3 Newsreader,serif;margin-bottom:var(--s3)}
 .ornek{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--cizgi);color:inherit;padding:var(--s2) 0;font:400 16px/1.4 Plex,sans-serif}
@@ -110,7 +113,6 @@ summary:hover{color:var(--sinyal)}
   input{font-size:18px}
   button{padding:12px var(--s2)}
   .harita{height:50vh;position:sticky;top:0;z-index:1;border-right:0;border-bottom:1px solid var(--murekkep)}
-  .dipnot{position:static;padding:var(--s1) var(--s2) 0;margin:0}
   .gosterge{display:none}
   button,summary{min-height:44px}
   summary{display:flex;align-items:center;gap:var(--s1)}
@@ -132,16 +134,16 @@ summary:hover{color:var(--sinyal)}
       <button id="gonder" type="submit">Kanıtla</button>
     </form>
   </header>
-  <main class="harita" aria-label="Rota ve risk haritası">
+  <main class="harita" aria-label="Hat ve olay haritası">
     <svg id="svg" role="img" aria-label="Harita"></svg>
     <div class="gosterge" id="gosterge" hidden>
-      <span><i class="d"></i>Teyitli</span>
-      <span><i></i>Kısmen, tek kaynak</span>
-      <span><i class="y"></i>Kanıt yok</span>
-      <span><i class="k"></i>Ülke geneli</span>
+      <span data-g="teyitli"><i class="d"></i>Teyitli</span>
+      <span data-g="zayif"><i></i>Kısmen, tek kaynak</span>
+      <span data-g="kanit-yok"><i class="y"></i>Kanıt yok</span>
+      <span data-g="genel"><i class="k"></i>Ülke geneli</span>
+      <span data-g="kapali"><b style="color:var(--sinyal)">- -</b>Kapalı bildirilen hava sahası</span>
     </div>
   </main>
-  <p class="dipnot" id="dipnot"></p>
   <aside class="ray" id="ray" aria-live="polite"></aside>
 </div>
 <script src="/v/d3-array.js"></script>
@@ -151,15 +153,17 @@ summary:hover{color:var(--sinyal)}
 const M = {
   seviye: { teyitli: "TEYİTLİ", kismen: "KISMEN", "tek-kaynak": "TEK KAYNAK", celiskili: "ÇELİŞKİLİ", "kanit-yok": "KANIT YOK" },
   tehlike: { savas: "Çatışma", hava: "Hava", saldiri: "Saldırı", deprem: "Deprem", sel: "Sel", grev: "Grev", yakit: "Yakıt", ariza: "Arıza", kul: "Volkan külü", dron: "Dron", gps: "GPS karıştırma", siber: "Siber", diger: "Diğer" },
-  iliski: { koridorda: "ROTA KORİDORU", bolgesel: "BÖLGESEL GELİŞME", "konum-genel": "ÜLKE GENELİ", "ulke-ici": "" },
+  iliski: { koridorda: "HAT KORİDORU", bolgesel: "BÖLGESEL GELİŞME", "konum-genel": "ÜLKE GENELİ", "ulke-ici": "" },
   durum: {
-    "koridorda-teyitli": (n) => `Rota koridorunda ${n} teyitli olay.`,
+    "hava-sahasi-kesisimi": (n, s) => `Bu hat ${ulkeAd(s.kesisim[0].ulke)} hava sahasından geçiyor. Hava sahası kapalı bildiriliyor.`,
+    "koridorda-teyitli": (n) => `Hat koridorunda ${n} teyitli olay.`,
     "ulkede-teyitli": (n) => `Ülkede ${n} teyitli olay.`,
     "bolgesel-gelisme": () => "Koridorda teyitli olay yok.",
     "dogrulanmamis-isaret": () => "İşaret var, teyit yok.",
     "bulgu-yok": () => "Kapıdan geçen kanıt yok.",
   },
   durumAlt: {
+    "hava-sahasi-kesisimi": (n, s) => s.kesisim[0].seviye === "teyitli" ? "Bu en kısa hat kullanılamaz, rotanın yeniden planlanması gerekir. Kararı ekip verir." : "Bilgi tam teyit edilmedi, ekip resmî kaynaktan doğrulamalı.",
     "koridorda-teyitli": "Olay doğrulandı. Uçuşa etkisini ekip değerlendirir.",
     "ulkede-teyitli": "Olay doğrulandı. Uçuşa etkisini ekip değerlendirir.",
     "bolgesel-gelisme": (n) => `Bölgede ${n} teyitli gelişme var, rotaya doğrudan bağı gösterilmedi.`,
@@ -234,10 +238,14 @@ function ciz(s) {
   const ulke = hedef.ulke && dunya.find((f) => f.properties.name === hedef.ulke);
   const nesne = ulke ?? (noktalar.length ? { type: "MultiPoint", coordinates: noktalar } : { type: "Sphere" });
   const merkez = d3.geoCentroid(nesne.type === "Sphere" ? { type: "Point", coordinates: [30, 25] } : nesne);
-  const izdusum = (nesne.type === "Sphere" ? d3.geoNaturalEarth1() : d3.geoAzimuthalEquidistant().rotate([-merkez[0], -merkez[1]]))
-    .fitExtent([[64, 56], [w - 64, h - 56]], nesne);
-  if (nesne.type !== "Sphere") izdusum.clipAngle(90);
+  // Uzun hat kure uzerinde gosterilir; ortasi ekranin merkezinden kaydirilinca yay kavisli gorunur.
+  const kure = rota && d3.geoLength({ type: "LineString", coordinates: rota }) * 6371 > 6000;
+  const orta = rota && d3.geoCentroid({ type: "LineString", coordinates: rota });
+  const izdusum = kure
+    ? d3.geoOrthographic().rotate([-orta[0], -(orta[1] + (orta[1] > 0 ? -24 : 24))]).fitExtent([[24, 24], [w - 24, h - 24]], { type: "Sphere" })
+    : (nesne.type === "Sphere" ? d3.geoNaturalEarth1() : d3.geoAzimuthalEquidistant().rotate([-merkez[0], -merkez[1]]).clipAngle(90)).fitExtent([[64, 56], [w - 64, h - 56]], nesne);
   const yol = d3.geoPath(izdusum);
+  if (kure) svg.append(sv("path", { class: "kure", d: yol({ type: "Sphere" }) }));
   svg.append(sv("path", { class: "ag", d: yol(d3.geoGraticule10()) }));
   const gecilen = new Set(hedef.ulkeler ?? (hedef.ulke ? [hedef.ulke] : []));
   for (const f of dunya) svg.append(sv("path", { class: "kara" + (gecilen.has(f.properties.name) ? " gecilen" : ""), d: yol(f) }));
@@ -245,7 +253,7 @@ function ciz(s) {
     const km1 = 1 / 6371 * 180 / Math.PI; // bir kilometrenin derece karsiligi
     const [a, b] = [izdusum(merkez), izdusum([merkez[0], merkez[1] + km1 * 100])];
     const pikselKm = Math.hypot(a[0] - b[0], a[1] - b[1]) / 100;
-    svg.append(sv("path", { class: "koridor", d: yol({ type: "LineString", coordinates: rota }), "stroke-width": 2 * (s.koridorKm ?? 150) * pikselKm }));
+    svg.append(sv("path", { class: "koridor", d: yol({ type: "LineString", coordinates: rota }), "stroke-width": Math.max(8, 2 * (s.koridorKm ?? 150) * pikselKm) }));
     svg.append(sv("path", { class: "yol ciz", d: yol({ type: "LineString", coordinates: rota }), pathLength: 1, "stroke-dasharray": 1 }));
     for (const u of [hedef.kalkis, hedef.varis]) {
       const [x, y] = izdusum(u.nokta);
@@ -254,7 +262,11 @@ function ciz(s) {
     }
   }
   $("gosterge").hidden = !s;
-  if (nesne.type !== "Sphere") {
+  for (const k of s?.kesisim ?? []) for (const p of k.parcalar) svg.append(sv("path", { class: "kapali", d: yol({ type: "LineString", coordinates: p }) }));
+  const gorunen = new Set((s?.bulgular ?? []).flatMap((b) => [b.seviye === "teyitli" ? "teyitli" : b.seviye === "kanit-yok" ? "kanit-yok" : "zayif", b.konum?.tur === "ulke" ? "genel" : ""]));
+  if (s?.kesisim?.length) gorunen.add("kapali");
+  document.querySelectorAll("[data-g]").forEach((e) => { e.hidden = !gorunen.has(e.dataset.g); });
+  if (nesne.type !== "Sphere" && !kure) {
     const km = 1 / 6371 * 180 / Math.PI;
     const [a, b] = [izdusum(merkez), izdusum([merkez[0], merkez[1] + km * 100])];
     const pikselKm = Math.hypot(a[0] - b[0], a[1] - b[1]) / 100;
@@ -278,13 +290,16 @@ function ciz(s) {
     g.append(sv("circle", { class: "dokun", cx: x, cy: y }));
     g.append(sv("circle", { cx: x, cy: y, r: 14 }));
     const t = sv("text", { x, y }); t.textContent = i + 1; g.append(t);
+    if (b.seviye !== "kanit-yok") {
+      const sagda = x < w - 180;
+      const ad = sv("text", { class: "imad", x: x + (sagda ? 20 : -20), y: y + 5, "text-anchor": sagda ? "start" : "end" });
+      ad.textContent = `${b.konum.tur === "ulke" ? ulkeAd(b.konum.ad) : b.konum.ad}, ${(M.tehlike[b.tehlike] ?? M.tehlike.diger).toLocaleLowerCase("tr")}`;
+      g.append(ad);
+    }
     g.onmouseenter = () => vurgula(i);
     g.onclick = () => { vurgula(i); document.getElementById(`bulgu-${i}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" }); };
     svg.append(g);
   });
-  const yol_notu = rota ? `Rota büyük daire yayıdır, uçuş planı değildir. Bant: rotanın iki yanında ${s.koridorKm ?? 150} km.` : "";
-  const genelVar = (s?.bulgular ?? []).some((b) => b.konum?.tur === "ulke");
-  $("dipnot").textContent = [yol_notu, genelVar ? "Kesikli halka: olay ülke genelinde, nokta yaklaşıktır." : ""].filter(Boolean).join(" ");
 }
 
 function vurgula(i) {
@@ -310,9 +325,10 @@ function goster(s) {
   ray.replaceChildren();
   const teyitli = s.bulgular.filter((b) => b.seviye === "teyitli");
   const kor = teyitli.filter((b) => b.iliski === "koridorda" || b.iliski === "ulke-ici").length;
-  ray.append(el("h2", "karar", M.durum[s.durum](kor)));
+  ray.append(el("h2", "karar", M.durum[s.durum](kor, s)));
   const alt = M.durumAlt[s.durum];
-  ray.append(el("p", "alt", `${typeof alt === "function" ? alt(teyitli.length) : alt} Taranan aralık: ${s.pencere.ilk} / ${s.pencere.son}.`));
+  ray.append(el("p", "alt", `${typeof alt === "function" ? alt(teyitli.length, s) : alt} Taranan aralık: ${s.pencere.ilk} / ${s.pencere.son}.`));
+  if (s.hedef.rota) ray.append(el("p", "dipnot", `${s.hedef.hatKaynagi ? `Hat, ${s.hedef.hatKaynagi.ucus} uçuşunun ${s.hedef.hatKaynagi.tarih} tarihli gerçek izinden elle alınmış yaklaşık çizimdir.` : "Bu rota için kayıtlı uçuş izi yok; çizgi en kısa teorik hattır, gerçek uçuş yolu değildir."} Bant: hattın iki yanında ${s.koridorKm ?? 150} km.`));
   if (s.elenenler?.length) {
     const d = el("details", "elenen");
     d.append(el("summary", null, `${s.elenenler.length} olay uçuşla ilgisiz bulunup elendi`));
@@ -327,7 +343,7 @@ function goster(s) {
     li.onmouseenter = () => vurgula(i);
     li.append(el("span", "no", i + 1));
     const g = el("div");
-    g.append(el("div", "seviye", [M.seviye[b.seviye], M.iliski[b.iliski], M.tehlike[b.tehlike] ?? M.tehlike.diger].filter(Boolean).join(" · ")));
+    g.append(el("div", "seviye", [M.seviye[b.seviye], b.suren ? "SÜREN KISIT" : "", M.iliski[b.iliski], M.tehlike[b.tehlike] ?? M.tehlike.diger].filter(Boolean).join(" · ")));
     g.append(el("p", "iddia", b.iddia));
     const yayinci = `${b.bagimsiz} ayrı haber`;
     const dil = b.diller.map((d) => M.dil[d] ?? d).join(", ");
