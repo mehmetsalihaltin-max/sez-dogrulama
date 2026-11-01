@@ -9,7 +9,7 @@ export const PIKSEL_METRE = KARE_METRE / G;
 /** Maske kenarindan atilan pay: 10 metrelik piksel pist kenarindaki cimi de karistirir. */
 export const ASINDIRMA_METRE = 14;
 /** NDWI ile ESA siniflandirmasi arasinda izin verilen fark, yuzde puan. */
-const UYUM_PAYI = 10;
+export const UYUM_PAYI = 10;
 const AZAMI_BULUT = 20;
 const SCL_SU = 6;
 const SCL_BULUT = [3, 8, 9, 10]; // golge, orta bulut, yogun bulut, ince bulut

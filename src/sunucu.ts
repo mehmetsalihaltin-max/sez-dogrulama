@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { sor } from "./rota.ts";
+import { sahneKur } from "./sahne.ts";
 
 const PORT = Number(process.env.PORT ?? 4173);
 const kok = (y: string) => new URL(`../${y}`, import.meta.url);
@@ -11,6 +12,9 @@ const KAYIT = "cikti/sorgu";
 // Yalniz bu dosyalar sunulur; adres diske hic dogrudan baglanmaz.
 const STATIK: Record<string, [string, string]> = {
   "/": ["web/index.html", "text/html; charset=utf-8"],
+  "/poa/2024-04-18.jpg": ["web/poa/2024-04-18.jpg", "image/jpeg"],
+  "/poa/2024-05-06.jpg": ["web/poa/2024-05-06.jpg", "image/jpeg"],
+  "/poa/2024-05-21.jpg": ["web/poa/2024-05-21.jpg", "image/jpeg"],
   "/v/d3-array.js": ["node_modules/d3-array/dist/d3-array.min.js", "text/javascript"],
   "/v/d3-geo.js": ["node_modules/d3-geo/dist/d3-geo.min.js", "text/javascript"],
   "/v/topojson.js": ["node_modules/topojson-client/dist/topojson-client.min.js", "text/javascript"],
@@ -31,6 +35,12 @@ createServer(async (istek, yanit) => {
     if (st) {
       yanit.writeHead(200, { "Content-Type": st[1] });
       yanit.end(await readFile(kok(st[0])));
+      return;
+    }
+    if (u.pathname === "/api/sahne") {
+      const veri = JSON.parse(await readFile(kok("ornek/porto-alegre.json"), "utf-8"));
+      yanit.writeHead(200, { "Content-Type": "application/json" });
+      yanit.end(JSON.stringify({ meydan: veri.meydan, senaryoEsik: veri.senaryoEsik, kareMetre: veri.kareMetre, ucuslar: veri.ucuslar, adimlar: sahneKur(veri) }));
       return;
     }
     if (u.pathname === "/api/kayitlar") {

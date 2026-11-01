@@ -105,11 +105,60 @@ summary:hover{color:var(--sinyal)}
 .kanit .tr{color:var(--soluk)}
 .kaynak{font-size:12px}
 .not{margin-top:var(--s3);padding-top:var(--s2);border-top:1px solid var(--murekkep);font-size:12px;color:var(--soluk)}
+.sahne-ac{background:none;color:var(--murekkep);white-space:nowrap}
+.sahne-gorsel{position:absolute;inset:0;z-index:2;margin:0;background:var(--murekkep);color:var(--kagit)}
+.sahne-gorsel[hidden]{display:none}
+.sahne-gorsel{overflow:hidden}
+.sahne-gorsel img{display:block;width:100%;height:100%;object-fit:cover}
+.ust-sol{position:absolute;left:var(--s2);top:var(--s2);display:flex;align-items:center}
+.yer{background:var(--murekkep);font-size:14px;font-weight:600;padding:4px var(--s1);line-height:16px}
+.anahtar{position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1);background:var(--murekkep);font-size:12px}
+.anahtar span{display:flex;gap:var(--s1);align-items:center}
+.anahtar i{width:24px;height:8px;background:var(--r)}
+.anahtar .serit{background:repeating-linear-gradient(90deg,var(--kagit) 0 6px,var(--murekkep) 6px 12px);outline:1px solid var(--kagit)}
+.olcekcik{display:block;height:6px;margin-top:4px;border:1px solid var(--kagit);border-top:0}
+.etiket{background:var(--sinyal);color:#fff;font-size:12px;font-weight:600;letter-spacing:.04em;padding:4px var(--s1)}
+.kunye{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(2,auto) minmax(0,1fr);gap:var(--s3);align-items:end;padding:var(--s2);background:var(--murekkep);font-size:14px}
+.kunye b{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;color:color-mix(in srgb,var(--kagit) 72%,var(--murekkep))}
+.kunye small{font-size:12px;text-align:right;color:color-mix(in srgb,var(--kagit) 72%,var(--murekkep))}
+.adim-sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s1);list-style:none;margin:0 0 var(--s2);padding:0}
+.adim-sec button{width:100%;padding:var(--s1);background:none;color:var(--murekkep);border-color:var(--cizgi);font-size:14px;text-align:left}
+.adim-sec button:hover{background:none;color:var(--sinyal);border-color:var(--sinyal);box-shadow:none}
+.adim-sec button[aria-current]{background:var(--murekkep);border-color:var(--murekkep);color:var(--kagit)}
+.senaryo{font-size:14px;margin-bottom:var(--s2);padding:var(--s1) var(--s2);border-left:2px solid var(--sinyal)}
+.senaryo b{color:var(--sinyal)}
+.kart{margin:0}
+.kart div.satir{display:grid;grid-template-columns:96px minmax(0,1fr);gap:var(--s2);padding:var(--s1) 0;border-top:1px solid var(--cizgi)}
+.kart dt{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--soluk);line-height:16px;padding-top:4px}
+.kart .neden{border-top:2px solid var(--murekkep)}
+.kart .neden dd{font:500 20px/1.35 Newsreader,serif}
+.karar.yok{color:var(--sinyal)}
+.kart .takip{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--sinyal)}
+.kart dd{margin:0}
+.durumlar{font-size:12px;font-weight:600;letter-spacing:.04em;margin-bottom:var(--s2)}
+.durumlar.yok{color:var(--sinyal)}
+.yontem{margin:var(--s1) 0 0;display:grid;gap:4px;font-size:12px;font-weight:400}
+.yontem p{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:var(--s1);align-items:center}
+.yontem i{display:block;height:8px;background:var(--kara)}
+.yontem i span{display:block;height:100%;background:var(--murekkep)}
+.yontem.yok i span{background:var(--sinyal)}
+.yontem em{font-style:normal;text-align:right;font-weight:600}
+.ucuslar{list-style:none;margin:var(--s1) 0 0;padding:0;font-size:14px;color:var(--soluk)}
 @media (max-width:860px){
+  .kunye{grid-template-columns:1fr 1fr;gap:var(--s1);padding:var(--s1) var(--s2)}.kunye small{grid-column:1/-1;text-align:left}
+  .kart div.satir{grid-template-columns:1fr;gap:4px}
+  .sahne-gorsel img{transform:scale(1.7)}
+  .yer{font-size:12px}
+  .anahtar{display:none}
+  .ray:has(.kart){display:flex;flex-direction:column}
+  .ray .senaryo{order:1;margin:var(--s2) 0 0}
   .ekran{display:block;height:auto}
   .ust{grid-template-columns:1fr;gap:var(--s1);padding:var(--s1) var(--s2)}
   .damga{font-size:24px}.damga small{display:none}
-  form{gap:var(--s1)}
+  .adim-sec button{font-size:12px;padding:var(--s1) 4px}
+  form{gap:var(--s1);flex-wrap:wrap}
+  .kutu{flex-basis:100%}
+  form button{flex:1}
   input{font-size:18px}
   button{padding:12px var(--s2)}
   .harita{height:50vh;position:sticky;top:0;z-index:1;border-right:0;border-bottom:1px solid var(--murekkep)}
@@ -132,6 +181,7 @@ summary:hover{color:var(--sinyal)}
         <input id="soru" autocomplete="off" required maxlength="300" placeholder="Los Angeles–Dubai rotasında bu hafta ne oldu?">
       </div>
       <button id="gonder" type="submit">Kanıtla</button>
+      <button id="sahneAc" class="sahne-ac" type="button">Yeni kanıt sahnesi</button>
     </form>
   </header>
   <main class="harita" aria-label="Hat ve olay haritası">
@@ -143,6 +193,16 @@ summary:hover{color:var(--sinyal)}
       <span data-g="genel"><i class="k"></i>Ülke geneli</span>
       <span data-g="kapali"><b style="color:var(--sinyal)">- -</b>Kapalı bildirilen hava sahası</span>
     </div>
+    <figure class="sahne-gorsel" id="sahneGorsel" hidden>
+      <img id="sahneResim" alt="">
+      <div class="ust-sol"><span class="etiket">SENARYO</span><span class="yer" id="sahneYer"></span></div>
+      <div class="anahtar" id="anahtar"></div>
+      <figcaption class="kunye">
+        <span><b>ÇEKİM ZAMANI</b><span id="cekim"></span></span>
+        <span><b>İŞLEME ZAMANI</b><span id="isleme"></span></span>
+        <small><span id="anahtarMetin"></span><span id="sahneAd"></span> · Copernicus Sentinel verisi (2024), işlenmiş</small>
+      </figcaption>
+    </figure>
   </main>
   <aside class="ray" id="ray" aria-live="polite"></aside>
 </div>
@@ -201,7 +261,9 @@ async function hazirla() {
   acilis();
   // Ekran bos acilmasin: en son kayitli sorgu ayni yoldan yuklenir, para harcamaz.
   const liste = await (await fetch("/api/kayitlar")).json();
-  if (liste[0] && !new URLSearchParams(location.search).has("bos")) { $("soru").value = liste[0].soru; sorgula(liste[0].soru); }
+  const adres = new URLSearchParams(location.search);
+  if (adres.has("sahne")) { sahneAc(+adres.get("sahne") || 0); return; }
+  if (liste[0] && !adres.has("bos")) { $("soru").value = liste[0].soru; sorgula(liste[0].soru); }
 }
 
 function acilis() {
@@ -362,8 +424,79 @@ function goster(s) {
   ray.append(el("p", "not", "SEZ kanıtı gösterir, uçuş kararını operasyon ekibi verir. Seviyeyi model yazmaz; kod ayrı haber sayısından hesaplar. Kanıtlar haber kaynaklarından gelir, resmî kayıt yerine geçmez. Olayın doğrulanması, uçuşa etkisinin kanıtlandığı anlamına gelmez."));
 }
 
+let sahne = null, sahneAdim = 0;
+const sahneKapat = () => { $("sahneGorsel").hidden = true; };
+
+async function sahneAc(i = 0) {
+  sahne ??= await (await fetch("/api/sahne")).json();
+  kaynak?.close();
+  $("gonder").disabled = false;
+  $("sahneGorsel").hidden = false;
+  sahneCiz(i);
+}
+
+function sahneAnahtar(a) {
+  const z = matchMedia("(max-width:860px)").matches ? 1.7 : 1; // mobilde pist yakinlastirilir
+  const { width: w, height: h } = $("sahneGorsel").getBoundingClientRect();
+  const satirlar = a.sonucYok ? [["serit", "Pist: yöntemler uyuşmuyor, oran yok"]] : [["#c9391a", "İki yöntem de su diyor"], ["#f3eee2", "İki yöntem birlikte su demiyor"]];
+  const k = $("anahtar"); k.replaceChildren();
+  for (const [r, m] of satirlar) {
+    const s = el("span"), c = el("i", r === "serit" ? "serit" : "");
+    if (r !== "serit") c.style.setProperty("--r", r);
+    s.append(c, document.createTextNode(m)); k.append(s);
+  }
+  const o = el("span", "olcekcik"); o.style.width = `${(1000 * Math.max(w, h) * z) / sahne.kareMetre}px`;
+  k.append(o, el("small", null, "1 km · Kuzey yukarıda"));
+  $("anahtarMetin").textContent = z > 1 ? `${satirlar.map((x) => x[1]).join(" · ")} · ` : "";
+}
+
+function sahneCiz(i) {
+  const a = sahne.adimlar[i];
+  $("sahneResim").src = a.gorsel;
+  $("sahneResim").alt = `${sahne.meydan} pisti, ${a.gun} uydu görüntüsü. ${a.baslik}`;
+  $("cekim").textContent = a.cekim;
+  $("isleme").textContent = a.isleme;
+  $("sahneAd").textContent = a.sahne;
+  $("sahneYer").textContent = sahne.meydan;
+  sahneAdim = i;
+  sahneAnahtar(a);
+  ray.replaceChildren();
+  const se = el("p", "senaryo");
+  se.append(el("b", null, "SENARYO. "), document.createTextNode(`Pist ölçümleri gerçek Sentinel-2 görüntülerinden gelir. Üç uçuş, yedek meydan planı ve %${sahne.senaryoEsik} sınırı kurgusaldır.`));
+  ray.append(se);
+  const sec = el("ol", "adim-sec");
+  sahne.adimlar.forEach((x, n) => {
+    const li = el("li"), b = el("button", null, x.gun); b.type = "button";
+    if (n === i) b.setAttribute("aria-current", "step");
+    b.onclick = () => sahneCiz(n);
+    li.append(b); sec.append(li);
+  });
+  ray.append(sec);
+  ray.append(el("h2", "karar" + (a.sonucYok ? " yok" : ""), a.baslik));
+  ray.append(el("p", "durumlar" + (a.sonucYok ? " yok" : ""), `KANIT DURUMU: ${a.kanit}`));
+  const k = el("dl", "kart");
+  const satir = (ad, metin, sinif = "") => { const d = el("div", `satir ${sinif}`); d.append(el("dt", null, ad)); const dd = el("dd", null, metin); d.append(dd); k.append(d); return dd; };
+  satir("ÖNCE", a.once);
+  const sim = satir("ŞİMDİ", a.simdi);
+  const ol = el("div", "yontem" + (a.sonucYok ? " yok" : ""));
+  for (const [ad, v] of [["NDWI", a.olcum.ndwi], ["SCL", a.olcum.scl]]) {
+    const p = el("p"), c = el("i"), d = el("span"); d.style.width = `${v}%`; c.append(d);
+    p.append(el("span", null, ad), c, el("em", null, `%${v.toLocaleString("tr-TR")}`)); ol.append(p);
+  }
+  sim.append(ol);
+  satir("NEDEN", a.neden, "neden");
+  const et = satir("OPERASYONEL ETKİ", a.etki);
+  const u = el("ul", "ucuslar");
+  for (const f of sahne.ucuslar) u.append(el("li", null, `${f.kod} ${f.hat}`));
+  et.append(u);
+  satir("BEKLEYEN", a.bekleyen).prepend(el("span", "takip", a.takip));
+  ray.append(k);
+  ray.append(el("p", "not", `NDWI: görüntünün yeşil ve yakın kızılötesi bantlarından hesaplanan su göstergesi. SCL: Avrupa Uzay Ajansı sahne sınıflandırması. İki yöntem ${a.olcum.sinir} puandan çok ayrılırsa SEZ oran yazmaz. Uçuş kararını operasyon ekibi verir.`));
+}
+
 function sorgula(s) {
   kaynak?.close();
+  sahneKapat();
   $("gonder").disabled = true;
   ray.replaceChildren();
   const liste = el("ol", "adimlar"); ray.append(liste);
@@ -378,8 +511,9 @@ function sorgula(s) {
   kaynak.onerror = () => { bitir(); ray.replaceChildren(el("p", "hata", "Sunucuyla bağlantı kesildi.")); };
 }
 
+$("sahneAc").onclick = () => sahneAc();
 $("form").onsubmit = (o) => { o.preventDefault(); sorgula($("soru").value.trim()); };
-let son; addEventListener("resize", () => { clearTimeout(son); son = setTimeout(() => ciz(sonSonuc), 150); });
+let son; addEventListener("resize", () => { clearTimeout(son); son = setTimeout(() => { ciz(sonSonuc); if (!$("sahneGorsel").hidden) sahneAnahtar(sahne.adimlar[sahneAdim]); }, 150); });
 hazirla();
 </script>
 </body>

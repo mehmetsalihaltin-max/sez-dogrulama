@@ -1,0 +1,36 @@
+{
+  "meydan": "Porto Alegre Salgado Filho (POA)",
+  "senaryoEsik": 10,
+  "kareMetre": 7000,
+  "ucuslar": [
+    { "kod": "SNR-1", "hat": "Buenos Aires–Florianópolis" },
+    { "kod": "SNR-2", "hat": "Montevideo–Curitiba" },
+    { "kod": "SNR-3", "hat": "São Paulo–Montevideo" }
+  ],
+  "goruntuler": [
+    {
+      "gun": "2024-04-18",
+      "sahne": "S2A_22JDM_20240418_0_L2A",
+      "cekim": "2024-04-18T13:30:54Z",
+      "isleme": "2024-04-18T18:29:52Z",
+      "gorsel": "/poa/2024-04-18.jpg",
+      "olcum": { "durum": "olculdu", "oran": 0, "ndwi": 1.1, "scl": 0, "bulut": 0 }
+    },
+    {
+      "gun": "2024-05-06",
+      "sahne": "S2B_22JDM_20240506_0_L2A",
+      "cekim": "2024-05-06T13:40:47Z",
+      "isleme": "2024-05-06T15:44:38Z",
+      "gorsel": "/poa/2024-05-06.jpg",
+      "olcum": { "durum": "olculdu", "oran": 79.4, "ndwi": 79.9, "scl": 79.4, "bulut": 0 }
+    },
+    {
+      "gun": "2024-05-21",
+      "sahne": "S2A_22JDM_20240521_0_L2A",
+      "cekim": "2024-05-21T13:40:46Z",
+      "isleme": "2024-05-21T20:46:01Z",
+      "gorsel": "/poa/2024-05-21.jpg",
+      "olcum": { "durum": "yontemler-uyusmuyor", "ndwi": 11.5, "scl": 40.2, "bulut": 0 }
+    }
+  ]
+}
