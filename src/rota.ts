@@ -194,6 +194,7 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
     durum: durumVer(bulgular),
     koridorKm: KORIDOR_KM,
     elenen: taranan.length - riskler.length,
+    elenenler: taranan.filter((r) => !riskler.some((k) => k.r === r)).map((r) => r.iddia),
     zaman: new Date().toISOString(),
   };
 }

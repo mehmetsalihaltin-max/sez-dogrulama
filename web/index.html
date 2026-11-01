@@ -40,9 +40,11 @@ button:hover{background:var(--sinyal);border-color:var(--sinyal);box-shadow:var(
 button:disabled{opacity:.5;cursor:progress}
 .harita{position:relative;background:var(--deniz);border-right:1px solid var(--murekkep);min-height:0;overflow:hidden}
 svg{display:block;width:100%;height:100%}
-.ag{fill:none;stroke:var(--cizgi);stroke-width:.5}
-.kara{fill:var(--kara);stroke:var(--deniz);stroke-width:.6}
-.gecilen{fill:color-mix(in srgb,var(--murekkep) 26%,var(--kagit))}
+.ag{fill:none;stroke:var(--cizgi);stroke-width:.5;stroke-dasharray:2 4}
+.kara{fill:var(--kara);stroke:color-mix(in srgb,var(--murekkep) 38%,var(--kagit));stroke-width:.5}
+.gecilen{fill:color-mix(in srgb,var(--murekkep) 22%,var(--kagit))}
+.olcek{stroke:var(--murekkep);stroke-width:2;fill:none}
+.olcekad{font:600 12px Plex,sans-serif;fill:var(--murekkep);text-anchor:middle}
 .yol{fill:none;stroke:var(--murekkep);stroke-width:2.5;stroke-linecap:round}
 .ciz{animation:ciz 1.2s ease-out both}
 @keyframes ciz{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
@@ -51,14 +53,24 @@ svg{display:block;width:100%;height:100%}
 .imi circle{stroke:var(--kagit);stroke-width:2;transition:r .15s}
 .imi text{font:600 12px Plex,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .imi{cursor:pointer}
+.imi .dokun{fill:transparent;stroke:none;r:22px}
+.bag{stroke:var(--murekkep);stroke-width:1}
+.gosterge{position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1);background:var(--kagit);border:1px solid var(--cizgi);font-size:12px}
+.gosterge[hidden]{display:none}
+.gosterge span{display:flex;gap:var(--s1);align-items:center}
+.gosterge i{width:12px;height:12px;border-radius:50%;border:2px solid var(--sinyal)}
+.gosterge .d{background:var(--sinyal)}.gosterge .y{border-color:var(--soluk)}.gosterge .k{border-style:dashed;border-color:var(--murekkep)}
+.elenen{font-size:12px;color:var(--soluk);margin-bottom:var(--s2)}
+.elenen summary{font-weight:400}
+.elenen li{margin:4px 0 0 var(--s2)}
 .imi.etkin circle{r:17px}
 .imi.genel circle{stroke-dasharray:4 3}
 .imi.uzak{opacity:.55}
-.koridor{fill:none;stroke:var(--sinyal);stroke-opacity:.1;stroke-linecap:round}
+.koridor{fill:none;stroke:var(--sinyal);stroke-opacity:.24;stroke-linecap:round}
 .s-teyitli circle{fill:var(--sinyal)}.s-teyitli text{fill:#fff}
 .s-kismen circle,.s-tek-kaynak circle,.s-celiskili circle{fill:var(--kagit);stroke:var(--sinyal)}.s-kismen text,.s-tek-kaynak text,.s-celiskili text{fill:var(--sinyal)}
 .s-kanit-yok circle{fill:var(--kagit);stroke:var(--soluk)}.s-kanit-yok text{fill:var(--soluk)}
-.dipnot{position:absolute;left:var(--s2);right:var(--s2);bottom:var(--s1);margin:0;font-size:12px;color:var(--soluk)}
+.dipnot{position:absolute;left:var(--s2);bottom:var(--s1);max-width:60%;margin:0;font-size:12px;color:var(--soluk)}
 .ray{overflow:auto;padding:var(--s3);min-height:0}
 .acilis p{font:500 24px/1.3 Newsreader,serif;margin-bottom:var(--s3)}
 .ornek{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--cizgi);color:inherit;padding:var(--s2) 0;font:400 16px/1.4 Plex,sans-serif}
@@ -98,7 +110,10 @@ summary:hover{color:var(--sinyal)}
   input{font-size:18px}
   button{padding:12px var(--s2)}
   .harita{height:50vh;position:sticky;top:0;z-index:1;border-right:0;border-bottom:1px solid var(--murekkep)}
-  .dipnot{display:none}
+  .dipnot{position:static;padding:var(--s1) var(--s2) 0;margin:0}
+  .gosterge{display:none}
+  button,summary{min-height:44px}
+  summary{display:flex;align-items:center;gap:var(--s1)}
   .ray{padding:var(--s2)}
   .karar{font-size:24px}
 }
@@ -119,8 +134,14 @@ summary:hover{color:var(--sinyal)}
   </header>
   <main class="harita" aria-label="Rota ve risk haritası">
     <svg id="svg" role="img" aria-label="Harita"></svg>
-    <p class="dipnot" id="dipnot"></p>
+    <div class="gosterge" id="gosterge" hidden>
+      <span><i class="d"></i>Teyitli</span>
+      <span><i></i>Kısmen, tek kaynak</span>
+      <span><i class="y"></i>Kanıt yok</span>
+      <span><i class="k"></i>Ülke geneli</span>
+    </div>
   </main>
+  <p class="dipnot" id="dipnot"></p>
   <aside class="ray" id="ray" aria-live="polite"></aside>
 </div>
 <script src="/v/d3-array.js"></script>
@@ -164,7 +185,14 @@ let dunya = [], kaynak, sonSonuc = null;
 
 async function hazirla() {
   const t = await (await fetch("/v/dunya.json")).json();
-  dunya = topojson.feature(t, t.objects.countries).features;
+  // Ayrintili sinir verisinde ters sarili halkalar var; d3 bunlari "butun dunya" sanar, duzeltilir.
+  const duzelt = (p) => (d3.geoArea({ type: "Polygon", coordinates: p }) > 2 * Math.PI ? p.map((h) => [...h].reverse()) : p);
+  dunya = topojson.feature(t, t.objects.countries).features.map((f) => ({
+    ...f,
+    geometry: f.geometry.type === "Polygon"
+      ? { type: "Polygon", coordinates: duzelt(f.geometry.coordinates) }
+      : { type: "MultiPolygon", coordinates: f.geometry.coordinates.map(duzelt) },
+  }));
   ciz(null);
   acilis();
   // Ekran bos acilmasin: en son kayitli sorgu ayni yoldan yuklenir, para harcamaz.
@@ -225,15 +253,29 @@ function ciz(s) {
       const t = sv("text", { class: "ucad", x: x + 10, y: y - 10 }); t.textContent = u.iata; svg.append(t);
     }
   }
-  const yigin = {};
+  $("gosterge").hidden = !s;
+  if (nesne.type !== "Sphere") {
+    const km = 1 / 6371 * 180 / Math.PI;
+    const [a, b] = [izdusum(merkez), izdusum([merkez[0], merkez[1] + km * 100])];
+    const pikselKm = Math.hypot(a[0] - b[0], a[1] - b[1]) / 100;
+    const uzunluk = [100, 200, 500, 1000, 2000, 5000].find((u) => u * pikselKm >= 64) ?? 5000;
+    const x2 = w - 24, x1 = x2 - uzunluk * pikselKm, yy = h - 24;
+    svg.append(sv("path", { class: "olcek", d: `M${x1} ${yy - 4}V${yy}H${x2}V${yy - 4}` }));
+    const t = sv("text", { class: "olcekad", x: (x1 + x2) / 2, y: yy - 8 }); t.textContent = `${uzunluk} km`; svg.append(t);
+  }
+  const yerler = [];
   (s?.bulgular ?? []).forEach((b, i) => {
     if (!b.konum) return;
     const [x0, y0] = izdusum(b.konum.nokta);
-    const anahtar = b.konum.nokta.join();
-    const sira = yigin[anahtar] = (yigin[anahtar] ?? -1) + 1;
-    const x = x0 + sira * 30, y = y0;
+    // Yakin isaretler ayni noktanin cevresine acilir, ince cizgi gercek yere baglar.
+    const kume = yerler.filter((p) => Math.hypot(p.x0 - x0, p.y0 - y0) < 30).length;
+    const aci = -Math.PI / 2 + kume * (Math.PI / 3);
+    const [x, y] = kume ? [x0 + 34 * Math.cos(aci), y0 + 34 * Math.sin(aci)] : [x0, y0];
+    yerler.push({ x0, y0 });
+    if (kume) svg.append(sv("line", { class: "bag", x1: x0, y1: y0, x2: x, y2: y }));
     const genel = b.konum.tur === "ulke" && b.iliski !== "koridorda";
     const g = sv("g", { class: `imi s-${b.seviye}${genel ? " genel" : ""}${b.iliski === "bolgesel" ? " uzak" : ""}`, "data-no": i, tabindex: 0, role: "button", "aria-label": `${i + 1}. bulgu` });
+    g.append(sv("circle", { class: "dokun", cx: x, cy: y }));
     g.append(sv("circle", { cx: x, cy: y, r: 14 }));
     const t = sv("text", { x, y }); t.textContent = i + 1; g.append(t);
     g.onmouseenter = () => vurgula(i);
@@ -270,7 +312,15 @@ function goster(s) {
   const kor = teyitli.filter((b) => b.iliski === "koridorda" || b.iliski === "ulke-ici").length;
   ray.append(el("h2", "karar", M.durum[s.durum](kor)));
   const alt = M.durumAlt[s.durum];
-  ray.append(el("p", "alt", `${typeof alt === "function" ? alt(teyitli.length) : alt} Taranan aralık: ${s.pencere.ilk} / ${s.pencere.son}.${s.elenen ? ` ${s.elenen} yerel olay uçuşla ilgisiz diye elendi.` : ""}`));
+  ray.append(el("p", "alt", `${typeof alt === "function" ? alt(teyitli.length) : alt} Taranan aralık: ${s.pencere.ilk} / ${s.pencere.son}.`));
+  if (s.elenenler?.length) {
+    const d = el("details", "elenen");
+    d.append(el("summary", null, `${s.elenenler.length} olay uçuşla ilgisiz bulunup elendi`));
+    const l = el("ul");
+    for (const e of s.elenenler) l.append(el("li", null, e));
+    d.append(l);
+    ray.append(d);
+  }
   const ol = el("ol", "bulgular");
   s.bulgular.forEach((b, i) => {
     const li = el("li", `bulgu b-${b.seviye}`); li.id = `bulgu-${i}`; li.dataset.no = i;

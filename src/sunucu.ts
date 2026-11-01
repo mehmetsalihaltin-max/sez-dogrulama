@@ -14,7 +14,7 @@ const STATIK: Record<string, [string, string]> = {
   "/v/d3-array.js": ["node_modules/d3-array/dist/d3-array.min.js", "text/javascript"],
   "/v/d3-geo.js": ["node_modules/d3-geo/dist/d3-geo.min.js", "text/javascript"],
   "/v/topojson.js": ["node_modules/topojson-client/dist/topojson-client.min.js", "text/javascript"],
-  "/v/dunya.json": ["node_modules/world-atlas/countries-50m.json", "application/json"],
+  "/v/dunya.json": ["node_modules/world-atlas/countries-10m.json", "application/json"],
   "/v/newsreader-500.woff2": ["node_modules/@fontsource/newsreader/files/newsreader-latin-ext-500-normal.woff2", "font/woff2"],
   "/v/plex-400.woff2": ["node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-ext-400-normal.woff2", "font/woff2"],
   "/v/plex-600.woff2": ["node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-ext-600-normal.woff2", "font/woff2"],
