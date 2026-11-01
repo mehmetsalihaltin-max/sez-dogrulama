@@ -1,4 +1,6 @@
 // Meta Model API istemcisi: https://dev.meta.ai/docs/quickstart
+import { AsyncLocalStorage } from "node:async_hooks";
+
 const TABAN = "https://api.meta.ai/v1";
 export const MODEL = process.env.MUSE_MODEL ?? "muse-spark-1.3";
 
@@ -10,17 +12,29 @@ const FIYAT = {
 };
 const ARAMA_FIYATI = 2.5 / 1000;
 export const sayac = { istek: 0, girdi: 0, cikti: 0, arama: 0, modelDolar: 0 };
-export const tahminiDolar = () => sayac.modelDolar + sayac.arama * ARAMA_FIYATI;
+type Sayac = typeof sayac;
+export const tahminiDolar = (s: Sayac = sayac) => s.modelDolar + s.arama * ARAMA_FIYATI;
+
+/** Ayni anda calisan sorgular birbirinin harcamasini saymasin diye her sorgu kendi sayacini tasir. */
+const kapsam = new AsyncLocalStorage<Sayac>();
+export async function sayarak<T>(is: () => Promise<T>): Promise<{ sonuc: T; dolar: number; arama: number }> {
+  const s: Sayac = { istek: 0, girdi: 0, cikti: 0, arama: 0, modelDolar: 0 };
+  const sonuc = await kapsam.run(s, is);
+  return { sonuc, dolar: +tahminiDolar(s).toFixed(3), arama: s.arama };
+}
 
 function say(d: any, model: string) {
   const girdi = d.usage?.prompt_tokens ?? d.usage?.input_tokens ?? 0;
   const cikti = d.usage?.completion_tokens ?? d.usage?.output_tokens ?? 0;
   const f = model.startsWith("muse-wonder") ? FIYAT.wonder : FIYAT.spark;
-  sayac.istek++;
-  sayac.girdi += girdi;
-  sayac.cikti += cikti;
-  sayac.modelDolar += girdi * f.girdi + cikti * f.cikti;
-  sayac.arama += (d.output ?? []).filter((p: any) => p.type === "web_search_call").length;
+  for (const s of [sayac, kapsam.getStore()]) {
+    if (!s) continue;
+    s.istek++;
+    s.girdi += girdi;
+    s.cikti += cikti;
+    s.modelDolar += girdi * f.girdi + cikti * f.cikti;
+    s.arama += (d.output ?? []).filter((p: any) => p.type === "web_search_call").length;
+  }
 }
 
 function anahtar(): string {

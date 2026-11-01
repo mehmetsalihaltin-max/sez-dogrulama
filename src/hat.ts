@@ -7,7 +7,11 @@ const [dosya, cikti = "cikti/sonuc.json"] = process.argv.slice(2);
 if (!dosya) throw new Error("kullanim: node --env-file=.env src/hat.ts <brifing.txt> [cikti.json]");
 
 const brifing = await readFile(dosya, "utf-8");
-const iddialar = await iddialariCikar(brifing, new Date().toISOString().slice(0, 10));
+// Her satir bir iddiadir: model satiri bolup birlestiremez, ayni girdi ayni sinav olur.
+const bugun = new Date().toISOString().slice(0, 10);
+const satirlar = brifing.split("\n").map((s) => s.trim()).filter(Boolean);
+const iddialar = (await Promise.all(satirlar.map(async (s) => (await iddialariCikar(s, bugun))[0]))).filter(Boolean);
+if (iddialar.length !== satirlar.length) console.log(`UYARI: ${satirlar.length} satirdan ${iddialar.length} iddia cikti`);
 const sonuclar = [];
 for (const iddia of iddialar) sonuclar.push(await iddiaDogrula(iddia));
 

@@ -99,10 +99,12 @@ async function esle(iddia: Iddia, adaylar: Aday[]): Promise<ModelKarari[]> {
   const liste = adaylar.map((a, i) => `<source id="${i}" lang="${a.dil}">${temiz(a.baslik)}</source>`).join("\n");
   const sonuc = await yapili<{ kararlar: ModelKarari[] }>(
     "You compare news headlines with one aviation-safety claim. Return exactly one decision for every source id. " +
-      "destekliyor: the headline reports the same event, even with less detail, a different cause, or the wider " +
-      "geography of the place (city, island group, region, or the storm's local name). celisiyor: the same event is " +
-      "explicitly denied or the headline says the opposite. ilgisiz: anything else, including another event at the " +
-      "same place. For destekliyor and celisiyor, alinti is a short exact character-for-character copy of the part of " +
+      "destekliyor: the headline reports the same event, possibly with less detail or the wider geography of the place " +
+      "(city, island group, region, or the storm's local name), and when the claim names a cause the headline states " +
+      "that cause or a direct synonym. celisiyor: the same disruption with a different stated cause, or the event is " +
+      "explicitly denied. ilgisiz: anything else, including another event at the same place and any headline that does " +
+      "not state the cause the claim names. The quote must contain the words that prove both the place and the cause. " +
+      "For destekliyor and celisiyor, alinti is a short exact character-for-character copy of the part of " +
       "the headline that proves it, in the original language, and ceviri its Turkish translation. For ilgisiz leave " +
       `both empty. ${VERI_NOTU}`,
     `Claim: ${iddia.iddia}\nPlace names: ${iddia.yer_adlari.join(", ")}\nDate: ${iddia.olay_tarihi || "recent"}\n\n${liste}`,

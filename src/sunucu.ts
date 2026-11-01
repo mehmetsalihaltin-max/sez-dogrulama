@@ -62,7 +62,8 @@ createServer(async (istek, yanit) => {
         }
         gonder({ tip: "sonuc", sonuc });
       } catch (e) {
-        gonder({ tip: "hata", metin: e instanceof Error ? e.message : String(e) });
+        const m = e instanceof Error ? e.message : String(e);
+        gonder({ tip: "hata", metin: m.includes("content_policy_violation") ? "Model bu soruyu içerik filtresine takıldığı için yanıtlamadı. Soruyu farklı ifade edip yeniden deneyin." : m });
       }
       yanit.end();
       return;

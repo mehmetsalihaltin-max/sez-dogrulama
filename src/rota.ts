@@ -1,5 +1,5 @@
 // Tek soru, tek hat: soru cozulur, cografya kodla kurulur, Muse risk tarar, her bulgu kapidan gecer.
-import { aramali, sayac, tahminiDolar, yapili } from "./muse.ts";
+import { aramali, sayarak, yapili } from "./muse.ts";
 import { iddiaDogrula, iddialariCikar, sinirli } from "./dogrula.ts";
 import { jsonDizisi } from "./govde.ts";
 import { bagimsizKaynaklar, type Seviye } from "./kapi.ts";
@@ -11,6 +11,12 @@ const AYNI_ANDA_DOGRULAMA = 3;
 const GUN = 86_400_000;
 /** Rota koridorunun yari genisligi. Havacilik standardi degil, ekranda ayrim yapmak icin secilmis pay. */
 export const KORIDOR_KM = 150;
+/** Yerel olayin uc meydana bu kadar yakinsa operasyonu etkileyebilir sayilir. */
+const MEYDAN_YAKINI_KM = 100;
+/** Rotadan bu kadar uzak olay bolgesel gelisme de sayilmaz (New York-Dubai sorgusunda Las Vegas vakasi). */
+const ILGI_SINIRI_KM = 1000;
+/** Hava sahasi boyunca etkisi olan turler: yerel olay diye elenmez. */
+const GENIS_ETKILI = ["savas", "saldiri", "dron", "gps", "siber", "kul"];
 export const TEHLIKELER = ["savas", "hava", "saldiri", "deprem", "sel", "grev", "yakit", "ariza", "kul", "dron", "gps", "siber", "diger"] as const;
 
 export type Soru = { tur: "mevcut-rota" | "yeni-rota" | "ulke"; kalkis: string; varis: string; ulke: string; tarih: string };
@@ -49,16 +55,17 @@ export function pencereKur(tarih: string, simdi = Date.now()) {
 }
 
 async function riskTara(yerler: string[], pencere: { ilk: string; son: string }): Promise<Risk[]> {
+  // Meta icerik filtresi siddet kelimeleri siralanan istemi reddediyor (istanbul-izmir vakasi); operasyon dili geciyor.
   const { metin } = await aramali(
-    `You are an aviation-safety analyst. Find events between ${pencere.ilk} and ${pencere.son} that affect flight safety in or over: ` +
-      `${yerler.join(", ")}. Cover every hazard: armed conflict and airspace closures (including NOTAMs), weather, hijacking or attacks on ` +
-      `aircraft, earthquakes, floods, strikes, fuel shortages, technical failures at airports, volcanic ash, drones, GPS jamming, cyber attacks. ` +
-      `Search in English and in the local languages. Answer with a JSON array only, at most ${AZAMI_BULGU} items, most serious first. Each item: ` +
+    `You support an airline operations safety desk. Find publicly reported events between ${pencere.ilk} and ${pencere.son} that could ` +
+      `disrupt flight operations at or over: ${yerler.join(", ")}. Include airspace restrictions and NOTAMs, conflict-related airspace risk, ` +
+      `severe weather, natural disasters, industrial action, fuel supply, airport infrastructure faults, volcanic ash, drones, navigation signal ` +
+      `interference and security incidents reported by news media or authorities. Search in English and in the local languages. Answer with a JSON array only, at most ${AZAMI_BULGU} items, most serious first. Each item: ` +
       `{"iddia": one checkable factual sentence in Turkish naming the place, "tehlike": one of ${TEHLIKELER.join(", ")}, ` +
       `"iata": IATA code when the event is at an airport, otherwise empty, "yer_adi": English name of the city or district where it happened, ` +
       `empty if the event is country-wide, "ulke": English country name, "hava_sahasi": true only when the event closes or restricts the ` +
       `airspace of that country, "olay_tarihi": YYYY-MM-DD}. ` +
-      `Only events that happened and could affect flights to, from or over these places; skip local incidents with no bearing on flight operations. No forecasts. Return [] if there are none.`,
+      `Only events that happened and could affect flights to, from or over these places; skip local incidents with no bearing on flight operations and events at distant airports. No forecasts. Return [] if there are none.`,
     TARAMA_MODELI,
   );
   return (jsonDizisi(metin) as Risk[]).filter((r) => typeof r?.iddia === "string").slice(0, AZAMI_BULGU);
@@ -81,6 +88,12 @@ export function iliskiVer(k: { tur: "nokta" | "ulke"; km: number | null; rotaVar
   return k.km <= KORIDOR_KM ? "koridorda" : "bolgesel";
 }
 
+/** Uc meydandan ve hava sahasindan uzak yerel kaza, hava ya da dogal olay uçusu ilgilendirmez (Goreme vakasi). */
+export function gurultuMu(r: { tehlike: string; iata: string; hava_sahasi: boolean }, meydanaKm: number | null) {
+  if (r.iata || r.hava_sahasi === true || GENIS_ETKILI.includes(r.tehlike)) return false;
+  return meydanaKm == null || meydanaKm > MEYDAN_YAKINI_KM;
+}
+
 export function durumVer(b: { seviye: Seviye; iliski: Iliski }[]): Durum {
   const teyitli = b.filter((x) => x.seviye === "teyitli");
   if (teyitli.some((x) => x.iliski === "koridorda")) return "koridorda-teyitli";
@@ -92,7 +105,11 @@ export function durumVer(b: { seviye: Seviye; iliski: Iliski }[]): Durum {
 const uc = (h: Havalimani) => ({ iata: h.iata, ad: h.ad, sehir: h.sehir, nokta: [h.lon, h.lat] as Nokta });
 
 export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
-  const baslangic = { ...sayac, dolar: tahminiDolar() };
+  const { sonuc, dolar, arama } = await sayarak(() => sorgula(soru, ilerle));
+  return { ...sonuc, maliyet: { dolar, arama } };
+}
+
+async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
   ilerle({ adim: "soru", metin: "Soru çözülüyor" });
   const s = await soruCoz(soru);
   const pencere = pencereKur(s.tarih);
@@ -101,6 +118,7 @@ export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
   let rota: Nokta[] = [];
   let gecilen: string[] = [];
   let hedef: Record<string, unknown>;
+  let meydanlar: Nokta[] = [];
   if (s.tur === "ulke") {
     const u = await ulkeBul(s.ulke);
     if (!u) throw new Error(`"${s.ulke}" ülke verisinde yok`);
@@ -110,6 +128,7 @@ export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
     const [a, b] = await Promise.all([havalimani(s.kalkis), havalimani(s.varis)]);
     if (!a || !b) throw new Error(`Havalimanı bulunamadı: ${s.kalkis}, ${s.varis}`);
     rota = buyukDaire([a.lon, a.lat], [b.lon, b.lat]);
+    meydanlar = [[a.lon, a.lat], [b.lon, b.lat]];
     gecilen = await ucusUlkeleri(rota);
     yerler = [`${a.ad} (${a.iata})`, `${b.ad} (${b.iata})`, ...gecilen];
     hedef = { kalkis: uc(a), varis: uc(b), rota, ulkeler: gecilen };
@@ -117,16 +136,22 @@ export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
   }
 
   ilerle({ adim: "tarama", metin: `Muse ${pencere.ilk} / ${pencere.son} aralığını tarıyor` });
-  const riskler = await riskTara(yerler, pencere);
-  ilerle({ adim: "dogrulama", metin: `${riskler.length} bulgu kanıt kapısına giriyor` });
+  const taranan = await riskTara(yerler, pencere);
+  // Elenen bulgu para harcamasin diye konum, dogrulamadan once bulunur.
+  const konumlu = await sinirli(taranan, AYNI_ANDA_DOGRULAMA, async (r) => ({ r, konum: await konumBul(r) }));
+  const riskler = konumlu.filter(({ r, konum }) => {
+    const nokta = konum?.tur === "nokta" ? konum.nokta : null;
+    if (nokta && rota.length && rotayaUzaklikKm(nokta, rota) > ILGI_SINIRI_KM) return false;
+    return !gurultuMu(r, nokta && meydanlar.length ? rotayaUzaklikKm(nokta, meydanlar) : null);
+  });
+  ilerle({ adim: "dogrulama", metin: `${riskler.length} bulgu kanıt kapısına giriyor, ${taranan.length - riskler.length} yerel olay elendi` });
 
   const bugun = new Date().toISOString().slice(0, 10);
   let biten = 0;
-  const bulgular = await sinirli(riskler, AYNI_ANDA_DOGRULAMA, async (r) => {
+  const bulgular = await sinirli(riskler, AYNI_ANDA_DOGRULAMA, async ({ r, konum }) => {
     const [iddia] = await iddialariCikar(`${r.olay_tarihi}: ${r.iddia}`, bugun);
     const d = await iddiaDogrula(iddia ?? { iddia: r.iddia, yer: r.ulke, yer_adlari: [r.ulke], olay_tarihi: r.olay_tarihi, sorgular: [] });
     ilerle({ adim: "kapi", metin: `${++biten}/${riskler.length}: ${d.sonuc.seviye}` });
-    const konum = await konumBul(r);
     const rotayaKm = konum?.tur === "nokta" && rota.length ? rotayaUzaklikKm(konum.nokta, rota) : null;
     return {
       iddia: r.iddia,
@@ -142,7 +167,8 @@ export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
         tur: konum?.tur ?? "ulke",
         km: rotayaKm,
         rotaVar: rota.length > 0,
-        havaSahasiRotada: r.hava_sahasi === true && gecilen.includes(r.ulke),
+        // Tek noktadaki olay ulkenin hava sahasi sayilmaz (Maumere vakasi).
+        havaSahasiRotada: konum?.tur === "ulke" && r.hava_sahasi === true && gecilen.includes(r.ulke),
       }),
       kanitlar: bagimsizKaynaklar(d.sonuc.destek).slice(0, 4).map((k) => ({
         yayinci: k.yayinci,
@@ -158,7 +184,7 @@ export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
 
   const sira: Seviye[] = ["teyitli", "celiskili", "kismen", "tek-kaynak", "kanit-yok"];
   const yakin: Iliski[] = ["koridorda", "ulke-ici", "konum-genel", "bolgesel"];
-  bulgular.sort((a, b) => sira.indexOf(a.seviye) - sira.indexOf(b.seviye) || yakin.indexOf(a.iliski) - yakin.indexOf(b.iliski));
+  bulgular.sort((a, b) => yakin.indexOf(a.iliski) - yakin.indexOf(b.iliski) || sira.indexOf(a.seviye) - sira.indexOf(b.seviye));
   return {
     soru,
     tur: s.tur,
@@ -167,7 +193,7 @@ export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
     bulgular,
     durum: durumVer(bulgular),
     koridorKm: KORIDOR_KM,
-    maliyet: { dolar: +(tahminiDolar() - baslangic.dolar).toFixed(3), arama: sayac.arama - baslangic.arama },
+    elenen: taranan.length - riskler.length,
     zaman: new Date().toISOString(),
   };
 }

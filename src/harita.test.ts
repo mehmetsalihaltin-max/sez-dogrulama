@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { buyukDaire, csvSatiri, havalimaniCoz, rotayaUzaklikKm, ucusUlkeleri, ulkeBul, type Nokta } from "./harita.ts";
-import { durumVer, iliskiVer, pencereKur } from "./rota.ts";
+import { durumVer, gurultuMu, iliskiVer, pencereKur } from "./rota.ts";
 
 test("tirnakli virgul alani bolmez", () => {
   assert.deepEqual(csvSatiri('1,"Kansas City, MO",x'), ["1", "Kansas City, MO", "x"]);
@@ -58,6 +58,16 @@ test("yeri bilinmeyen olay koridora yazilmaz, rotanin gectigi hava sahasi kapani
   assert.equal(iliskiVer({ tur: "ulke", km: null, rotaVar: true, havaSahasiRotada: false }), "konum-genel");
   assert.equal(iliskiVer({ tur: "ulke", km: null, rotaVar: true, havaSahasiRotada: true }), "koridorda");
   assert.equal(iliskiVer({ tur: "nokta", km: null, rotaVar: false, havaSahasiRotada: false }), "ulke-ici");
+});
+
+test("meydandan uzak yerel olay elenir, genis etkili olay elenmez (Goreme vakasi)", () => {
+  const yerel = { tehlike: "hava", iata: "", hava_sahasi: false };
+  assert.equal(gurultuMu(yerel, 240), true);
+  assert.equal(gurultuMu(yerel, null), true);
+  assert.equal(gurultuMu(yerel, 8), false);
+  assert.equal(gurultuMu({ ...yerel, iata: "SAW" }, 240), false);
+  assert.equal(gurultuMu({ ...yerel, tehlike: "dron" }, 400), false);
+  assert.equal(gurultuMu({ ...yerel, hava_sahasi: true }, null), false);
 });
 
 test("tarihli soru gecmis pencereyi kullanir", () => {
