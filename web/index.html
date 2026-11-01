@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEZ · Uçuş güvenliği kanıt ekranı</title>
+<meta name="description" content="Uçuş kararı verecek ekibe hangi olayın hangi kanıtla desteklendiğini gösteren ekran.">
+<style>
+@font-face{font-family:Newsreader;src:url(/v/newsreader-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:Plex;src:url(/v/plex-l400.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF}
+@font-face{font-family:Plex;src:url(/v/plex-400.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+0100-02AF}
+@font-face{font-family:Plex;src:url(/v/plex-l600.woff2) format("woff2");font-weight:600;font-display:swap;unicode-range:U+0000-00FF}
+@font-face{font-family:Plex;src:url(/v/plex-600.woff2) format("woff2");font-weight:600;font-display:swap;unicode-range:U+0100-02AF}
+:root{
+  --murekkep:#14323f;--kagit:#f3eee2;--sinyal:#c9391a;
+  --cizgi:color-mix(in srgb,var(--murekkep) 22%,transparent);
+  --soluk:color-mix(in srgb,var(--murekkep) 72%,var(--kagit));
+  --kara:color-mix(in srgb,var(--murekkep) 13%,var(--kagit));
+  --deniz:color-mix(in srgb,var(--murekkep) 4%,var(--kagit));
+  --golge:0 8px 24px color-mix(in srgb,var(--murekkep) 14%,transparent);
+  --s1:8px;--s2:16px;--s3:24px;--s4:32px;--s6:48px;--s8:64px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--kagit);color:var(--murekkep);font:400 16px/1.5 Plex,system-ui,sans-serif}
+h1,h2,p,ol{margin:0;padding:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sinyal);outline-offset:2px}
+.ekran{display:grid;grid-template-columns:minmax(0,7fr) minmax(360px,4fr);grid-template-rows:auto minmax(0,1fr);height:100vh}
+.ust{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s4);align-items:end;padding:var(--s2) var(--s3);border-bottom:1px solid var(--murekkep)}
+.damga{font:500 32px/1 Newsreader,serif;letter-spacing:.02em}
+.damga small{display:block;font:400 12px/1.4 Plex,sans-serif;letter-spacing:.04em;color:var(--soluk);margin-top:4px}
+form{display:flex;gap:var(--s2);align-items:end}
+.kutu{flex:1;min-width:0}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--soluk)}
+input{width:100%;border:0;border-bottom:1px solid var(--murekkep);background:none;color:inherit;font:500 24px/1.3 Newsreader,serif;padding:4px 0}
+input:focus{outline:0;border-bottom:2px solid var(--sinyal);padding-bottom:3px}
+button{font:600 14px/1 Plex,sans-serif;border:1px solid var(--murekkep);background:var(--murekkep);color:var(--kagit);padding:12px var(--s3);cursor:pointer;transition:background .15s,box-shadow .15s}
+button:hover{background:var(--sinyal);border-color:var(--sinyal);box-shadow:var(--golge)}
+button:disabled{opacity:.5;cursor:progress}
+.harita{position:relative;background:var(--deniz);border-right:1px solid var(--murekkep);min-height:0;overflow:hidden}
+svg{display:block;width:100%;height:100%}
+.ag{fill:none;stroke:var(--cizgi);stroke-width:.5}
+.kara{fill:var(--kara);stroke:var(--deniz);stroke-width:.6}
+.gecilen{fill:color-mix(in srgb,var(--murekkep) 26%,var(--kagit))}
+.yol{fill:none;stroke:var(--murekkep);stroke-width:2.5;stroke-linecap:round}
+.ciz{animation:ciz 1.2s ease-out both}
+@keyframes ciz{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.uc{fill:var(--kagit);stroke:var(--murekkep);stroke-width:2}
+.ucad{font:600 14px Plex,sans-serif;fill:var(--murekkep);paint-order:stroke;stroke:var(--deniz);stroke-width:4px}
+.imi circle{stroke:var(--kagit);stroke-width:2;transition:r .15s}
+.imi text{font:600 12px Plex,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.imi{cursor:pointer}
+.imi.etkin circle{r:17px}
+.imi.genel circle{stroke-dasharray:4 3}
+.imi.uzak{opacity:.55}
+.koridor{fill:none;stroke:var(--sinyal);stroke-opacity:.1;stroke-linecap:round}
+.s-teyitli circle{fill:var(--sinyal)}.s-teyitli text{fill:#fff}
+.s-kismen circle,.s-tek-kaynak circle,.s-celiskili circle{fill:var(--kagit);stroke:var(--sinyal)}.s-kismen text,.s-tek-kaynak text,.s-celiskili text{fill:var(--sinyal)}
+.s-kanit-yok circle{fill:var(--kagit);stroke:var(--soluk)}.s-kanit-yok text{fill:var(--soluk)}
+.dipnot{position:absolute;left:var(--s2);right:var(--s2);bottom:var(--s1);margin:0;font-size:12px;color:var(--soluk)}
+.ray{overflow:auto;padding:var(--s3);min-height:0}
+.acilis p{font:500 24px/1.3 Newsreader,serif;margin-bottom:var(--s3)}
+.ornek{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--cizgi);color:inherit;padding:var(--s2) 0;font:400 16px/1.4 Plex,sans-serif}
+.ornek:hover{background:none;border-color:var(--cizgi);box-shadow:none;color:var(--sinyal)}
+.ornek b{display:block;font-size:12px;letter-spacing:.04em;color:var(--soluk)}
+.gecmis{margin-top:var(--s6)}
+.gecmis-baslik{font:600 12px/1.4 Plex,sans-serif!important;letter-spacing:.04em;color:var(--soluk);margin-bottom:var(--s1)!important}
+.adimlar{list-style:none;font-size:14px}
+.adimlar li{padding:var(--s1) 0;border-top:1px solid var(--cizgi)}
+.adimlar li:last-child{font-weight:600}
+.karar{font:500 32px/1.15 Newsreader,serif;margin-bottom:var(--s1)}
+.alt{font-size:14px;color:var(--soluk);margin-bottom:var(--s3)}
+.hata{color:var(--sinyal);font-weight:600}
+.bulgular{list-style:none}
+.bulgu{display:grid;grid-template-columns:32px minmax(0,1fr);gap:0 var(--s1);padding:var(--s2) 0;border-top:1px solid var(--cizgi);transition:background .15s}
+.bulgu.etkin{background:color-mix(in srgb,var(--sinyal) 7%,transparent)}
+.no{font:600 14px/24px Plex,sans-serif;width:24px;height:24px;text-align:center;border-radius:50%;border:2px solid var(--sinyal);color:var(--sinyal)}
+.b-teyitli .no{background:var(--sinyal);color:#fff}.b-kanit-yok .no{border-color:var(--soluk);color:var(--soluk)}
+.seviye{font-size:12px;font-weight:600;letter-spacing:.04em}
+.b-teyitli .seviye,.b-kismen .seviye,.b-tek-kaynak .seviye,.b-celiskili .seviye{color:var(--sinyal)}
+.b-kanit-yok .seviye{color:var(--soluk)}
+.iddia{font-size:16px;font-weight:600;margin:4px 0}
+.meta{font-size:12px;color:var(--soluk)}
+details{grid-column:2;margin-top:var(--s1);font-size:14px}
+summary{cursor:pointer;font-weight:600}
+summary:hover{color:var(--sinyal)}
+.kanit{padding:var(--s1) 0 var(--s1) var(--s2);border-left:2px solid var(--cizgi);margin-top:var(--s1)}
+.kanit q{display:block;font:500 16px/1.35 Newsreader,serif;quotes:none}
+.kanit .tr{color:var(--soluk)}
+.kaynak{font-size:12px}
+.not{margin-top:var(--s3);padding-top:var(--s2);border-top:1px solid var(--murekkep);font-size:12px;color:var(--soluk)}
+@media (max-width:860px){
+  .ekran{display:block;height:auto}
+  .ust{grid-template-columns:1fr;gap:var(--s1);padding:var(--s1) var(--s2)}
+  .damga{font-size:24px}.damga small{display:none}
+  form{gap:var(--s1)}
+  input{font-size:18px}
+  button{padding:12px var(--s2)}
+  .harita{height:50vh;position:sticky;top:0;z-index:1;border-right:0;border-bottom:1px solid var(--murekkep)}
+  .dipnot{display:none}
+  .ray{padding:var(--s2)}
+  .karar{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){.ciz{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="ekran">
+  <header class="ust">
+    <h1 class="damga">SEZ<small>Uçuş güvenliği kanıt ekranı</small></h1>
+    <form id="form">
+      <div class="kutu">
+        <label for="soru">Rota, yeni hat ya da ülke sorun</label>
+        <input id="soru" autocomplete="off" required maxlength="300" placeholder="İstanbul–Erbil rotasında bu hafta ne oldu?">
+      </div>
+      <button id="gonder" type="submit">Kanıtla</button>
+    </form>
+  </header>
+  <main class="harita" aria-label="Rota ve risk haritası">
+    <svg id="svg" role="img" aria-label="Harita"></svg>
+    <p class="dipnot" id="dipnot"></p>
+  </main>
+  <aside class="ray" id="ray" aria-live="polite"></aside>
+</div>
+<script src="/v/d3-array.js"></script>
+<script src="/v/d3-geo.js"></script>
+<script src="/v/topojson.js"></script>
+<script>
+const M = {
+  seviye: { teyitli: "TEYİTLİ", kismen: "KISMEN", "tek-kaynak": "TEK KAYNAK", celiskili: "ÇELİŞKİLİ", "kanit-yok": "KANIT YOK" },
+  tehlike: { savas: "Çatışma", hava: "Hava", saldiri: "Saldırı", deprem: "Deprem", sel: "Sel", grev: "Grev", yakit: "Yakıt", ariza: "Arıza", kul: "Volkan külü", dron: "Dron", gps: "GPS karıştırma", siber: "Siber", diger: "Diğer" },
+  iliski: { koridorda: "ROTA KORİDORU", bolgesel: "BÖLGESEL GELİŞME", "konum-genel": "ÜLKE GENELİ", "ulke-ici": "" },
+  durum: {
+    "koridorda-teyitli": (n) => `Rota koridorunda ${n} teyitli olay.`,
+    "ulkede-teyitli": (n) => `Ülkede ${n} teyitli olay.`,
+    "bolgesel-gelisme": () => "Koridorda teyitli olay yok.",
+    "dogrulanmamis-isaret": () => "İşaret var, teyit yok.",
+    "bulgu-yok": () => "Kapıdan geçen kanıt yok.",
+  },
+  durumAlt: {
+    "koridorda-teyitli": "Olay doğrulandı. Uçuşa etkisini ekip değerlendirir.",
+    "ulkede-teyitli": "Olay doğrulandı. Uçuşa etkisini ekip değerlendirir.",
+    "bolgesel-gelisme": (n) => `Bölgede ${n} teyitli gelişme var, rotaya doğrudan bağı gösterilmedi.`,
+    "dogrulanmamis-isaret": "Tek başına karar için yeterli değil.",
+    "bulgu-yok": "Bu, güvenli demek olmaz; yalnız bu aralıkta kanıt bulunamadı.",
+  },
+  ornekler: [
+    ["Mevcut rota", "İstanbul–Erbil rotası bu hafta nasıl?"],
+    ["Yeni hat", "Ankara–Tahran hattını açmak istiyoruz, riskler neler?"],
+    ["Ülke durumu", "Lübnan'da uçuş güvenliği durumu nedir?"],
+  ],
+  dil: { tr: "Türkçe", en: "İngilizce", ar: "Arapça", ru: "Rusça", fa: "Farsça", uk: "Ukraynaca", de: "Almanca", fr: "Fransızca", es: "İspanyolca", nl: "Felemenkçe", ja: "Japonca", zh: "Çince", ko: "Korece" },
+};
+const ulkeAd = (a) => new Intl.DisplayNames(["tr"], { type: "region" }).of(ULKE_KOD[a] ?? "ZZ")?.replace("Bilinmeyen Bölge", a) ?? a;
+const ULKE_KOD = { Turkey: "TR", Syria: "SY", Iraq: "IQ", Iran: "IR", Lebanon: "LB", Israel: "IL", Jordan: "JO", Armenia: "AM", Azerbaijan: "AZ", Georgia: "GE", Russia: "RU", Ukraine: "UA", Yemen: "YE", Egypt: "EG", Sudan: "SD", Libya: "LY", Pakistan: "PK", Afghanistan: "AF", "Saudi Arabia": "SA", "United Arab Emirates": "AE", Qatar: "QA", Kuwait: "KW", Oman: "OM", Bahrain: "BH" };
+const NS = "http://www.w3.org/2000/svg";
+const $ = (id) => document.getElementById(id);
+const el = (ad, sinif, metin) => { const e = document.createElement(ad); if (sinif) e.className = sinif; if (metin != null) e.textContent = metin; return e; };
+const sv = (ad, oz = {}) => { const e = document.createElementNS(NS, ad); for (const k in oz) e.setAttribute(k, oz[k]); return e; };
+const svg = $("svg"), ray = $("ray");
+let dunya = [], kaynak, sonSonuc = null;
+
+async function hazirla() {
+  const t = await (await fetch("/v/dunya.json")).json();
+  dunya = topojson.feature(t, t.objects.countries).features;
+  ciz(null);
+  acilis();
+}
+
+function acilis() {
+  ray.replaceChildren();
+  const k = el("div", "acilis");
+  k.append(el("p", null, "Hangi olay, hangi kanıtla?"));
+  for (const [ust, s] of M.ornekler) {
+    const b = el("button", "ornek"); b.type = "button";
+    b.append(el("b", null, ust), document.createTextNode(s));
+    b.onclick = () => { $("soru").value = s; sorgula(s); };
+    k.append(b);
+  }
+  ray.append(k);
+  fetch("/api/kayitlar").then((r) => r.json()).then((l) => {
+    if (!l.length) return;
+    const b = el("div", "gecmis");
+    b.append(el("p", "gecmis-baslik", "Kayıtlı sorgular"));
+    for (const g of l.slice(0, 5)) {
+      const d = el("button", "ornek"); d.type = "button"; d.textContent = g.soru;
+      d.onclick = () => { $("soru").value = g.soru; sorgula(g.soru); };
+      b.append(d);
+    }
+    k.append(b);
+  });
+}
+
+function ciz(s) {
+  const { width: w, height: h } = svg.getBoundingClientRect();
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  svg.replaceChildren();
+  const hedef = s?.hedef ?? {};
+  const rota = hedef.rota;
+  const noktalar = [...(rota ?? []), ...((s?.bulgular ?? []).filter((b) => b.konum).map((b) => b.konum.nokta))];
+  const ulke = hedef.ulke && dunya.find((f) => f.properties.name === hedef.ulke);
+  const nesne = ulke ?? (noktalar.length ? { type: "MultiPoint", coordinates: noktalar } : { type: "Sphere" });
+  const merkez = d3.geoCentroid(nesne.type === "Sphere" ? { type: "Point", coordinates: [30, 25] } : nesne);
+  const izdusum = (nesne.type === "Sphere" ? d3.geoNaturalEarth1() : d3.geoAzimuthalEquidistant().rotate([-merkez[0], -merkez[1]]))
+    .fitExtent([[64, 56], [w - 64, h - 56]], nesne);
+  if (nesne.type !== "Sphere") izdusum.clipAngle(90);
+  const yol = d3.geoPath(izdusum);
+  svg.append(sv("path", { class: "ag", d: yol(d3.geoGraticule10()) }));
+  const gecilen = new Set(hedef.ulkeler ?? (hedef.ulke ? [hedef.ulke] : []));
+  for (const f of dunya) svg.append(sv("path", { class: "kara" + (gecilen.has(f.properties.name) ? " gecilen" : ""), d: yol(f) }));
+  if (rota) {
+    const km1 = 1 / 6371 * 180 / Math.PI; // bir kilometrenin derece karsiligi
+    const [a, b] = [izdusum(merkez), izdusum([merkez[0], merkez[1] + km1 * 100])];
+    const pikselKm = Math.hypot(a[0] - b[0], a[1] - b[1]) / 100;
+    svg.append(sv("path", { class: "koridor", d: yol({ type: "LineString", coordinates: rota }), "stroke-width": 2 * (s.koridorKm ?? 150) * pikselKm }));
+    svg.append(sv("path", { class: "yol ciz", d: yol({ type: "LineString", coordinates: rota }), pathLength: 1, "stroke-dasharray": 1 }));
+    for (const u of [hedef.kalkis, hedef.varis]) {
+      const [x, y] = izdusum(u.nokta);
+      svg.append(sv("circle", { class: "uc", cx: x, cy: y, r: 6 }));
+      const t = sv("text", { class: "ucad", x: x + 10, y: y - 10 }); t.textContent = u.iata; svg.append(t);
+    }
+  }
+  const yigin = {};
+  (s?.bulgular ?? []).forEach((b, i) => {
+    if (!b.konum) return;
+    const [x0, y0] = izdusum(b.konum.nokta);
+    const anahtar = b.konum.nokta.join();
+    const sira = yigin[anahtar] = (yigin[anahtar] ?? -1) + 1;
+    const x = x0 + sira * 30, y = y0;
+    const genel = b.konum.tur === "ulke" && b.iliski !== "koridorda";
+    const g = sv("g", { class: `imi s-${b.seviye}${genel ? " genel" : ""}${b.iliski === "bolgesel" ? " uzak" : ""}`, "data-no": i, tabindex: 0, role: "button", "aria-label": `${i + 1}. bulgu` });
+    g.append(sv("circle", { cx: x, cy: y, r: 14 }));
+    const t = sv("text", { x, y }); t.textContent = i + 1; g.append(t);
+    g.onmouseenter = () => vurgula(i);
+    g.onclick = () => { vurgula(i); document.getElementById(`bulgu-${i}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" }); };
+    svg.append(g);
+  });
+  const yol_notu = rota ? `Rota büyük daire yayıdır, uçuş planı değildir. Bant: rotanın iki yanında ${s.koridorKm ?? 150} km.` : "";
+  const genelVar = (s?.bulgular ?? []).some((b) => b.konum?.tur === "ulke");
+  $("dipnot").textContent = [yol_notu, genelVar ? "Kesikli halka: olay ülke genelinde, nokta yaklaşıktır." : ""].filter(Boolean).join(" ");
+}
+
+function vurgula(i) {
+  document.querySelectorAll(".imi,.bulgu").forEach((e) => e.classList.toggle("etkin", +e.dataset.no === i));
+}
+
+function kanitKart(k) {
+  const d = el("div", "kanit");
+  const q = el("q", null, k.alinti); q.dir = "auto"; if (k.dil) q.lang = k.dil;
+  d.append(q);
+  if (k.ceviri && k.dil !== "tr") d.append(el("p", "tr", k.ceviri));
+  const p = el("p", "kaynak");
+  const a = el("a", null, k.yayinci);
+  if (/^https?:\/\//.test(k.url)) { a.href = k.url; a.target = "_blank"; a.rel = "noopener noreferrer"; }
+  p.append(a, document.createTextNode(` · ${k.tarih ?? ""} · ${M.dil[k.dil] ?? ""}`));
+  d.append(p);
+  return d;
+}
+
+function goster(s) {
+  sonSonuc = s;
+  ciz(s);
+  ray.replaceChildren();
+  const teyitli = s.bulgular.filter((b) => b.seviye === "teyitli");
+  const kor = teyitli.filter((b) => b.iliski === "koridorda" || b.iliski === "ulke-ici").length;
+  ray.append(el("h2", "karar", M.durum[s.durum](kor)));
+  const alt = M.durumAlt[s.durum];
+  ray.append(el("p", "alt", `${typeof alt === "function" ? alt(teyitli.length) : alt} Taranan aralık: ${s.pencere.ilk} / ${s.pencere.son}.`));
+  const ol = el("ol", "bulgular");
+  s.bulgular.forEach((b, i) => {
+    const li = el("li", `bulgu b-${b.seviye}`); li.id = `bulgu-${i}`; li.dataset.no = i;
+    li.onmouseenter = () => vurgula(i);
+    li.append(el("span", "no", i + 1));
+    const g = el("div");
+    g.append(el("div", "seviye", [M.seviye[b.seviye], M.iliski[b.iliski], M.tehlike[b.tehlike] ?? M.tehlike.diger].filter(Boolean).join(" · ")));
+    g.append(el("p", "iddia", b.iddia));
+    const yayinci = `${b.bagimsiz} ayrı haber`;
+    const dil = b.diller.map((d) => M.dil[d] ?? d).join(", ");
+    g.append(el("p", "meta", [b.olayTarihi, yayinci, dil, b.rotayaKm != null ? `rotaya ${b.rotayaKm} km` : b.konum?.tur === "ulke" ? `${ulkeAd(b.konum.ad)} geneli` : ""].filter(Boolean).join(" · ")));
+    li.append(g);
+    if (b.kanitlar.length || b.celiski.length) {
+      const dt = el("details");
+      dt.append(el("summary", null, `Kanıtı gör (${b.kanitlar.length + b.celiski.length})`));
+      for (const k of [...b.kanitlar, ...b.celiski]) dt.append(kanitKart(k));
+      li.append(dt);
+    }
+    ol.append(li);
+  });
+  ray.append(ol);
+  ray.append(el("p", "not", "SEZ kanıtı gösterir, uçuş kararını operasyon ekibi verir. Seviyeyi model yazmaz; kod ayrı haber sayısından hesaplar. Olayın doğrulanması, uçuşa etkisinin kanıtlandığı anlamına gelmez."));
+}
+
+function sorgula(s) {
+  kaynak?.close();
+  $("gonder").disabled = true;
+  ray.replaceChildren();
+  const liste = el("ol", "adimlar"); ray.append(liste);
+  const bitir = () => { kaynak.close(); $("gonder").disabled = false; };
+  kaynak = new EventSource(`/api/sor?s=${encodeURIComponent(s)}`);
+  kaynak.onmessage = (o) => {
+    const d = JSON.parse(o.data);
+    if (d.tip === "ilerleme") liste.append(el("li", null, d.metin));
+    if (d.tip === "sonuc") { bitir(); goster(d.sonuc); }
+    if (d.tip === "hata") { bitir(); ray.replaceChildren(el("p", "hata", d.metin)); }
+  };
+  kaynak.onerror = () => { bitir(); ray.replaceChildren(el("p", "hata", "Sunucuyla bağlantı kesildi.")); };
+}
+
+$("form").onsubmit = (o) => { o.preventDefault(); sorgula($("soru").value.trim()); };
+let son; addEventListener("resize", () => { clearTimeout(son); son = setTimeout(() => ciz(sonSonuc), 150); });
+hazirla();
+</script>
+</body>
+</html>

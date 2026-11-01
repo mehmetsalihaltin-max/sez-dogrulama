@@ -1,0 +1,8 @@
+.env
+node_modules/
+__pycache__/
+cikti/
+ornek/gorsel/
+ornek/uydu/*.mjs
+ornek/uydu/*.png
+!ornek/uydu/pist-karsilastirma.png
