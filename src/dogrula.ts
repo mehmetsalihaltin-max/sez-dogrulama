@@ -84,8 +84,9 @@ const KARAR_SEMASI = {
           karar: { type: "string", enum: ["destekliyor", "celisiyor", "ilgisiz"] },
           alinti: { type: "string" },
           ceviri: { type: "string" },
+          ceviriEn: { type: "string" },
         },
-        required: ["id", "karar", "alinti", "ceviri"],
+        required: ["id", "karar", "alinti", "ceviri", "ceviriEn"],
         additionalProperties: false,
       },
     },
@@ -105,8 +106,8 @@ async function esle(iddia: Iddia, adaylar: Aday[]): Promise<ModelKarari[]> {
       "explicitly denied. ilgisiz: anything else, including another event at the same place and any headline that does " +
       "not state the cause the claim names. The quote must contain the words that prove both the place and the cause. " +
       "For destekliyor and celisiyor, alinti is a short exact character-for-character copy of the part of " +
-      "the headline that proves it, in the original language, and ceviri its Turkish translation. For ilgisiz leave " +
-      `both empty. ${VERI_NOTU}`,
+      "the headline that proves it, in the original language, ceviri its Turkish translation and ceviriEn its English translation. For ilgisiz leave " +
+      `all three empty. ${VERI_NOTU}`,
     `Claim: ${iddia.iddia}\nPlace names: ${iddia.yer_adlari.join(", ")}\nDate: ${iddia.olay_tarihi || "recent"}\n\n${liste}`,
     "Kararlar",
     KARAR_SEMASI,

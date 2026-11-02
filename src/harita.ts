@@ -6,7 +6,7 @@ import { feature } from "topojson-client";
 const HAVALIMANI_VERISI = "https://davidmegginson.github.io/ourairports-data/airports.csv"; // OurAirports, kamu malı
 const DUNYA_YARICAPI_KM = 6371;
 
-export type Havalimani = { iata: string; ad: string; sehir: string; ulke: string; lat: number; lon: number };
+export type Havalimani = { iata: string; icao: string; onem?: number; anahtar?: string; ad: string; sehir: string; ulke: string; lat: number; lon: number };
 export type Nokta = [lon: number, lat: number];
 
 export function csvSatiri(s: string): string[] {
@@ -44,6 +44,9 @@ export function havalimaniCoz(csv: string): Map<string, Havalimani> {
     onemi.set(iata, puan);
     tablo.set(iata, {
       iata,
+      icao: a[k("icao_code")] || a[k("ident")],
+      onem: puan + (a[k("scheduled_service")] === "yes" ? 0.5 : 0), // tarifeli sefer alan meydan aramada one gecer
+      anahtar: a[k("keywords")],
       ad: a[k("name")],
       sehir: a[k("municipality")],
       ulke: a[k("iso_country")],
@@ -65,6 +68,35 @@ export function havalimani(iata: string): Promise<Havalimani | undefined> {
   return havalimanlari.then((t) => t.get(iata.toUpperCase()));
 }
 
+// OurAirports Ingilizce: sik yazilan Turkce sehir adlari aramada karsiligina cevrilir.
+const TURKCE_AD: Record<string, string> = {
+  moskova: "moscow", londra: "london", singapur: "singapore", kahire: "cairo", atina: "athens", viyana: "vienna", roma: "rome",
+  munih: "munich", tahran: "tehran", bagdat: "baghdad", cidde: "jeddah", riyad: "riyadh", pekin: "beijing", seul: "seoul",
+  kopenhag: "copenhagen", varsova: "warsaw", lizbon: "lisbon", bukres: "bucharest", sofya: "sofia", belgrad: "belgrade",
+  sam: "damascus", halep: "aleppo", beyrut: "beirut", kudus: "jerusalem", medine: "medina", mekke: "jeddah", tiflis: "tbilisi", erivan: "yerevan",
+};
+const sade = (s: string) => s.toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/\p{M}/gu, "");
+
+/** Kod tam eslesirse once o, sonra sehir ya da ad; buyuk meydanlar uste. */
+export function havalimaniSuz(tablo: Map<string, Havalimani>, q: string, adet = 8): Havalimani[] {
+  const y = sade(q.trim());
+  if (y.length < 2) return [];
+  const arama = TURKCE_AD[y] ?? y;
+  const puan = (h: Havalimani) => {
+    if (sade(h.iata) === y || sade(h.icao) === y) return 100;
+    const sehir = sade(h.sehir);
+    if (sehir.startsWith(arama)) return 10 + (h.onem ?? 0);
+    if (sade(h.ad).includes(arama) || sade(h.anahtar ?? "").includes(arama)) return 5 + (h.onem ?? 0);
+    return 0;
+  };
+  return [...tablo.values()].map((h) => [puan(h), h] as const).filter(([p]) => p).sort((a, b) => b[0] - a[0]).slice(0, adet).map(([, h]) => h);
+}
+
+export async function havalimaniAra(q: string): Promise<Havalimani[]> {
+  await havalimani("IST");
+  return havalimanlari!.then((t) => havalimaniSuz(t, q));
+}
+
 let dunya: Promise<any[]> | undefined;
 export function ulkeler(): Promise<any[]> {
   dunya ??= readFile(new URL("../node_modules/world-atlas/countries-50m.json", import.meta.url), "utf-8").then((m) => {
@@ -74,8 +106,17 @@ export function ulkeler(): Promise<any[]> {
   return dunya;
 }
 
+/** Modelin yazdigi yaygin ad ile sinir verisindeki ad farkli olabilir. */
+const ES_ADLAR: Record<string, string> = {
+  "türkiye": "turkey", "turkiye": "turkey", "united states": "united states of america", "usa": "united states of america", "us": "united states of america",
+  "uk": "united kingdom", "great britain": "united kingdom", "uae": "united arab emirates", "czech republic": "czechia", "ivory coast": "côte d'ivoire",
+  "bosnia and herzegovina": "bosnia and herz.", "democratic republic of the congo": "dem. rep. congo", "dr congo": "dem. rep. congo", "republic of the congo": "congo",
+  "south sudan": "s. sudan", "central african republic": "central african rep.", "dominican republic": "dominican rep.", "burma": "myanmar",
+};
+
 export async function ulkeBul(ad: string) {
-  const a = ad.trim().toLocaleLowerCase("en");
+  const k = ad.trim().toLocaleLowerCase("en");
+  const a = ES_ADLAR[k] ?? k;
   return (await ulkeler()).find((f) => String(f.properties.name).toLocaleLowerCase("en") === a);
 }
 
@@ -125,6 +166,9 @@ export async function ucusUlkeleri(noktalar: Nokta[]): Promise<string[]> {
   return [...bulunan];
 }
 
+/** Sinir verisinde ayri duran bagli bolgeler: Jersey icin Birlesik Krallik yazilirsa nokta ulke ortasina dusmesin. */
+const BAGLI: Record<string, string> = { JE: "United Kingdom", GG: "United Kingdom", IM: "United Kingdom", GI: "United Kingdom", PR: "United States of America", GU: "United States of America", VI: "United States of America" };
+
 /** Yer adini haritaya kod baglar; sonuc beyan edilen ulkenin sinirlari icinde degilse kabul edilmez. */
 export async function yerBul(ad: string, ulke: string): Promise<Nokta | null> {
   const u = await ulkeBul(ulke);
@@ -135,7 +179,7 @@ export async function yerBul(ad: string, ulke: string): Promise<Nokta | null> {
   if (!r.ok) return null;
   for (const y of (await r.json()).results ?? []) {
     const p: Nokta = [y.longitude, y.latitude];
-    if (geoContains(u, p)) return p;
+    if (geoContains(u, p) || BAGLI[y.country_code] === u.properties.name) return p;
   }
   return null;
 }

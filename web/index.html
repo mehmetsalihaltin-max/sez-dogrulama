@@ -1,172 +1,242 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SEZ · Uçuş güvenliği kanıt ekranı</title>
-<meta name="description" content="Uçuş kararı verecek ekibe hangi olayın hangi kanıtla desteklendiğini gösteren ekran.">
+<title>SEZ</title>
+<meta name="description" content="Shows the operations team which event is backed by which evidence, along the route.">
 <style>
-@font-face{font-family:Newsreader;src:url(/v/newsreader-500.woff2) format("woff2");font-weight:500;font-display:swap}
-@font-face{font-family:Plex;src:url(/v/plex-l400.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF}
-@font-face{font-family:Plex;src:url(/v/plex-400.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+0100-02AF}
-@font-face{font-family:Plex;src:url(/v/plex-l600.woff2) format("woff2");font-weight:600;font-display:swap;unicode-range:U+0000-00FF}
-@font-face{font-family:Plex;src:url(/v/plex-600.woff2) format("woff2");font-weight:600;font-display:swap;unicode-range:U+0100-02AF}
+@font-face{font-family:Switzer;src:url(/font/switzer-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Switzer;src:url(/font/switzer-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:Switzer;src:url(/font/switzer-600.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:Clash;src:url(/font/clash-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:Clash;src:url(/font/clash-600.woff2) format("woff2");font-weight:600;font-display:swap}
 :root{
-  --murekkep:#14323f;--kagit:#f3eee2;--sinyal:#c9391a;
-  --cizgi:color-mix(in srgb,var(--murekkep) 22%,transparent);
-  --soluk:color-mix(in srgb,var(--murekkep) 72%,var(--kagit));
-  --kara:color-mix(in srgb,var(--murekkep) 13%,var(--kagit));
-  --deniz:color-mix(in srgb,var(--murekkep) 4%,var(--kagit));
-  --golge:0 8px 24px color-mix(in srgb,var(--murekkep) 14%,transparent);
+  --murekkep:#152a38;--koyu:#0d1b24;--soluk:#5a6b76;--zemin:#fbfbf9;--yuzey:#fff;--yuzey2:#f4f4f1;--cizgi:#e3e5e3;
+  --sinyal:#a3362f;--sinyal-z:#f5e6e4;--orta:#7d5410;--orta-z:#f5ecd9;--onay:#2f6b4f;
+  --deniz:#dfe6ea;--kara:#fff;--kiyi:#b9c4ca;--gecilen:#f1ece2;
+  --golge:0 1px 2px rgb(21 42 56 / .05);--golge2:0 2px 4px rgb(21 42 56 / .06),0 8px 24px rgb(21 42 56 / .06);
   --s1:8px;--s2:16px;--s3:24px;--s4:32px;--s6:48px;--s8:64px;
+  --baslik:Clash,Switzer,system-ui,sans-serif;--govde:Switzer,system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--kagit);color:var(--murekkep);font:400 16px/1.5 Plex,system-ui,sans-serif}
+body{margin:0;background:var(--zemin);color:var(--murekkep);font:400 16px/1.5 var(--govde);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:repeating-linear-gradient(0deg,transparent 0 63px,rgb(21 42 56 / .022) 63px 64px),repeating-linear-gradient(90deg,transparent 0 63px,rgb(21 42 56 / .022) 63px 64px)}
 h1,h2,p,ol{margin:0;padding:0}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--sinyal);outline-offset:2px}
-.ekran{display:grid;grid-template-columns:minmax(0,7fr) minmax(360px,4fr);grid-template-rows:auto minmax(0,1fr);height:100vh}
-.ust{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s4);align-items:end;padding:var(--s2) var(--s3);border-bottom:1px solid var(--murekkep)}
-.damga{font:500 32px/1 Newsreader,serif;letter-spacing:.02em}
-.damga small{display:block;font:400 12px/1.4 Plex,sans-serif;letter-spacing:.04em;color:var(--soluk);margin-top:4px}
-form{display:flex;gap:var(--s2);align-items:end}
-.kutu{flex:1;min-width:0}
-label{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--soluk)}
-input{width:100%;border:0;border-bottom:1px solid var(--murekkep);background:none;color:inherit;font:500 24px/1.3 Newsreader,serif;padding:4px 0}
-input:focus{outline:0;border-bottom:2px solid var(--sinyal);padding-bottom:3px}
-button{font:600 14px/1 Plex,sans-serif;border:1px solid var(--murekkep);background:var(--murekkep);color:var(--kagit);padding:12px var(--s3);cursor:pointer;transition:background .15s,box-shadow .15s}
-button:hover{background:var(--sinyal);border-color:var(--sinyal);box-shadow:var(--golge)}
-button:disabled{opacity:.5;cursor:progress}
-.harita{position:relative;background:var(--deniz);border-right:1px solid var(--murekkep);min-height:0;overflow:hidden}
+:focus-visible{outline:2px solid var(--murekkep);outline-offset:2px}
+.ekran{position:relative;display:grid;grid-template-columns:minmax(0,11fr) minmax(400px,9fr);grid-template-rows:auto minmax(0,1fr);gap:var(--s2);height:100vh;padding:0 var(--s2) var(--s2)}
+.ust{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:var(--s4);align-items:center;margin:0 calc(var(--s2) * -1);padding:var(--s2) var(--s3);background:var(--yuzey);border-bottom:1px solid var(--cizgi)}
+.damga{display:flex;align-items:baseline;gap:var(--s2);font:600 32px/1 var(--baslik);letter-spacing:.01em;color:var(--koyu)}
+form{display:flex;gap:var(--s1);align-items:center}
+.kutu{flex:1;min-width:0;position:relative}
+.oneri{position:absolute;z-index:20;top:100%;left:0;min-width:360px;max-height:320px;overflow:auto;margin:4px 0 0;padding:4px 0;list-style:none;background:var(--yuzey);border:1px solid var(--cizgi);border-radius:4px;box-shadow:var(--golge2)}
+.oneri:empty{display:none}
+.oneri li{padding:var(--s1) var(--s2);font-size:14px;line-height:1.4;cursor:pointer}
+.oneri li:hover,.oneri li[aria-selected=true]{background:var(--yuzey2)}
+.kutu[hidden]{display:none}
+.mod{display:flex;border:1px solid var(--cizgi);border-radius:4px;overflow:hidden;flex:none}
+.mod button{height:46px;border:0;border-radius:0;background:none;color:var(--soluk);padding:0 var(--s2)}
+.mod button:hover{background:var(--yuzey2);box-shadow:none;transform:none}
+.mod button[aria-pressed=true]{background:var(--yuzey2);color:var(--murekkep)}
+.kutu.tarih{flex:0 0 160px}
+.kutu input[type=date]{padding:0 var(--s1);color:var(--soluk)}
+label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+input{width:100%;height:48px;border:1px solid var(--cizgi);border-radius:4px;background:var(--yuzey);color:inherit;font:400 16px/1.3 var(--govde);padding:0 var(--s2);transition:border-color .12s}
+input:hover{border-color:var(--kiyi)}
+input:focus{outline:0;border-color:var(--murekkep)}
+button{height:48px;font:600 13px/1 var(--baslik);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--murekkep);border-radius:4px;background:var(--murekkep);color:#fff;padding:0 var(--s3);cursor:pointer;transition:background .12s,color .12s,box-shadow .12s,transform .12s}
+button:hover{background:var(--koyu);box-shadow:var(--golge2);transform:translateY(-1px)}
+button:disabled{opacity:.5;cursor:progress;transform:none}
+.sahne-ac{background:none;color:var(--murekkep);white-space:nowrap}
+.sahne-ac:hover{background:var(--yuzey2)}
+.dil{display:flex;border:1px solid var(--cizgi);border-radius:4px;overflow:hidden}
+.dil button{height:46px;border:0;border-radius:0;background:none;color:var(--soluk);padding:0 var(--s2)}
+.dil button:hover{background:var(--yuzey2);box-shadow:none;transform:none}
+.dil button[aria-pressed=true]{background:var(--murekkep);color:#fff}
+.harita{position:relative;background:var(--deniz);border:1px solid var(--cizgi);border-radius:6px;box-shadow:var(--golge2);min-height:0;overflow:hidden}
 svg{display:block;width:100%;height:100%}
-.ag{fill:none;stroke:var(--cizgi);stroke-width:.5;stroke-dasharray:2 4}
-.kure{fill:color-mix(in srgb,var(--murekkep) 7%,var(--kagit));stroke:var(--murekkep);stroke-width:1}
-.kapali{fill:none;stroke:var(--sinyal);stroke-width:5;stroke-dasharray:8 6;stroke-linecap:butt}
-.imad{font:600 14px Plex,sans-serif;fill:var(--murekkep);paint-order:stroke;stroke:var(--deniz);stroke-width:4px;pointer-events:none}
-.kara{fill:var(--kara);stroke:color-mix(in srgb,var(--murekkep) 38%,var(--kagit));stroke-width:.5}
-.gecilen{fill:color-mix(in srgb,var(--murekkep) 22%,var(--kagit))}
-.olcek{stroke:var(--murekkep);stroke-width:2;fill:none}
-.olcekad{font:600 12px Plex,sans-serif;fill:var(--murekkep);text-anchor:middle}
+.ag{fill:none;stroke:var(--kiyi);stroke-width:.5;stroke-dasharray:2 4;opacity:.7}
+.kure{fill:var(--deniz);stroke:var(--kiyi);stroke-width:1}
+.kara{fill:var(--kara);stroke:var(--kiyi);stroke-width:.5}
+.gecilen{fill:var(--gecilen)}
+.kapali{fill:none;stroke:var(--sinyal);stroke-width:5;stroke-dasharray:8 6}
+.koridor{fill:none;stroke:var(--murekkep);stroke-opacity:.08;stroke-linecap:round}
 .yol{fill:none;stroke:var(--murekkep);stroke-width:2.5;stroke-linecap:round}
 .ciz{animation:ciz 1.2s ease-out both}
 @keyframes ciz{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-.uc{fill:var(--kagit);stroke:var(--murekkep);stroke-width:2}
-.ucad{font:600 16px Plex,sans-serif;fill:var(--murekkep);paint-order:stroke;stroke:var(--deniz);stroke-width:4px}
-.imi circle{stroke:var(--kagit);stroke-width:2;transition:r .15s}
-.imi text{font:600 12px Plex,sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.uc{fill:var(--yuzey);stroke:var(--murekkep);stroke-width:2}
+.ucad{font:600 16px var(--baslik);fill:var(--koyu);paint-order:stroke;stroke:var(--deniz);stroke-width:4px}
+.olcek{stroke:var(--murekkep);stroke-width:2;fill:none}
+.olcekad{font:500 12px var(--govde);fill:var(--murekkep);text-anchor:middle}
 .imi{cursor:pointer}
+.imi circle{stroke:var(--yuzey);stroke-width:2;transition:r .12s}
+.imi text{font:600 12px var(--govde);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.imi text.imad{font:500 14px var(--govde);fill:var(--murekkep);paint-order:stroke;stroke:var(--deniz);stroke-width:4px}
 .imi .dokun{fill:transparent;stroke:none;r:22px}
-.bag{stroke:var(--murekkep);stroke-width:1}
-.gosterge{position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1);background:var(--kagit);border:1px solid var(--cizgi);font-size:14px}
-.gosterge[hidden]{display:none}
-.gosterge span{display:flex;gap:var(--s1);align-items:center}
-.gosterge i{width:12px;height:12px;border-radius:50%;border:2px solid var(--sinyal)}
-.gosterge .d{background:var(--sinyal)}.gosterge .y{border-color:var(--soluk)}.gosterge .k{border-style:dashed;border-color:var(--murekkep)}
-.elenen{font-size:12px;color:var(--soluk);margin-bottom:var(--s2)}
-.elenen summary{font-weight:400}
-.elenen li{margin:4px 0 0 var(--s2)}
 .imi.etkin circle{r:17px}
 .imi.genel circle{stroke-dasharray:4 3}
-.imi.uzak{opacity:.55}
-.koridor{fill:none;stroke:var(--sinyal);stroke-opacity:.24;stroke-linecap:round}
+.imi.uzak{opacity:.6}
+.bag{stroke:var(--murekkep);stroke-width:1}
 .s-teyitli circle{fill:var(--sinyal)}.s-teyitli text{fill:#fff}
-.s-kismen circle,.s-tek-kaynak circle,.s-celiskili circle{fill:var(--kagit);stroke:var(--sinyal)}.s-kismen text,.s-tek-kaynak text,.s-celiskili text{fill:var(--sinyal)}
-.s-kanit-yok circle{fill:var(--kagit);stroke:var(--soluk)}.s-kanit-yok text{fill:var(--soluk)}
-.dipnot{font-size:14px;color:var(--soluk);margin:0 0 var(--s3);padding:var(--s1) var(--s2);border-left:2px solid var(--sinyal)}
-.ray{overflow:auto;padding:var(--s3);min-height:0}
-.acilis p{font:500 24px/1.3 Newsreader,serif;margin-bottom:var(--s3)}
-.ornek{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--cizgi);color:inherit;padding:var(--s2) 0;font:400 16px/1.4 Plex,sans-serif}
-.ornek:hover{background:none;border-color:var(--cizgi);box-shadow:none;color:var(--sinyal)}
-.ornek b{display:block;font-size:12px;letter-spacing:.04em;color:var(--soluk)}
-.gecmis{margin-top:var(--s6)}
-.gecmis-baslik{font:600 12px/1.4 Plex,sans-serif!important;letter-spacing:.04em;color:var(--soluk);margin-bottom:var(--s1)!important}
+.s-kismen circle,.s-tek-kaynak circle,.s-celiskili circle{fill:var(--yuzey);stroke:#b07a1e}.s-kismen text,.s-tek-kaynak text,.s-celiskili text{fill:var(--orta)}
+.s-kanit-yok circle{fill:var(--yuzey);stroke:var(--soluk)}.s-kanit-yok text{fill:var(--soluk)}
+#kure3{position:absolute;inset:0;overflow:hidden;display:none}
+.harita.uc{background:var(--yuzey2)}.harita.uc #kure3{display:block}.harita.uc #svg{visibility:hidden}
+.ikon{display:inline-block;flex:none;width:18px;height:18px;background:currentColor;-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
+.im3{position:relative;display:grid;place-items:center;width:44px;height:44px;border:2px solid var(--yuzey);border-radius:50%;background:var(--orta);color:#fff;box-shadow:var(--golge2);cursor:pointer;pointer-events:auto}
+.im3 .ikon{width:30px;height:30px}
+.im3.s-teyitli{background:var(--sinyal)}
+.im3.s-kanit-yok{background:var(--yuzey);color:var(--soluk);border-color:var(--kiyi)}
+.im3.genel{border-style:dashed}
+.im3.etkin{outline:2px solid var(--murekkep);outline-offset:2px}
+.im3 small{position:absolute;right:-6px;top:-6px;min-width:16px;height:16px;padding:0 2px;border-radius:8px;background:var(--murekkep);color:#fff;font:600 11px/16px var(--govde);text-align:center}
+.im3ad{position:absolute;left:calc(100% + 8px);top:50%;translate:0 -50%;white-space:nowrap;padding:0 var(--s1);border-radius:2px;background:var(--yuzey);color:var(--murekkep);font:500 13px/20px var(--govde);box-shadow:var(--golge)}
+.im3ad.meydan{background:var(--murekkep);color:#fff;font:600 12px/20px var(--baslik);letter-spacing:.06em}
+#kure3 gmp-map-3d{display:block;width:100%;height:100%}
+.ucak3{filter:drop-shadow(0 0 1px #152a38) drop-shadow(0 1px 2px #152a38)}
+.ucak3 i{display:block;width:32px;height:32px;background:#fff;-webkit-mask:url(/ikon/flight.svg) center/contain no-repeat;mask:url(/ikon/flight.svg) center/contain no-repeat}
+.uc3{padding:0 6px;border-radius:2px;background:var(--murekkep);color:#fff;font:600 12px/18px var(--baslik);letter-spacing:.06em;translate:0 -24px;pointer-events:none}
+.ilgi .ikon{width:16px;height:16px;vertical-align:-3px;margin-right:4px}
+.notam-duz{font-size:14px;margin-top:4px}
+.uydular{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2);margin-top:var(--s2)}
+.uydular figure{margin:0;min-width:0}
+.uydular img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:var(--yuzey2);border-radius:4px}
+.uydular figcaption{margin-top:var(--s1);font-size:13px;line-height:1.4}
+.uydular figcaption b{font:600 13px/1.4 var(--baslik);letter-spacing:.06em}
+.uydular small{display:block;color:var(--soluk);font-size:12px}
+.uydu-yorum{margin:var(--s1) 0 4px;font-size:14px;line-height:1.45}
+.uydu-yorum.dikkat{color:var(--orta);font-weight:500}
+.notam-not{font-size:12px;color:var(--soluk);margin-top:4px}
+.gosterge{z-index:1;position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1) var(--s2);background:var(--yuzey);border:1px solid var(--cizgi);border-radius:6px;box-shadow:var(--golge);font-size:12px}
+.gosterge[hidden]{display:none}
+.gosterge span{display:flex;gap:var(--s1);align-items:center}
+.gosterge span[hidden]{display:none}
+.gosterge i{width:12px;height:12px;border-radius:50%;border:2px solid #b07a1e}
+.gosterge .d{background:var(--sinyal);border-color:var(--sinyal)}.gosterge .y{border-color:var(--soluk)}.gosterge .k{border-style:dashed;border-color:var(--murekkep)}
+.gosterge b{color:var(--sinyal)}
+.ray{overflow:auto;min-height:0;padding:0 4px var(--s6) 0;mask-image:linear-gradient(#000 calc(100% - 24px),transparent)}
+.etiketli{font:600 12px/1.4 var(--baslik);letter-spacing:.1em;text-transform:uppercase;color:var(--soluk)}
+.kartc{background:var(--yuzey);border:1px solid var(--cizgi);border-radius:6px;box-shadow:var(--golge2);padding:var(--s3);margin-bottom:var(--s2)}
+.acilis .soru-bas{font:600 24px/1.2 var(--baslik);color:var(--koyu);margin-bottom:var(--s2)}
+.ornek{display:block;width:100%;height:auto;text-align:left;text-transform:none;letter-spacing:0;background:none;border:0;border-top:1px solid var(--cizgi);border-radius:0;color:inherit;padding:var(--s2) 0;font:400 16px/1.4 var(--govde)}
+.ornek:hover{background:none;box-shadow:none;transform:none;color:var(--sinyal)}
+.ornek b{display:block;font:600 12px/1.6 var(--baslik);letter-spacing:.1em;text-transform:uppercase;color:var(--soluk)}
+.seritler{display:flex;flex-wrap:wrap;gap:var(--s1);margin-bottom:var(--s2)}
+.serit-d{height:32px;padding:0 var(--s2);background:var(--yuzey);color:var(--murekkep);border-color:var(--cizgi);font:500 12px/1 var(--govde);letter-spacing:0;text-transform:none}
+.serit-d:hover{background:var(--yuzey);border-color:var(--murekkep);box-shadow:none;transform:none}
+.serit-d[aria-current]{background:var(--murekkep);color:#fff;border-color:var(--murekkep)}
 .adimlar{list-style:none;font-size:14px}
 .adimlar li{padding:var(--s1) 0;border-top:1px solid var(--cizgi)}
+.adimlar li:first-child{border-top:0}
 .adimlar li:last-child{font-weight:600}
-.karar{font:500 32px/1.15 Newsreader,serif;margin-bottom:var(--s1)}
-.alt{font-size:14px;color:var(--soluk);margin-bottom:var(--s3)}
-.hata{color:var(--sinyal);font-weight:600;overflow-wrap:anywhere}
+.karar{font:600 28px/1.15 var(--baslik);color:var(--koyu);margin:var(--s1) 0}
+.durum-rozet{margin-bottom:var(--s1)}
+.rozet.durum-kirmizi{color:var(--sinyal);background:var(--sinyal-z)}
+.rozet.durum-kahve{color:var(--orta);background:var(--orta-z)}
+.karar.yok{color:var(--orta)}
+.alt{font-size:14px;color:var(--soluk)}
+.sayilar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s2);margin-top:var(--s3);padding-top:var(--s2);border-top:1px solid var(--cizgi)}
+.sayilar b{display:block;font:600 32px/1 var(--baslik);color:var(--koyu)}
+.sayilar span{display:block;margin-top:4px;font:500 12px/1.3 var(--baslik);letter-spacing:.06em;text-transform:uppercase;color:var(--soluk)}
+.dipnot{font-size:12px;color:var(--soluk);margin-top:var(--s2)}
+.notam .sat{display:flex;justify-content:space-between;gap:var(--s2);align-items:baseline}
+.notam-oz{font-size:14px;color:var(--soluk);margin-top:4px}
+.notam .kanit .ceviri{color:var(--murekkep);font-size:14px;font-weight:600}
+.notam .kanit q{font:400 13px/1.45 var(--govde);color:var(--soluk)}
 .bulgular{list-style:none}
-.bulgu{display:grid;grid-template-columns:32px minmax(0,1fr);gap:0 var(--s1);padding:var(--s2) 0;border-top:1px solid var(--cizgi);transition:background .15s}
-.bulgu.etkin{background:color-mix(in srgb,var(--sinyal) 7%,transparent)}
-.no{font:600 14px/24px Plex,sans-serif;width:24px;height:24px;text-align:center;border-radius:50%;border:2px solid var(--sinyal);color:var(--sinyal)}
-.b-teyitli .no{background:var(--sinyal);color:#fff}.b-kanit-yok .no{border-color:var(--soluk);color:var(--soluk)}
-.seviye{font-size:12px;font-weight:600;letter-spacing:.04em}
-.b-teyitli .seviye,.b-kismen .seviye,.b-tek-kaynak .seviye,.b-celiskili .seviye{color:var(--sinyal)}
-.b-kanit-yok .seviye{color:var(--soluk)}
-.iddia{font-size:16px;font-weight:600;margin:4px 0}
+.bulgu{display:grid;grid-template-columns:32px minmax(0,1fr);gap:0 var(--s1);padding:var(--s2);margin-bottom:var(--s1);background:var(--yuzey);border:1px solid var(--cizgi);border-left:2px solid var(--kiyi);border-radius:6px;box-shadow:var(--golge);transition:box-shadow .12s,border-color .12s}
+.bulgu.b-teyitli{border-left-color:var(--sinyal)}
+.bulgu.b-kismen,.bulgu.b-tek-kaynak,.bulgu.b-celiskili{border-left-color:#b07a1e}
+.bulgu.etkin{box-shadow:var(--golge2);border-color:var(--kiyi)}
+.no{font:600 13px/24px var(--govde);width:24px;height:24px;text-align:center;border-radius:50%;background:var(--yuzey2);color:var(--soluk)}
+.b-teyitli .no{background:var(--sinyal);color:#fff}
+.b-kismen .no,.b-tek-kaynak .no,.b-celiskili .no{background:var(--orta-z);color:var(--orta)}
+.ust-sira{display:flex;flex-wrap:wrap;gap:4px var(--s1);align-items:center}
+.rozet{display:inline-flex;align-items:center;gap:var(--s1);font:600 12px/16px var(--baslik);letter-spacing:.08em;text-transform:uppercase;padding:2px var(--s1);border-radius:2px;color:var(--soluk);background:var(--yuzey2)}
+.rozet::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.b-teyitli .rozet{color:var(--sinyal);background:var(--sinyal-z)}
+.b-kismen .rozet,.b-tek-kaynak .rozet,.b-celiskili .rozet{color:var(--orta);background:var(--orta-z)}
+.ilgi{font:500 12px/16px var(--baslik);letter-spacing:.06em;text-transform:uppercase;color:var(--soluk)}
+.iddia{font-size:16px;font-weight:500;margin:var(--s1) 0 4px}
 .meta{font-size:12px;color:var(--soluk)}
 details{grid-column:2;margin-top:var(--s1);font-size:14px}
-summary{cursor:pointer;font-weight:600}
+summary{cursor:pointer;font-weight:500}
 summary:hover{color:var(--sinyal)}
+.elenen{font-size:12px;color:var(--soluk);margin:0 0 var(--s2)}
+.elenen li{margin:4px 0 0 var(--s2)}
 .kanit{padding:var(--s1) 0 var(--s1) var(--s2);border-left:2px solid var(--cizgi);margin-top:var(--s1)}
-.kanit q{display:block;font:500 16px/1.35 Newsreader,serif;quotes:none}
-.kanit .tr{color:var(--soluk)}
-.kaynak{font-size:12px}
-.not{margin-top:var(--s3);padding-top:var(--s2);border-top:1px solid var(--murekkep);font-size:12px;color:var(--soluk)}
-.sahne-ac{background:none;color:var(--murekkep);white-space:nowrap}
-.sahne-gorsel{position:absolute;inset:0;z-index:2;margin:0;background:var(--murekkep);color:var(--kagit)}
+.kanit q{display:block;font:500 15px/1.4 var(--govde);quotes:none}
+.kanit .ceviri{color:var(--soluk)}
+.kaynak{font-size:12px;color:var(--soluk)}
+.not{margin:var(--s2) 0;font-size:12px;color:var(--soluk)}
+.hata{color:var(--sinyal);font-weight:500;overflow-wrap:anywhere}
+.sahne-gorsel{position:absolute;inset:0;z-index:2;margin:0;background:var(--murekkep);color:#fff;overflow:hidden}
 .sahne-gorsel[hidden]{display:none}
-.sahne-gorsel{overflow:hidden}
 .sahne-gorsel img{display:block;width:100%;height:100%;object-fit:cover}
-.ust-sol{position:absolute;left:var(--s2);top:var(--s2);display:flex;align-items:center}
-.yer{background:var(--murekkep);font-size:14px;font-weight:600;padding:4px var(--s1);line-height:16px}
-.anahtar{position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1);background:var(--murekkep);font-size:12px}
+.ust-sol{position:absolute;left:var(--s2);top:var(--s2);display:flex;align-items:stretch}
+.etiket{background:var(--yuzey);color:var(--murekkep);font:600 12px/16px var(--baslik);letter-spacing:.1em;padding:4px var(--s1)}
+.yer{background:var(--murekkep);font-size:14px;font-weight:500;padding:4px var(--s1);line-height:16px}
+.anahtar{position:absolute;right:var(--s2);top:var(--s2);display:grid;gap:4px;padding:var(--s1);background:var(--murekkep);border-radius:4px;font-size:12px}
 .anahtar span{display:flex;gap:var(--s1);align-items:center}
 .anahtar i{width:24px;height:8px;background:var(--r)}
-.anahtar .serit{background:repeating-linear-gradient(90deg,var(--kagit) 0 6px,var(--murekkep) 6px 12px);outline:1px solid var(--kagit)}
-.olcekcik{display:block;height:6px;margin-top:4px;border:1px solid var(--kagit);border-top:0}
-.etiket{background:var(--sinyal);color:#fff;font-size:12px;font-weight:600;letter-spacing:.04em;padding:4px var(--s1)}
+.anahtar .serit{background:repeating-linear-gradient(90deg,#fff 0 6px,var(--murekkep) 6px 12px);outline:1px solid #fff}
+.olcekcik{display:block;height:6px;margin-top:4px;border:1px solid #fff;border-top:0}
 .kunye{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(2,auto) minmax(0,1fr);gap:var(--s3);align-items:end;padding:var(--s2);background:var(--murekkep);font-size:14px}
-.kunye b{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;color:color-mix(in srgb,var(--kagit) 72%,var(--murekkep))}
-.kunye small{font-size:12px;text-align:right;color:color-mix(in srgb,var(--kagit) 72%,var(--murekkep))}
-.adim-sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s1);list-style:none;margin:0 0 var(--s2);padding:0}
-.adim-sec button{width:100%;padding:var(--s1);background:none;color:var(--murekkep);border-color:var(--cizgi);font-size:14px;text-align:left}
-.adim-sec button:hover{background:none;color:var(--sinyal);border-color:var(--sinyal);box-shadow:none}
-.adim-sec button[aria-current]{background:var(--murekkep);border-color:var(--murekkep);color:var(--kagit)}
-.senaryo{font-size:14px;margin-bottom:var(--s2);padding:var(--s1) var(--s2);border-left:2px solid var(--sinyal)}
-.senaryo b{color:var(--sinyal)}
+.kunye b{display:block;font:600 12px/1.4 var(--baslik);letter-spacing:.08em;color:var(--kiyi)}
+.kunye small{font-size:12px;text-align:right;color:var(--kiyi)}
+.adim-sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s1);list-style:none;margin:0 0 var(--s2)}
+.adim-sec button{width:100%;height:auto;padding:var(--s1);background:var(--yuzey);color:var(--murekkep);border-color:var(--cizgi);font:500 14px/1.3 var(--govde);letter-spacing:0;text-transform:none;text-align:left}
+.adim-sec button:hover{border-color:var(--murekkep);box-shadow:none;transform:none}
+.adim-sec button[aria-current]{background:var(--murekkep);border-color:var(--murekkep);color:#fff}
+.senaryo{font-size:14px;margin-bottom:var(--s2);padding:var(--s1) var(--s2);background:var(--yuzey2);border:1px solid var(--cizgi);border-radius:4px}
+.senaryo b{font:600 12px var(--baslik);letter-spacing:.1em;color:var(--murekkep)}
+.durumlar{font:600 12px/1.4 var(--baslik);letter-spacing:.08em;margin-bottom:var(--s2);color:var(--onay)}
+.durumlar.yok{color:var(--orta)}
 .kart{margin:0}
-.kart div.satir{display:grid;grid-template-columns:96px minmax(0,1fr);gap:var(--s2);padding:var(--s1) 0;border-top:1px solid var(--cizgi)}
-.kart dt{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--soluk);line-height:16px;padding-top:4px}
-.kart .neden{border-top:2px solid var(--murekkep)}
-.kart .neden dd{font:500 20px/1.35 Newsreader,serif}
-.karar.yok{color:var(--sinyal)}
-.kart .takip{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--sinyal)}
+.kart div.satir{display:grid;grid-template-columns:112px minmax(0,1fr);gap:var(--s2);padding:var(--s1) 0;border-top:1px solid var(--cizgi)}
+.kart dt{font:600 12px/16px var(--baslik);letter-spacing:.08em;color:var(--soluk);padding-top:4px}
 .kart dd{margin:0}
-.durumlar{font-size:12px;font-weight:600;letter-spacing:.04em;margin-bottom:var(--s2)}
-.durumlar.yok{color:var(--sinyal)}
-.yontem{margin:var(--s1) 0 0;display:grid;gap:4px;font-size:12px;font-weight:400}
+.kart .neden{border-top:2px solid var(--murekkep)}
+.kart .neden dd{font:600 16px/1.4 var(--govde);color:var(--koyu)}
+.kart .takip{display:block;font:600 12px var(--baslik);letter-spacing:.08em;color:var(--orta)}
+.yontem{margin:var(--s1) 0 0;display:grid;gap:4px;font-size:12px}
 .yontem p{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:var(--s1);align-items:center}
-.yontem i{display:block;height:8px;background:var(--kara)}
+.yontem i{display:block;height:8px;background:var(--yuzey2);border-radius:1px}
 .yontem i span{display:block;height:100%;background:var(--murekkep)}
-.yontem.yok i span{background:var(--sinyal)}
+.yontem.yok i span{background:#b07a1e}
 .yontem em{font-style:normal;text-align:right;font-weight:600}
 .ucuslar{list-style:none;margin:var(--s1) 0 0;padding:0;font-size:14px;color:var(--soluk)}
+@media (max-width:1320px){.kutu.tarih{flex-basis:144px}.sahne-ac{display:none}}
+@media (max-width:1180px){.ust{gap:var(--s2)}button{padding:0 var(--s2)}}
 @media (max-width:860px){
+  .ekran{display:block;height:auto;padding:0}
+  .ust{grid-template-columns:auto auto;margin:0;padding:var(--s1) var(--s2);gap:var(--s1);justify-content:space-between}
+  .damga{font-size:24px}
+  .dil button{height:44px}
+  form{grid-column:1/-1;grid-row:2;flex-wrap:wrap}
+  .mod{flex-basis:100%}
+  .mod button{flex:1}
+  .kutu{flex-basis:calc(50% - 4px)}
+  .oneri{min-width:0;width:100%}
+  .kutu.tarih{flex-basis:100%}
+  form button{flex:1;padding:0 var(--s1);letter-spacing:.04em;white-space:nowrap}
+  .harita{height:32vh;min-height:240px;position:relative;border-width:0 0 1px;border-radius:0;box-shadow:none}
+  .harita:has(.sahne-gorsel:not([hidden])){height:56vh}
+  input{font-size:14px;padding:0 var(--s1)}
+  .gosterge,.anahtar{display:none}
+  .ray{overflow:visible;padding:var(--s2);mask-image:none}
+  .notam .kanit q{font-size:12px}
+  .karar{font-size:24px}
+  .kartc{padding:var(--s2)}
+  button,summary{min-height:44px}
+  summary{display:flex;align-items:center;gap:var(--s1)}
   .kunye{grid-template-columns:1fr 1fr;gap:var(--s1);padding:var(--s1) var(--s2)}.kunye small{grid-column:1/-1;text-align:left}
   .kart div.satir{grid-template-columns:1fr;gap:4px}
   .sahne-gorsel img{transform:scale(1.7)}
   .yer{font-size:12px}
-  .anahtar{display:none}
-  .ray:has(.kart){display:flex;flex-direction:column}
-  .ray .senaryo{order:1;margin:var(--s2) 0 0}
-  .ekran{display:block;height:auto}
-  .ust{grid-template-columns:1fr;gap:var(--s1);padding:var(--s1) var(--s2)}
-  .damga{font-size:24px}.damga small{display:none}
   .adim-sec button{font-size:12px;padding:var(--s1) 4px}
-  form{gap:var(--s1);flex-wrap:wrap}
-  .kutu{flex-basis:100%}
-  form button{flex:1}
-  input{font-size:18px}
-  button{padding:12px var(--s2)}
-  .harita{height:50vh;position:sticky;top:0;z-index:1;border-right:0;border-bottom:1px solid var(--murekkep)}
-  .gosterge{display:none}
-  button,summary{min-height:44px}
-  summary{display:flex;align-items:center;gap:var(--s1)}
-  .ray{padding:var(--s2)}
-  .karar{font-size:24px}
 }
 @media (prefers-reduced-motion:reduce){.ciz{animation:none}*{transition:none!important}}
 </style>
@@ -174,33 +244,41 @@ summary:hover{color:var(--sinyal)}
 <body>
 <div class="ekran">
   <header class="ust">
-    <h1 class="damga">SEZ<small>Uçuş güvenliği kanıt ekranı</small></h1>
+    <h1 class="damga">SEZ</h1>
     <form id="form">
-      <div class="kutu">
-        <label for="soru">Rota, yeni hat ya da ülke sorun</label>
-        <input id="soru" autocomplete="off" required maxlength="300" placeholder="Los Angeles–Dubai rotasında bu hafta ne oldu?">
+      <div class="mod" role="group">
+        <button type="button" data-mod="rota" data-t="modRota"></button>
+        <button type="button" data-mod="ulke" data-t="modUlke"></button>
       </div>
-      <button id="gonder" type="submit">Kanıtla</button>
-      <button id="sahneAc" class="sahne-ac" type="button">Yeni kanıt sahnesi</button>
+      <div class="kutu"><label for="nereden" data-t="nereden"></label><input id="nereden" autocomplete="off" required maxlength="80"><ul id="neredenL" class="oneri" role="listbox"></ul></div>
+      <div class="kutu" id="nereyeK"><label for="nereye" data-t="nereye"></label><input id="nereye" autocomplete="off" maxlength="80"><ul id="nereyeL" class="oneri" role="listbox"></ul></div>
+      <div class="kutu tarih" id="tarihK"><label for="tarih" data-t="tarih"></label><input id="tarih" type="date"></div>
+      <button id="gonder" type="submit" data-t="kanitla"></button>
+      <button id="sahneAc" class="sahne-ac" type="button" data-t="sahneDugme"></button>
     </form>
+    <div class="dil" role="group" aria-label="Language / Dil">
+      <button type="button" data-dil="en">EN</button>
+      <button type="button" data-dil="tr">TR</button>
+    </div>
   </header>
-  <main class="harita" aria-label="Hat ve olay haritası">
-    <svg id="svg" role="img" aria-label="Harita"></svg>
+  <main class="harita" id="harita">
+    <svg id="svg" role="img"></svg>
+    <div id="kure3"></div>
     <div class="gosterge" id="gosterge" hidden>
-      <span data-g="teyitli"><i class="d"></i>Teyitli</span>
-      <span data-g="zayif"><i></i>Kısmen, tek kaynak</span>
-      <span data-g="kanit-yok"><i class="y"></i>Kanıt yok</span>
-      <span data-g="genel"><i class="k"></i>Ülke geneli</span>
-      <span data-g="kapali"><b style="color:var(--sinyal)">- -</b>Kapalı bildirilen hava sahası</span>
+      <span data-g="teyitli"><i class="d"></i><em data-t="gTeyitli" style="font-style:normal"></em></span>
+      <span data-g="zayif"><i></i><em data-t="gZayif" style="font-style:normal"></em></span>
+      <span data-g="kanit-yok"><i class="y"></i><em data-t="gYok" style="font-style:normal"></em></span>
+      <span data-g="genel"><i class="k"></i><em data-t="gGenel" style="font-style:normal"></em></span>
+      <span data-g="kapali"><b>- -</b><em data-t="gKapali" style="font-style:normal"></em></span>
     </div>
     <figure class="sahne-gorsel" id="sahneGorsel" hidden>
       <img id="sahneResim" alt="">
-      <div class="ust-sol"><span class="etiket">SENARYO</span><span class="yer" id="sahneYer"></span></div>
+      <div class="ust-sol"><span class="etiket" data-t="senaryo"></span><span class="yer" id="sahneYer"></span></div>
       <div class="anahtar" id="anahtar"></div>
       <figcaption class="kunye">
-        <span><b>ÇEKİM ZAMANI</b><span id="cekim"></span></span>
-        <span><b>İŞLEME ZAMANI</b><span id="isleme"></span></span>
-        <small><span id="anahtarMetin"></span><span id="sahneAd"></span> · Copernicus Sentinel verisi (2024), işlenmiş</small>
+        <span><b data-t="cekim"></b><span id="cekim"></span></span>
+        <span><b data-t="isleme"></b><span id="isleme"></span></span>
+        <small><span id="anahtarMetin"></span><span id="sahneAd"></span> · <span data-t="copernicus"></span></small>
       </figcaption>
     </figure>
   </main>
@@ -211,43 +289,209 @@ summary:hover{color:var(--sinyal)}
 <script src="/v/topojson.js"></script>
 <script>
 const M = {
-  seviye: { teyitli: "TEYİTLİ", kismen: "KISMEN", "tek-kaynak": "TEK KAYNAK", celiskili: "ÇELİŞKİLİ", "kanit-yok": "KANIT YOK" },
-  tehlike: { savas: "Çatışma", hava: "Hava", saldiri: "Saldırı", deprem: "Deprem", sel: "Sel", grev: "Grev", yakit: "Yakıt", ariza: "Arıza", kul: "Volkan külü", dron: "Dron", gps: "GPS karıştırma", siber: "Siber", diger: "Diğer" },
-  iliski: { koridorda: "HAT KORİDORU", bolgesel: "BÖLGESEL GELİŞME", "konum-genel": "ÜLKE GENELİ", "ulke-ici": "" },
-  durum: {
-    "hava-sahasi-kesisimi": (n, s) => `Bu hat ${ulkeAd(s.kesisim[0].ulke)} hava sahasından geçiyor. Hava sahası kapalı bildiriliyor.`,
-    "koridorda-teyitli": (n) => `Hat koridorunda ${n} teyitli olay.`,
-    "ulkede-teyitli": (n) => `Ülkede ${n} teyitli olay.`,
-    "bolgesel-gelisme": () => "Koridorda teyitli olay yok.",
-    "dogrulanmamis-isaret": () => "İşaret var, teyit yok.",
-    "bulgu-yok": () => "Kapıdan geçen kanıt yok.",
+  en: {
+    rozet: { "hava-sahasi-kesisimi": "Airspace issue", "koridorda-teyitli": "Confirmed on route", "ulkede-teyitli": "Confirmed in country", "bolgesel-gelisme": "Regional only", "dogrulanmamis-isaret": "Unconfirmed", "bulgu-yok": "No evidence" },
+    modRota: "Route", modUlke: "Country", nereden: "From", nereye: "To", tarih: "Date, leave empty for this week", ipucuA: "From", ipucuB: "To", ipucuU: "Country, for example Syria",
+    soruUlke: (a) => `What is the flight safety situation in ${a}?`, soruHafta: (a, b) => `How is the ${a}–${b} route this week?`, soruTarih: (a, b, t) => `How is the ${a}–${b} route for ${t}?`,
+    uyduOnce: (t) => `Taken before the event of ${t}; it does not show the effect.`, olayUzak: (k) => `Event location is ${k.toLocaleString("en-GB")} km from the route.`, olayUydu: "Satellite check", olayAra: "Looking for passes before and after the event", olayYok: "No usable pass around this date.", olaySonra: "AFTER", olayNot: (y) => `Muse reading of the images, independent of the news. Does not change the evidence level. Copernicus Sentinel data (${y}), processed.`,
+    uyduBas: "Satellite · Sentinel-2", uyduModel: "Muse reading of the image. Not an evidence level.", uyduNot: "Not live: the last clear pass over each airport and its surroundings. Roughly 20 km square.", uyduAra: "Looking for the last clear pass", uyduYok: "No clear pass in the last 45 days.", uyduAlt: (i, t) => `Satellite image of ${i}, ${t}`, uyduKunye: (t, b) => `${t} UTC · cloud ${b}%`, uyduGecis: (t) => `Later pass on ${t} was cloudy or partial`, uyduHak: (y) => `Copernicus Sentinel data (${y}), processed`,
+    notamAc: "Plain language", notamModel: "Model translation. The original above is the binding text.",
+    kanitla: "Show evidence", sahneDugme: "New evidence scene", gTeyitli: "Confirmed", gZayif: "Partial or single source", gYok: "No evidence", gGenel: "Country-wide", gKapali: "Airspace reported closed",
+    senaryo: "SCENARIO", cekim: "CAPTURE TIME", isleme: "PROCESSING TIME", copernicus: "Copernicus Sentinel data (2024), processed", harita: "Route and event map",
+    soruBas: "Which event, on what evidence?",
+    seviye: { teyitli: "Confirmed", kismen: "Partial", "tek-kaynak": "Single source", celiskili: "Contradicted", "kanit-yok": "No evidence" },
+    tehlike: { savas: "Conflict", hava: "Weather", saldiri: "Security", deprem: "Earthquake", sel: "Flood", grev: "Strike", yakit: "Fuel", ariza: "Fault", kul: "Volcanic ash", dron: "Drone", gps: "GPS interference", siber: "Cyber", diger: "Other" },
+    iliski: { koridorda: "In corridor", bolgesel: "Regional", "konum-genel": "Country-wide", "ulke-ici": "" },
+    durum: {
+      "hava-sahasi-kesisimi": (n, s) => `This route crosses ${ulkeAd(s.kesisim[0].ulke)} airspace, reported closed.`,
+      "koridorda-teyitli": (n) => `${n} confirmed event${n === 1 ? "" : "s"} in the route corridor.`,
+      "ulkede-teyitli": (n) => `${n} confirmed event${n === 1 ? "" : "s"} in the country.`,
+      "bolgesel-gelisme": () => "No confirmed event in the corridor.",
+      "dogrulanmamis-isaret": () => "Signals, no confirmation.",
+      "bulgu-yok": () => "No evidence passed the gate.",
+    },
+    durumAlt: {
+      "hava-sahasi-kesisimi": (n, s) => s.kesisim[0].seviye === "teyitli" ? "This shortest line cannot be used; the route needs replanning. The team decides." : "Not fully confirmed. The team should check the official source.",
+      "koridorda-teyitli": "Confirmed by separate reports. The team assesses the effect on the flight.",
+      "ulkede-teyitli": "Confirmed by separate reports. The team assesses the effect on the flight.",
+      "bolgesel-gelisme": (n) => `${n} confirmed regional development, no direct link to the route shown.`,
+      "dogrulanmamis-isaret": "Not enough for a decision on its own.",
+      "bulgu-yok": "This does not mean safe; only that no evidence was found in this period.",
+    },
+    aralik: (a, b) => `Period checked: ${a} to ${b}.`,
+    saTaranan: "Events scanned", saTeyitli: "Confirmed in corridor", saKoridor: "Confirmed elsewhere",
+    hatIz: (u, t, k) => `Route is an approximate drawing taken by hand from the Flightradar24 track of ${u} on ${t}. Band: ${k} km either side.`,
+    hatCanli: (u, t, k) => `Route is the real Flightradar24 track of ${u} on ${t}. Band: ${k} km either side.`,
+    hatSonra: "This track is from a later date, not the day asked; it shows the usual path.",
+    hatYok: (k) => `No recorded track for this route; the line is the theoretical shortest path, not the real flight path. Band: ${k} km either side.`,
+    notamBas: "Official notices · NOTAM", notamOkunuyor: "Reading notices", notamGecmis: "Live notices in force today, not of the date asked.", notamHata: "NOTAM source could not be reached.", notamYok: "NOTAM source is not connected here.",
+    notamSay: (i, n) => `${n} operational notice${n === 1 ? "" : "s"} in force for ${i}.`,
+    yon: { tam: "closed", inis: "closed to landings only", kalkis: "closed to take-offs only", sinirli: "restricted, not a full closure" },
+    tur: { meydan: "Aerodrome", pist: "Runway", "hava-sahasi": "Airspace", navigasyon: "Navigation" }, suresiz: "no end date",
+    elenen: (n) => `${n} event${n === 1 ? "" : "s"} dropped as unrelated to the flight`,
+    suren: "Ongoing restriction", haber: (n) => `${n} separate report${n === 1 ? "" : "s"}`,
+    dusme: (n) => `${n} source${n === 1 ? "" : "s"} lost ends confirmation`, gelme: (n) => `${n} more source${n === 1 ? "" : "s"} confirms`,
+    rotaya: (k) => `${k} km from route`, geneli: (u) => `${u}, country-wide`, kanit: (n, t) => t > n ? `News evidence (${n} of ${t} shown)` : `News evidence (${n})`,
+    not: "SEZ shows the evidence; the operations team makes the flight decision. The model does not write the level: code counts separate reports. News does not replace official records. Confirming an event does not prove its effect on a flight.",
+    senaryoMetin: (e) => `Runway measurements come from real Sentinel-2 images. The three flights, the alternate plan and the ${e}% limit are fictional.`,
+    anahtarYok: "Runway: methods disagree, no share", anahtarIki: "Both methods say water", anahtarYokSu: "Methods do not both say water", olcek: "1 km · North up",
+    gorselAlt: (m, g, b) => `${m} runway, satellite image of ${g}. ${b}`,
+    kanitDurum: "EVIDENCE STATUS", once: "BEFORE", simdi: "NOW", neden: "WHY", etki: "OPERATIONAL EFFECT", bekleyen: "PENDING", yuzde: (v) => `${v.toLocaleString("en-GB")}%`,
+    kartNot: (l) => `NDWI: water index from the green and near-infrared bands. SCL: European Space Agency scene classification. If the two differ by more than ${l} points, SEZ writes no share. The operations team makes the flight decision.`,
+    baglanti: "Connection to the server was lost.",
   },
-  durumAlt: {
-    "hava-sahasi-kesisimi": (n, s) => s.kesisim[0].seviye === "teyitli" ? "Bu en kısa hat kullanılamaz, rotanın yeniden planlanması gerekir. Kararı ekip verir." : "Bilgi tam teyit edilmedi, ekip resmî kaynaktan doğrulamalı.",
-    "koridorda-teyitli": "Olay doğrulandı. Uçuşa etkisini ekip değerlendirir.",
-    "ulkede-teyitli": "Olay doğrulandı. Uçuşa etkisini ekip değerlendirir.",
-    "bolgesel-gelisme": (n) => `Bölgede ${n} teyitli gelişme var, rotaya doğrudan bağı gösterilmedi.`,
-    "dogrulanmamis-isaret": "Tek başına karar için yeterli değil.",
-    "bulgu-yok": "Bu, güvenli demek olmaz; yalnız bu aralıkta kanıt bulunamadı.",
+  tr: {
+    rozet: { "hava-sahasi-kesisimi": "Hava sahası sorunu", "koridorda-teyitli": "Rotada teyitli", "ulkede-teyitli": "Ülkede teyitli", "bolgesel-gelisme": "Yalnız bölgesel", "dogrulanmamis-isaret": "Teyitsiz", "bulgu-yok": "Kanıt yok" },
+    modRota: "Rota", modUlke: "Ülke", nereden: "Nereden", nereye: "Nereye", tarih: "Tarih, boş bırakılırsa bu hafta", ipucuA: "Nereden", ipucuB: "Nereye", ipucuU: "Ülke, örneğin Suriye",
+    soruUlke: (a) => `${a} için uçuş güvenliği durumu nedir?`, soruHafta: (a, b) => `${a}–${b} rotası bu hafta nasıl?`, soruTarih: (a, b, t) => `${a}–${b} rotası ${t} için nasıl?`,
+    uyduOnce: (t) => `${t} tarihli olaydan önce çekildi; olayın etkisini göstermez.`, olayUzak: (k) => `Olay yeri rotaya ${k.toLocaleString("tr-TR")} km uzakta.`, olayUydu: "Uydu kontrolü", olayAra: "Olay öncesi ve sonrası geçişler aranıyor", olayYok: "Bu tarihlerde kullanılabilir geçiş yok.", olaySonra: "SONRA", olayNot: (y) => `Muse'un görüntü yorumu, haberlerden bağımsızdır. Kanıt seviyesini değiştirmez. Copernicus Sentinel verisi (${y}), işlenmiş.`,
+    uyduBas: "Uydu · Sentinel-2", uyduModel: "Muse'un görüntü yorumu. Kanıt seviyesi değildir.", uyduNot: "Canlı değildir: her meydanın ve çevresinin üzerinden son açık geçiştir. Yaklaşık 20 km kare.", uyduAra: "Son açık geçiş aranıyor", uyduYok: "Son 45 günde açık geçiş yok.", uyduAlt: (i, t) => `${i} uydu görüntüsü, ${t}`, uyduKunye: (t, b) => `${t} UTC · bulut %${b}`, uyduGecis: (t) => `${t} tarihli sonraki geçiş bulutlu ya da yarım`, uyduHak: (y) => `Copernicus Sentinel verisi (${y}), işlenmiş`,
+    notamAc: "Düz anlatım", notamModel: "Model çevirisi. Bağlayıcı metin yukarıdaki orijinaldir.",
+    kanitla: "Kanıtla", sahneDugme: "Yeni kanıt sahnesi", gTeyitli: "Teyitli", gZayif: "Kısmen, tek kaynak", gYok: "Kanıt yok", gGenel: "Ülke geneli", gKapali: "Kapalı bildirilen hava sahası",
+    senaryo: "SENARYO", cekim: "ÇEKİM ZAMANI", isleme: "İŞLEME ZAMANI", copernicus: "Copernicus Sentinel verisi (2024), işlenmiş", harita: "Hat ve olay haritası",
+    soruBas: "Hangi olay, hangi kanıtla?",
+    seviye: { teyitli: "Teyitli", kismen: "Kısmen", "tek-kaynak": "Tek kaynak", celiskili: "Çelişkili", "kanit-yok": "Kanıt yok" },
+    tehlike: { savas: "Çatışma", hava: "Hava", saldiri: "Saldırı", deprem: "Deprem", sel: "Sel", grev: "Grev", yakit: "Yakıt", ariza: "Arıza", kul: "Volkan külü", dron: "Dron", gps: "GPS karıştırma", siber: "Siber", diger: "Diğer" },
+    iliski: { koridorda: "Hat koridoru", bolgesel: "Bölgesel", "konum-genel": "Ülke geneli", "ulke-ici": "" },
+    durum: {
+      "hava-sahasi-kesisimi": (n, s) => `Bu hat ${ulkeAd(s.kesisim[0].ulke)} hava sahasından geçiyor. Hava sahası kapalı bildiriliyor.`,
+      "koridorda-teyitli": (n) => `Hat koridorunda ${n} teyitli olay.`,
+      "ulkede-teyitli": (n) => `Ülkede ${n} teyitli olay.`,
+      "bolgesel-gelisme": () => "Koridorda teyitli olay yok.",
+      "dogrulanmamis-isaret": () => "İşaret var, teyit yok.",
+      "bulgu-yok": () => "Kapıdan geçen kanıt yok.",
+    },
+    durumAlt: {
+      "hava-sahasi-kesisimi": (n, s) => s.kesisim[0].seviye === "teyitli" ? "Bu en kısa hat kullanılamaz, rotanın yeniden planlanması gerekir. Kararı ekip verir." : "Bilgi tam teyit edilmedi, ekip resmî kaynaktan doğrulamalı.",
+      "koridorda-teyitli": "Ayrı haberlerle doğrulandı. Uçuşa etkisini ekip değerlendirir.",
+      "ulkede-teyitli": "Ayrı haberlerle doğrulandı. Uçuşa etkisini ekip değerlendirir.",
+      "bolgesel-gelisme": (n) => `Bölgede ${n} teyitli gelişme var, rotaya doğrudan bağı gösterilmedi.`,
+      "dogrulanmamis-isaret": "Tek başına karar için yeterli değil.",
+      "bulgu-yok": "Bu, güvenli demek olmaz; yalnız bu aralıkta kanıt bulunamadı.",
+    },
+    aralik: (a, b) => `Taranan aralık: ${a} / ${b}.`,
+    saTaranan: "Taranan olay", saTeyitli: "Koridorda teyitli", saKoridor: "Diğer teyitli",
+    hatIz: (u, t, k) => `Hat, ${u} uçuşunun ${t} tarihli Flightradar24 izinden elle alınmış yaklaşık çizimdir. Bant: hattın iki yanında ${k} km.`,
+    hatCanli: (u, t, k) => `Hat, ${u} uçuşunun ${t} tarihli gerçek Flightradar24 izidir. Bant: hattın iki yanında ${k} km.`,
+    hatSonra: "Bu iz sorulan güne ait değil, daha sonraki bir tarihten; hattın olağan yolunu gösterir.",
+    hatYok: (k) => `Bu rota için kayıtlı uçuş izi yok; çizgi en kısa teorik hattır, gerçek uçuş yolu değildir. Bant: hattın iki yanında ${k} km.`,
+    notamBas: "Resmî yayın · NOTAM", notamOkunuyor: "Yayınlar okunuyor", notamGecmis: "Bugün geçerli canlı yayınlar, sorulan tarihe ait değil.", notamHata: "NOTAM kaynağına ulaşılamadı.", notamYok: "NOTAM kaynağı bu kurulumda bağlı değil.",
+    notamSay: (i, n) => `${i} için ${n} operasyonel yayın geçerli.`,
+    yon: { tam: "kapalı", inis: "yalnız inişe kapalı", kalkis: "yalnız kalkışa kapalı", sinirli: "kısıtlı, tam kapanış değil" },
+    tur: { meydan: "Meydan", pist: "Pist", "hava-sahasi": "Hava sahası", navigasyon: "Navigasyon" }, suresiz: "süresiz",
+    elenen: (n) => `${n} olay uçuşla ilgisiz bulunup elendi`,
+    suren: "Süren kısıt", haber: (n) => `${n} ayrı haber`,
+    dusme: (n) => `${n} kaynak düşerse teyit biter`, gelme: (n) => `${n} kaynak daha gelirse teyitli olur`,
+    rotaya: (k) => `rotaya ${k} km`, geneli: (u) => `${u} geneli`, kanit: (n, t) => t > n ? `Haber kanıtı (${t} haberin ${n} tanesi)` : `Haber kanıtı (${n})`,
+    not: "SEZ kanıtı gösterir, uçuş kararını operasyon ekibi verir. Seviyeyi model yazmaz; kod ayrı haber sayısından hesaplar. Kanıtlar haber kaynaklarından gelir, resmî kayıt yerine geçmez. Olayın doğrulanması, uçuşa etkisinin kanıtlandığı anlamına gelmez.",
+    senaryoMetin: (e) => `Pist ölçümleri gerçek Sentinel-2 görüntülerinden gelir. Üç uçuş, yedek meydan planı ve %${e} sınırı kurgusaldır.`,
+    anahtarYok: "Pist: yöntemler uyuşmuyor, oran yok", anahtarIki: "İki yöntem de su diyor", anahtarYokSu: "İki yöntem birlikte su demiyor", olcek: "1 km · Kuzey yukarıda",
+    gorselAlt: (m, g, b) => `${m} pisti, ${g} uydu görüntüsü. ${b}`,
+    kanitDurum: "KANIT DURUMU", once: "ÖNCE", simdi: "ŞİMDİ", neden: "NEDEN", etki: "OPERASYONEL ETKİ", bekleyen: "BEKLEYEN", yuzde: (v) => `%${v.toLocaleString("tr-TR")}`,
+    kartNot: (l) => `NDWI: görüntünün yeşil ve yakın kızılötesi bantlarından hesaplanan su göstergesi. SCL: Avrupa Uzay Ajansı sahne sınıflandırması. İki yöntem ${l} puandan çok ayrılırsa SEZ oran yazmaz. Uçuş kararını operasyon ekibi verir.`,
+    baglanti: "Sunucuyla bağlantı kesildi.",
   },
-  ornekler: [
-    ["Mevcut rota", "Los Angeles–Dubai rotası bu hafta nasıl?"],
-    ["Geçmiş olay: volkan külü", "Singapur–Bali rotası 20 Haziran 2025 için nasıl?"],
-    ["Yeni hat", "Londra–Tokyo hattını açmak istiyoruz, ne bilmeliyiz?"],
-    ["Ülke durumu", "Lübnan'da uçuş güvenliği durumu nedir?"],
-  ],
-  dil: { tr: "Türkçe", en: "İngilizce", ar: "Arapça", ru: "Rusça", fa: "Farsça", uk: "Ukraynaca", de: "Almanca", fr: "Fransızca", es: "İspanyolca", nl: "Felemenkçe", ja: "Japonca", zh: "Çince", ko: "Korece" },
 };
-const ulkeAd = (a) => new Intl.DisplayNames(["tr"], { type: "region" }).of(ULKE_KOD[a] ?? "ZZ")?.replace("Bilinmeyen Bölge", a) ?? a;
+// Ayni ornegin iki dildeki sorusu tek kayda duser; anahtar Turkce metindir.
+const ORNEKLER = [
+  { tr: "Singapur–Bali rotası 20 Haziran 2025 için nasıl?", en: "How is the Singapore–Bali route for 20 June 2025?", a: { tr: "Singapur", en: "Singapore" }, b: { tr: "Bali", en: "Bali" }, t: "2025-06-20", ust: { tr: "Geçmiş olay: volkan külü", en: "Past event: volcanic ash" } },
+  { tr: "Los Angeles–Dubai rotası bu hafta nasıl?", en: "How is the Los Angeles–Dubai route this week?", a: { tr: "Los Angeles", en: "Los Angeles" }, b: { tr: "Dubai", en: "Dubai" }, ust: { tr: "Mevcut rota", en: "Current route" } },
+  { tr: "Londra–Tokyo hattını açmak istiyoruz, ne bilmeliyiz?", en: "We want to open London–Tokyo. What should we know?", a: { tr: "Londra", en: "London" }, b: { tr: "Tokyo", en: "Tokyo" }, ust: { tr: "Yeni hat", en: "New route" } },
+  { tr: "Lübnan'da uçuş güvenliği durumu nedir?", en: "What is the flight safety situation in Lebanon?", a: { tr: "Lübnan", en: "Lebanon" }, ust: { tr: "Ülke durumu", en: "Country status" } },
+];
+const adres = new URLSearchParams(location.search);
+let dil = adres.get("dil") ?? localStorage.getItem("sezDil") ?? "en";
+if (!M[dil]) dil = "en";
+const T = () => M[dil];
+const ulkeAd = (a) => dil === "en" ? a : new Intl.DisplayNames(["tr"], { type: "region" }).of(ULKE_KOD[a] ?? "ZZ")?.replace("Bilinmeyen Bölge", a) ?? a;
+const dilAd = (d) => new Intl.DisplayNames([dil], { type: "language" }).of(d) ?? d;
 const ULKE_KOD = { Turkey: "TR", Syria: "SY", Iraq: "IQ", Iran: "IR", Lebanon: "LB", Israel: "IL", Jordan: "JO", Armenia: "AM", Azerbaijan: "AZ", Georgia: "GE", Russia: "RU", Ukraine: "UA", Yemen: "YE", Egypt: "EG", Sudan: "SD", Libya: "LY", Pakistan: "PK", Afghanistan: "AF", "Saudi Arabia": "SA", "United Arab Emirates": "AE", Qatar: "QA", Kuwait: "KW", Oman: "OM", Bahrain: "BH" };
 const NS = "http://www.w3.org/2000/svg";
 const $ = (id) => document.getElementById(id);
 const el = (ad, sinif, metin) => { const e = document.createElement(ad); if (sinif) e.className = sinif; if (metin != null) e.textContent = metin; return e; };
 const sv = (ad, oz = {}) => { const e = document.createElementNS(NS, ad); for (const k in oz) e.setAttribute(k, oz[k]); return e; };
+const IKON = { savas: "swords", saldiri: "crisis_alert", kul: "volcano", deprem: "earthquake", sel: "flood", grev: "groups", yakit: "local_gas_station", ariza: "build", dron: "drone", gps: "report", siber: "shield_lock", diger: "warning" };
 const svg = $("svg"), ray = $("ray");
-let dunya = [], kaynak, sonSonuc = null;
+let dunya = [], kaynak, sonSonuc = null, sonOrnek = null, gorunum = "acilis";
+
+let mod = "rota";
+function modSec(m) {
+  mod = m;
+  $("nereyeK").hidden = $("tarihK").hidden = m === "ulke";
+  $("nereye").value = m === "ulke" ? "" : $("nereye").value;
+  if (m === "ulke") $("neredenL").replaceChildren();
+  document.querySelectorAll("[data-mod]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mod === m)));
+  $("nereden").placeholder = m === "ulke" ? T().ipucuU : T().ipucuA;
+}
+
+// Listeden secilen satir "IST · Istanbul Airport, Istanbul" olur; soruya kod gider, yazilan sehir de kabul edilir.
+const kodu = (v) => /^([A-Z0-9]{3}) · /.exec(v)?.[1] ?? v;
+// Tarayicinin datalist'i yazilan metni icermeyen satiri gizler (kahire -> Cairo), bu yuzden liste bizde.
+function oneriBagla(girdi, liste) {
+  let aramaZamani, sonuc = [], secili = -1;
+  const kapat = () => { liste.replaceChildren(); sonuc = []; secili = -1; };
+  const sec = (h) => { girdi.value = `${h.iata} · ${h.ad}, ${h.sehir}`; kapat(); };
+  const isaretle = () => [...liste.children].forEach((li, i) => { li.setAttribute("aria-selected", String(i === secili)); if (i === secili) li.scrollIntoView({ block: "nearest" }); });
+  girdi.addEventListener("input", () => {
+    clearTimeout(aramaZamani);
+    if (mod !== "rota" || girdi.value.includes(" · ")) { kapat(); return; }
+    aramaZamani = setTimeout(async () => {
+      const q = girdi.value;
+      const l = await (await fetch(`/api/havalimani?q=${encodeURIComponent(q)}`)).json();
+      if (q !== girdi.value || mod !== "rota" || document.activeElement !== girdi) return; // gec gelen eski cevap listeyi ezmesin
+      sonuc = l; secili = -1;
+      liste.replaceChildren(...l.map((h) => {
+        const li = el("li", null, `${h.iata} · ${h.ad}, ${h.sehir}`);
+        li.setAttribute("role", "option");
+        li.onmousedown = (e) => { e.preventDefault(); sec(h); };
+        return li;
+      }));
+    }, 150);
+  });
+  girdi.addEventListener("keydown", (e) => {
+    if (!sonuc.length) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      secili = (secili + (e.key === "ArrowDown" ? 1 : sonuc.length - 1 + (secili < 0 ? 1 : 0))) % sonuc.length;
+      isaretle();
+    } else if (e.key === "Enter") {
+      e.preventDefault(); // listedeki ilk satir secilir, soru henuz gitmez
+      sec(sonuc[Math.max(secili, 0)]);
+    } else if (e.key === "Escape") kapat();
+  });
+  girdi.addEventListener("blur", kapat);
+}
+
+function alanlariYaz(o) {
+  if (o) modSec(o.b ? "rota" : "ulke");
+  $("nereden").value = o?.a?.[dil] ?? "";
+  $("nereye").value = o?.b?.[dil] ?? "";
+  $("tarih").value = o?.t ?? "";
+}
+
+function dilUygula() {
+  document.documentElement.lang = dil;
+  document.querySelectorAll("[data-t]").forEach((e) => { e.textContent = T()[e.dataset.t]; });
+  document.querySelectorAll("[data-dil]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dil === dil)));
+  $("nereden").placeholder = mod === "ulke" ? T().ipucuU : T().ipucuA;
+  $("nereye").placeholder = T().ipucuB;
+  $("tarih").title = T().tarih;
+  $("harita").setAttribute("aria-label", T().harita);
+  $("svg").setAttribute("aria-label", T().harita);
+  if (sonOrnek) alanlariYaz(sonOrnek);
+}
+
+function dilDegis(y) {
+  dil = y;
+  localStorage.setItem("sezDil", y);
+  dilUygula();
+  if (gorunum === "sahne") { sahne = null; sahneAc(sahneAdim); }
+  else if (gorunum === "sonuc") goster(sonSonuc);
+  else if (gorunum === "acilis") acilis();
+}
 
 async function hazirla() {
+  dilUygula();
   const t = await (await fetch("/v/dunya.json")).json();
   // Ayrintili sinir verisinde ters sarili halkalar var; d3 bunlari "butun dunya" sanar, duzeltilir.
   const duzelt = (p) => (d3.geoArea({ type: "Polygon", coordinates: p }) > 2 * Math.PI ? p.map((h) => [...h].reverse()) : p);
@@ -259,44 +503,197 @@ async function hazirla() {
   }));
   ciz(null);
   acilis();
-  // Ekran bos acilmasin: en son kayitli sorgu ayni yoldan yuklenir, para harcamaz.
-  const liste = await (await fetch("/api/kayitlar")).json();
-  const adres = new URLSearchParams(location.search);
   if (adres.has("sahne")) { sahneAc(+adres.get("sahne") || 0); return; }
-  if (liste[0] && !adres.has("bos")) { $("soru").value = liste[0].soru; sorgula(liste[0].soru); }
+  // Ekran bos acilmasin: ana ornek kayittan yuklenir, para harcamaz.
+  if (!adres.has("bos")) ornekSor(ORNEKLER[0]);
+}
+
+function seritler() {
+  const k = el("div", "seritler");
+  for (const o of ORNEKLER) {
+    const b = el("button", "serit-d", o.ust[dil]); b.type = "button";
+    if (o === sonOrnek) b.setAttribute("aria-current", "true");
+    b.onclick = () => ornekSor(o);
+    k.append(b);
+  }
+  return k;
+}
+
+function ornekSor(o) {
+  sonOrnek = o;
+  alanlariYaz(o);
+  sorgula(o[dil], o.tr);
 }
 
 function acilis() {
+  gorunum = "acilis";
   ray.replaceChildren();
-  const k = el("div", "acilis");
-  k.append(el("p", null, "Hangi olay, hangi kanıtla?"));
-  for (const [ust, s] of M.ornekler) {
+  const k = el("div", "acilis kartc");
+  k.append(el("p", "soru-bas", T().soruBas));
+  for (const o of ORNEKLER) {
     const b = el("button", "ornek"); b.type = "button";
-    b.append(el("b", null, ust), document.createTextNode(s));
-    b.onclick = () => { $("soru").value = s; sorgula(s); };
+    b.append(el("b", null, o.ust[dil]), document.createTextNode(o[dil]));
+    b.onclick = () => ornekSor(o);
     k.append(b);
   }
   ray.append(k);
-  fetch("/api/kayitlar").then((r) => r.json()).then((l) => {
-    if (!l.length) return;
-    const b = el("div", "gecmis");
-    b.append(el("p", "gecmis-baslik", "Kayıtlı sorgular"));
-    for (const g of l.slice(0, 5)) {
-      const d = el("button", "ornek"); d.type = "button"; d.textContent = g.soru;
-      d.onclick = () => { $("soru").value = g.soru; sorgula(g.soru); };
-      b.append(d);
-    }
-    k.append(b);
-  });
 }
 
-function ciz(s) {
+// Google 3D harita: hat, koridor, olaylar ve kamera. Anahtar yoksa ya da yuklenemezse SVG harita kalir.
+const sakin = matchMedia("(prefers-reduced-motion:reduce)").matches;
+let gm, gHazir, nesneler = [], kameraSirasi = 0, ucakKare, sonKamera;
+const enlem = ([lng, lat]) => ({ lat, lng });
+
+function gKur() {
+  gHazir ??= (async () => {
+    const { anahtar } = await (await fetch("/api/ayar")).json();
+    if (!anahtar) return false;
+    await new Promise((tamam, red) => {
+      const b = document.createElement("script");
+      window.gYuklendi = tamam;
+      b.src = `https://maps.googleapis.com/maps/api/js?loading=async&callback=gYuklendi&key=${encodeURIComponent(anahtar)}&libraries=maps3d,marker&language=${dil}`;
+      b.onerror = red;
+      document.head.append(b);
+    });
+    const { Map3DElement } = await google.maps.importLibrary("maps3d");
+    await google.maps.importLibrary("marker");
+    gm = new Map3DElement({ center: { lat: 25, lng: 30, altitude: 0 }, range: 1.8e7, tilt: 0, mode: "HYBRID", defaultUIHidden: true });
+    $("kure3").append(gm);
+    $("harita").classList.add("uc");
+    return true;
+  })().catch((e) => { console.error(e); return false; });
+  return gHazir;
+}
+
+// Koridor, hattin iki yanina km cinsinden acilan seridin kendisidir.
+function koridorSeridi(rota, km) {
+  const r = km / 6371, rad = Math.PI / 180;
+  const yana = ([lon, lat], yon) => {
+    const [f, l] = [lat * rad, lon * rad];
+    const f2 = Math.asin(Math.sin(f) * Math.cos(r) + Math.cos(f) * Math.sin(r) * Math.cos(yon));
+    return [(l + Math.atan2(Math.sin(yon) * Math.sin(r) * Math.cos(f), Math.cos(r) - Math.sin(f) * Math.sin(f2))) / rad, f2 / rad];
+  };
+  const sag = [], sol = [];
+  rota.forEach((n, i) => {
+    const yon = yonu(rota[Math.max(i - 1, 0)], rota[Math.min(i + 1, rota.length - 1)]);
+    sag.push(yana(n, yon + Math.PI / 2)); sol.push(yana(n, yon - Math.PI / 2));
+  });
+  return [...sag, ...sol.reverse()].map(enlem);
+}
+
+function yonu(a, b) {
+  const rad = Math.PI / 180, [f1, f2, dl] = [a[1] * rad, b[1] * rad, (b[0] - a[0]) * rad];
+  return Math.atan2(Math.sin(dl) * Math.cos(f2), Math.cos(f1) * Math.sin(f2) - Math.sin(f1) * Math.cos(f2) * Math.cos(dl));
+}
+
+function ikonAdi(b) {
+  if (b.tehlike !== "hava") return IKON[b.tehlike] ?? "warning";
+  const m = `${b.iddia ?? ""} ${b.iddiaEn ?? ""}`.toLocaleLowerCase("tr");
+  return [[/kar yağ|tipi|snow|blizzard/, "weather_snowy"], [/tayfun|kasırga|hortum|hurricane|typhoon|cyclone|tornado/, "cyclone"], [/gök gürültü|thunder/, "thunderstorm"], [/rüzgar|fırtına|wind|storm|gale/, "air"], [/\bsis\b|fog|mist/, "foggy"], [/yağmur|sağanak|rain/, "rainy"]].find(([r]) => r.test(m))?.[1] ?? "thunderstorm";
+}
+const ikon = (ad) => { const i = el("i", "ikon"); i.style.setProperty("--i", `url(/ikon/${ad}.svg)`); return i; };
+
+function isaretKoy(lat, lng, icerik) {
+  const m = document.createElement("gmp-marker");
+  m.setAttribute("position", `${lat},${lng}`);
+  m.append(icerik);
+  gm.append(m);
+  nesneler.push(m);
+  return m;
+}
+
+function olayIsaretleri(s) {
+  const yerler = [], hedef = s.hedef ?? {}, etiketli = new Set();
+  s.bulgular.forEach((b, i) => {
+    if (!b.konum) return;
+    const [lng, lat] = b.konum.nokta;
+    const kume = yerler.filter((p) => d3.geoDistance(p, [lng, lat]) * 6371 < 120).length;
+    yerler.push([lng, lat]);
+    const genel = b.konum.tur === "ulke" && b.iliski !== "koridorda";
+    const tehlike = T().tehlike[b.tehlike] ?? T().tehlike.diger;
+    const d = el("div", `im3 s-${b.seviye}${genel ? " genel" : ""}${b.iliski === "bolgesel" ? " uzak" : ""}`);
+    d.dataset.no = i; d.title = tehlike; d.tabIndex = 0; d.setAttribute("role", "button"); d.setAttribute("aria-label", `${i + 1}, ${tehlike}`);
+    const aci = -Math.PI / 2 + kume * (Math.PI / 3);
+    if (kume) d.style.translate = `${40 * Math.cos(aci)}px ${40 * Math.sin(aci)}px`;
+    d.append(ikon(ikonAdi(b)), el("small", null, i + 1));
+    // Meydandaki olayda meydan kodu ikonun yanina gecer: ayri etiket ikonun ustune binmesin.
+    const meydan = hedef.rota && [hedef.kalkis, hedef.varis].find((u) => d3.geoDistance(u.nokta, [lng, lat]) * 6371 < 60);
+    if (meydan && !kume && !etiketli.has(meydan.iata)) { etiketli.add(meydan.iata); d.append(el("span", "im3ad meydan", meydan.iata)); }
+    else if (!meydan && b.seviye !== "kanit-yok" && !kume) d.append(el("span", "im3ad", b.konum.tur === "ulke" ? ulkeAd(b.konum.ad) : b.konum.ad));
+    d.onmouseenter = () => vurgula(i);
+    d.onclick = () => { vurgula(i); document.getElementById(`bulgu-${i}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" }); };
+    isaretKoy(lat, lng, d);
+  });
+  for (const u of hedef.rota ? [hedef.kalkis, hedef.varis] : []) if (!etiketli.has(u.iata)) isaretKoy(u.nokta[1], u.nokta[0], el("div", "uc3", u.iata));
+}
+
+// Hat boyunca giden ucak: burnu gercek gidis yonune, kamera acisi dusulerek bakar.
+function ucakBaslat(rota) {
+  cancelAnimationFrame(ucakKare);
+  if (!rota || sakin) return;
+  const yol = [0];
+  rota.forEach((n, i) => { if (i) yol.push(yol[i - 1] + d3.geoDistance(rota[i - 1], n)); });
+  const toplam = yol.at(-1), t0 = performance.now(), SURE = 14000;
+  const konum = (o) => {
+    const h = o * toplam, i = Math.max(1, yol.findIndex((v) => v >= h));
+    return d3.geoInterpolate(rota[i - 1], rota[i])((h - yol[i - 1]) / (yol[i] - yol[i - 1] || 1));
+  };
+  const u = el("div", "ucak3"); u.append(el("i"));
+  const m = isaretKoy(rota[0][1], rota[0][0], u);
+  let son = 0;
+  const kare = (z) => {
+    if (z - son > 40) {
+      son = z;
+      const o = ((z - t0) % SURE) / SURE, p = konum(o), q = konum(Math.min(1, o + .003));
+      m.position = enlem(p);
+      if (q[0] !== p[0]) u.style.rotate = `${yonu(p, q) * 180 / Math.PI - (gm.heading ?? 0)}deg`;
+    }
+    ucakKare = requestAnimationFrame(kare);
+  };
+  ucakKare = requestAnimationFrame(kare);
+}
+
+async function kureGoster(s) {
+  if (!(await gKur())) return;
+  if (s && s !== sonSonuc) return; // bu arada yeni sorgu geldi
+  const { Polyline3DElement, Polygon3DElement } = await google.maps.importLibrary("maps3d");
+  cancelAnimationFrame(ucakKare);
+  nesneler.forEach((n) => n.remove()); nesneler = [];
+  const sira = ++kameraSirasi;
+  gm.stopCameraAnimation?.();
+  if (!s) { gm.flyCameraTo({ endCamera: { center: { lat: 25, lng: 30, altitude: 0 }, range: 1.8e7, tilt: 0, heading: 0 }, durationMillis: sakin ? 0 : 1500 }); return; }
+  const hedef = s.hedef ?? {}, rota = hedef.rota;
+  if (rota) {
+    const koridor = new Polygon3DElement({ path: koridorSeridi(rota, s.koridorKm ?? 150), fillColor: "#ffffff30", strokeWidth: 0, altitudeMode: "CLAMP_TO_GROUND", drawsOccludedSegments: true });
+    const hat = new Polyline3DElement({ path: rota.map(enlem), strokeColor: "#ffffff", strokeWidth: 3, outerColor: "#152a38", outerWidth: .5, altitudeMode: "CLAMP_TO_GROUND", drawsOccludedSegments: true });
+    gm.append(koridor, hat); nesneler.push(koridor, hat);
+  }
+  for (const k of s.kesisim ?? []) for (const p of k.parcalar) {
+    const c = new Polyline3DElement({ path: p.map(enlem), strokeColor: "#a3362f", strokeWidth: 5, altitudeMode: "CLAMP_TO_GROUND", drawsOccludedSegments: true });
+    gm.append(c); nesneler.push(c);
+  }
+  olayIsaretleri(s);
+  ucakBaslat(rota);
+  const ulke = hedef.ulke && dunya.find((f) => f.properties.name === hedef.ulke);
+  const noktalar = [...(rota ?? []), ...s.bulgular.filter((b) => b.konum && (!rota || b.iliski !== "bolgesel")).map((b) => b.konum.nokta)];
+  const nesne = ulke ?? { type: "MultiPoint", coordinates: noktalar };
+  const [mlng, mlat] = d3.geoCentroid(nesne);
+  const yay = Math.max(.03, ...(ulke ? d3.geoBounds(ulke) : noktalar).map((p) => d3.geoDistance(p, [mlng, mlat]))); // radyan
+  const range = Math.min(1.8e7, yay * 6371e3 * 3.4);
+  const son = sonKamera = { center: { lat: mlat, lng: mlng, altitude: 0 }, range, tilt: range < 6e6 ? 45 : 0, heading: 0 };
+  if (sakin || !rota) { gm.flyCameraTo({ endCamera: son, durationMillis: sakin ? 0 : 2500 }); return; }
+  gm.flyCameraTo({ endCamera: { center: { ...enlem(hedef.kalkis.nokta), altitude: 0 }, range: Math.max(range, 3e6), tilt: 20, heading: 0 }, durationMillis: 1800 });
+  gm.addEventListener("gmp-animationend", () => { if (sira === kameraSirasi) gm.flyCameraTo({ endCamera: son, durationMillis: 3000 }); }, { once: true });
+}
+
+function ciz(s, kamera = true) {
   const { width: w, height: h } = svg.getBoundingClientRect();
   svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
   svg.replaceChildren();
   const hedef = s?.hedef ?? {};
   const rota = hedef.rota;
-  const noktalar = [...(rota ?? []), ...((s?.bulgular ?? []).filter((b) => b.konum).map((b) => b.konum.nokta))];
+  // Uzak bolgesel gelisme haritayi kuculturmesin: cerceve rotaya ve rotaya yakin olaylara gore kurulur.
+  const noktalar = [...(rota ?? []), ...((s?.bulgular ?? []).filter((b) => b.konum && (!rota || b.iliski !== "bolgesel")).map((b) => b.konum.nokta))];
   const ulke = hedef.ulke && dunya.find((f) => f.properties.name === hedef.ulke);
   const nesne = ulke ?? (noktalar.length ? { type: "MultiPoint", coordinates: noktalar } : { type: "Sphere" });
   const merkez = d3.geoCentroid(nesne.type === "Sphere" ? { type: "Point", coordinates: [30, 25] } : nesne);
@@ -310,7 +707,10 @@ function ciz(s) {
   if (kure) svg.append(sv("path", { class: "kure", d: yol({ type: "Sphere" }) }));
   svg.append(sv("path", { class: "ag", d: yol(d3.geoGraticule10()) }));
   const gecilen = new Set(hedef.ulkeler ?? (hedef.ulke ? [hedef.ulke] : []));
-  for (const f of dunya) svg.append(sv("path", { class: "kara" + (gecilen.has(f.properties.name) ? " gecilen" : ""), d: yol(f) }));
+  for (const f of dunya) {
+    const d = yol(f);
+    if (d) svg.append(sv("path", { class: "kara" + (gecilen.has(f.properties.name) ? " gecilen" : ""), d }));
+  }
   if (rota) {
     const km1 = 1 / 6371 * 180 / Math.PI; // bir kilometrenin derece karsiligi
     const [a, b] = [izdusum(merkez), izdusum([merkez[0], merkez[1] + km1 * 100])];
@@ -320,7 +720,8 @@ function ciz(s) {
     for (const u of [hedef.kalkis, hedef.varis]) {
       const [x, y] = izdusum(u.nokta);
       svg.append(sv("circle", { class: "uc", cx: x, cy: y, r: 6 }));
-      const t = sv("text", { class: "ucad", x: x + 10, y: y - 10 }); t.textContent = u.iata; svg.append(t);
+      const sol = x < w / 2;
+      const t = sv("text", { class: "ucad", x: x + (sol ? -12 : 10), y: y - 10, style: `text-anchor:${sol ? "end" : "start"}` }); t.textContent = u.iata; svg.append(t);
     }
   }
   $("gosterge").hidden = !s;
@@ -340,7 +741,8 @@ function ciz(s) {
   const yerler = [];
   (s?.bulgular ?? []).forEach((b, i) => {
     if (!b.konum) return;
-    const [x0, y0] = izdusum(b.konum.nokta);
+    const [x0, y0] = izdusum(b.konum.nokta) ?? [-1, -1];
+    if (x0 < 0 || y0 < 0 || x0 > w || y0 > h) return; // cerceve disindaki bolgesel olay yalniz listede kalir
     // Yakin isaretler ayni noktanin cevresine acilir, ince cizgi gercek yere baglar.
     const kume = yerler.filter((p) => Math.hypot(p.x0 - x0, p.y0 - y0) < 30).length;
     const aci = -Math.PI / 2 + kume * (Math.PI / 3);
@@ -348,54 +750,169 @@ function ciz(s) {
     yerler.push({ x0, y0 });
     if (kume) svg.append(sv("line", { class: "bag", x1: x0, y1: y0, x2: x, y2: y }));
     const genel = b.konum.tur === "ulke" && b.iliski !== "koridorda";
-    const g = sv("g", { class: `imi s-${b.seviye}${genel ? " genel" : ""}${b.iliski === "bolgesel" ? " uzak" : ""}`, "data-no": i, tabindex: 0, role: "button", "aria-label": `${i + 1}. bulgu` });
+    const g = sv("g", { class: `imi s-${b.seviye}${genel ? " genel" : ""}${b.iliski === "bolgesel" ? " uzak" : ""}`, "data-no": i, tabindex: 0, role: "button", "aria-label": `${i + 1}` });
     g.append(sv("circle", { class: "dokun", cx: x, cy: y }));
     g.append(sv("circle", { cx: x, cy: y, r: 14 }));
     const t = sv("text", { x, y }); t.textContent = i + 1; g.append(t);
-    if (b.seviye !== "kanit-yok") {
-      const sagda = x < w - 180;
-      const ad = sv("text", { class: "imad", x: x + (sagda ? 20 : -20), y: y + 5, "text-anchor": sagda ? "start" : "end" });
-      ad.textContent = `${b.konum.tur === "ulke" ? ulkeAd(b.konum.ad) : b.konum.ad}, ${(M.tehlike[b.tehlike] ?? M.tehlike.diger).toLocaleLowerCase("tr")}`;
+    if (b.seviye !== "kanit-yok" && !kume) { // kumedeki isaret numarayla yetinir, etiketler ust uste binmez
+      // Kumenin isaretleri saga acilir; ilk isaretin etiketi onlarin altinda kalmasin diye sola gecer.
+      const yakin = (s?.bulgular ?? []).some((o, j) => {
+        const k = j > i && o.konum && izdusum(o.konum.nokta);
+        return k && Math.hypot(k[0] - x0, k[1] - y0) < 30;
+      });
+      const sagda = !yakin && x < w - 180;
+      const ad = sv("text", { class: "imad", x: x + (sagda ? 20 : -20), y, style: `text-anchor:${sagda ? "start" : "end"}` });
+      ad.textContent = `${b.konum.tur === "ulke" ? ulkeAd(b.konum.ad) : b.konum.ad}, ${(T().tehlike[b.tehlike] ?? T().tehlike.diger).toLocaleLowerCase(dil)}`;
       g.append(ad);
     }
     g.onmouseenter = () => vurgula(i);
     g.onclick = () => { vurgula(i); document.getElementById(`bulgu-${i}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" }); };
     svg.append(g);
   });
+  if (kamera) kureGoster(s);
 }
 
 function vurgula(i) {
-  document.querySelectorAll(".imi,.bulgu").forEach((e) => e.classList.toggle("etkin", +e.dataset.no === i));
+  document.querySelectorAll(".imi,.im3,.bulgu").forEach((e) => e.classList.toggle("etkin", +e.dataset.no === i));
 }
 
 function kanitKart(k) {
   const d = el("div", "kanit");
   const q = el("q", null, k.alinti); q.dir = "auto"; if (k.dil) q.lang = k.dil;
   d.append(q);
-  if (k.ceviri && k.dil !== "tr") d.append(el("p", "tr", k.ceviri));
+  const ceviri = dil === "en" ? k.ceviriEn : k.ceviri;
+  if (ceviri && k.dil !== dil) d.append(el("p", "ceviri", ceviri));
   const p = el("p", "kaynak");
   const a = el("a", null, k.yayinci);
   if (/^https?:\/\//.test(k.url)) { a.href = k.url; a.target = "_blank"; a.rel = "noopener noreferrer"; }
-  p.append(a, document.createTextNode(` · ${k.tarih ?? ""} · ${M.dil[k.dil] ?? ""}`));
+  p.append(a, document.createTextNode(` · ${k.tarih ?? ""} · ${k.dil ? dilAd(k.dil) : ""}`));
   d.append(p);
   return d;
 }
 
+// Uydu canli degildir: sorulan gune kadarki son acik gecis, cekim saatiyle gosterilir.
+const OLAY_UYDU = ["kul", "sel", "hava", "deprem"];
+
+// Olay yerinin once ve sonrasi, acilinca istenir: haberden bagimsiz ikinci kanal, seviye hesabina girmez.
+function olayUyduKart(b) {
+  const dt = el("details", "olay-uydu");
+  dt.append(el("summary", null, T().olayUydu));
+  const alan = el("div");
+  dt.append(alan);
+  let v, isaret;
+  const yereUc = () => {
+    if (!gm || !v) return;
+    gm.flyCameraTo({ endCamera: { center: { lat: v.lat, lng: v.lon, altitude: 0 }, range: 90_000, tilt: 55, heading: 0 }, durationMillis: sakin ? 0 : 3500 });
+    if (isaret?.isConnected) return;
+    const d = el("div", `im3 s-${b.seviye}`); d.append(ikon(ikonAdi(b)));
+    isaret = isaretKoy(v.lat, v.lon, d);
+  };
+  dt.addEventListener("toggle", async () => {
+    if (!dt.open) { if (gm && sonKamera) gm.flyCameraTo({ endCamera: sonKamera, durationMillis: sakin ? 0 : 2500 }); return; }
+    if (alan.dataset.yuklu) { yereUc(); return; }
+    alan.dataset.yuklu = "1";
+    alan.replaceChildren(el("p", "notam-oz", T().olayAra));
+    const q = new URLSearchParams({ lon: b.konum.nokta[0], lat: b.konum.nokta[1], gun: b.olayTarihi, tehlike: b.tehlike, iddia: b.iddia });
+    ({ sonuc: v } = await (await fetch(`/api/olay-uydu?${q}`)).json().catch(() => ({})));
+    if (!v) { alan.replaceChildren(el("p", "notam-oz", T().olayYok)); return; }
+    const liste = el("div", "uydular");
+    for (const [kare, ad] of [[v.once, T().once], [v.sonra, T().olaySonra]]) {
+      if (!kare) continue;
+      const f = el("figure"), a = el("a"), g = el("img"), y = el("figcaption");
+      a.href = `/api/uydu-gorsel?ad=${kare.ad}`; a.target = "_blank"; a.rel = "noopener";
+      g.src = a.href; g.alt = `${ad}, ${kare.cekim.slice(0, 10)}`;
+      a.append(g);
+      y.append(el("b", null, ad), el("small", null, T().uyduKunye(kare.cekim.slice(0, 16).replace("T", " "), kare.bulut)));
+      f.append(a, y);
+      liste.append(f);
+    }
+    alan.replaceChildren(liste);
+    if (v.yorum) alan.append(el("p", `uydu-yorum${v.yorum.uyumlu ? " dikkat" : ""}`, v.yorum[dil]));
+    const rota = sonSonuc?.hedef?.rota;
+    if (rota) alan.append(el("p", "notam-oz", T().olayUzak(Math.round(Math.min(...rota.map((n) => d3.geoDistance(n, [v.lon, v.lat]))) * 6371))));
+    alan.append(el("small", "notam-not", T().olayNot(v.sonra.cekim.slice(0, 4))));
+    if (dt.open) yereUc();
+  });
+  return dt;
+}
+
+function uyduEkle(s, k) {
+  const liste = el("div", "uydular");
+  k.append(el("p", "etiketli", T().uyduBas), el("p", "notam-oz", T().uyduNot), liste);
+  for (const u of [s.hedef.kalkis, s.hedef.varis]) {
+    const f = el("figure");
+    const yazi = el("figcaption");
+    yazi.append(el("b", null, u.iata), el("small", null, T().uyduAra));
+    f.append(yazi);
+    liste.append(f);
+    fetch(`/api/uydu?iata=${u.iata}&gun=${s.pencere.son}`).then((y) => y.json()).then(({ sonuc: v }) => {
+      if (sonSonuc !== s || !k.isConnected) return;
+      if (!v) { yazi.lastChild.textContent = T().uyduYok; return; }
+      const a = el("a"); a.href = `/api/uydu-gorsel?ad=${v.ad}`; a.target = "_blank"; a.rel = "noopener";
+      const g = el("img"); g.src = a.href; g.alt = T().uyduAlt(u.iata, v.cekim.slice(0, 10)); g.loading = "lazy";
+      a.append(g); f.prepend(a);
+      yazi.lastChild.textContent = T().uyduKunye(v.cekim.slice(0, 16).replace("T", " "), v.bulut);
+      if (v.sonGecis.slice(0, 10) !== v.cekim.slice(0, 10)) yazi.append(el("small", null, T().uyduGecis(v.sonGecis.slice(0, 10))));
+      const olay = s.bulgular.find((b) => b.konum?.ad === u.iata && b.seviye !== "kanit-yok" && b.olayTarihi > v.cekim.slice(0, 10));
+      if (olay) yazi.append(el("small", null, T().uyduOnce(olay.olayTarihi)));
+      yazi.append(el("small", null, T().uyduHak(v.cekim.slice(0, 4))));
+      if (v.yorum) yazi.append(el("p", `uydu-yorum${v.yorum.dikkat ? " dikkat" : ""}`, v.yorum[dil]), el("small", null, T().uyduModel));
+    }).catch(() => { if (k.isConnected) yazi.lastChild.textContent = T().uyduYok; });
+  }
+}
+
+// Resmi yayin her zaman canli okunur; gecmis tarihli soruda bunun o gunu anlatmadigi yazilir.
+async function notamEkle(s, k) {
+  const bas = el("p", "etiketli", T().notamBas);
+  const oz = el("p", "notam-oz", T().notamOkunuyor);
+  k.append(bas, oz);
+  const gecmis = s.pencere.son < new Date(Date.now() - 2 * 864e5).toISOString().slice(0, 10);
+  const v = await (await fetch(`/api/notam?iata=${s.hedef.kalkis.iata},${s.hedef.varis.iata}`)).json();
+  if (sonSonuc !== s || !k.isConnected) return;
+  if (v.durum !== "tamam") { oz.textContent = v.durum === "hata" ? T().notamHata : T().notamYok; return; }
+  oz.textContent = `${T().notamSay(v.icaolar.join(", "), v.notamlar.length)}${gecmis ? ` ${T().notamGecmis}` : ""}`;
+  for (const n of v.notamlar.slice(0, 6)) {
+    const d = el("div", "kanit");
+    d.append(el("p", "ceviri", [n.no, n.meydan, T().tur[n.tur], T().yon[n.yon]].filter(Boolean).join(" · ")), el("q", null, n.metin));
+    d.append(el("p", "kaynak", `${n.baslangic} → ${n.bitis ?? T().suresiz}`));
+    if (n.anlatim) {
+      const ac = el("details");
+      ac.append(el("summary", null, T().notamAc), el("p", "notam-duz", n.anlatim[dil]), el("p", "notam-not", T().notamModel));
+      d.append(ac);
+    }
+    k.append(d);
+  }
+}
+
 function goster(s) {
+  gorunum = "sonuc";
   sonSonuc = s;
   ciz(s);
-  ray.replaceChildren();
+  ray.replaceChildren(seritler());
   const teyitli = s.bulgular.filter((b) => b.seviye === "teyitli");
   const kor = teyitli.filter((b) => b.iliski === "koridorda" || b.iliski === "ulke-ici").length;
-  ray.append(el("h2", "karar", M.durum[s.durum](kor, s)));
-  const alt = M.durumAlt[s.durum];
-  ray.append(el("p", "alt", `${typeof alt === "function" ? alt(teyitli.length, s) : alt} Taranan aralık: ${s.pencere.ilk} / ${s.pencere.son}.`));
-  if (s.hedef.rota) ray.append(el("p", "dipnot", `${s.hedef.hatKaynagi ? `Hat, ${s.hedef.hatKaynagi.ucus} uçuşunun ${s.hedef.hatKaynagi.tarih} tarihli gerçek izinden elle alınmış yaklaşık çizimdir.` : "Bu rota için kayıtlı uçuş izi yok; çizgi en kısa teorik hattır, gerçek uçuş yolu değildir."} Bant: hattın iki yanında ${s.koridorKm ?? 150} km.`));
-  if (s.elenenler?.length) {
+  const ust = el("section", "kartc");
+  const renk = { "hava-sahasi-kesisimi": " durum-kirmizi", "koridorda-teyitli": " durum-kirmizi", "ulkede-teyitli": " durum-kirmizi", "bolgesel-gelisme": " durum-kahve", "dogrulanmamis-isaret": " durum-kahve" }[s.durum] ?? "";
+  ust.append(el("span", `rozet durum-rozet${renk}`, T().rozet[s.durum]));
+  ust.append(el("h2", "karar", T().durum[s.durum](kor, s)));
+  const alt = T().durumAlt[s.durum];
+  ust.append(el("p", "alt", `${typeof alt === "function" ? alt(teyitli.length, s) : alt} ${T().aralik(s.pencere.ilk, s.pencere.son)}`));
+  const sayilar = el("div", "sayilar");
+  for (const [n, ad] of [[s.bulgular.length + (s.elenen ?? 0), T().saTaranan], [kor, T().saTeyitli], [teyitli.length - kor, T().saKoridor]]) {
+    const d = el("div"); d.append(el("b", null, n), el("span", null, ad)); sayilar.append(d);
+  }
+  ust.append(sayilar);
+  const km = s.koridorKm ?? 150;
+  if (s.hedef.rota) ust.append(el("p", "dipnot", s.hedef.hatKaynagi ? `${T()[s.hedef.hatKaynagi.canli ? "hatCanli" : "hatIz"](s.hedef.hatKaynagi.ucus, s.hedef.hatKaynagi.tarih, km)}${s.hedef.hatKaynagi.sonraki ? ` ${T().hatSonra}` : ""}` : T().hatYok(km)));
+  ray.append(ust);
+  if (s.hedef.kalkis) { const k = el("section", "kartc notam"); ray.append(k); notamEkle(s, k); }
+  if (s.hedef.kalkis) { const k = el("section", "kartc"); ray.append(k); uyduEkle(s, k); }
+  const elenenler = dil === "en" ? s.elenenlerEn ?? s.elenenler : s.elenenler;
+  if (elenenler?.length) {
     const d = el("details", "elenen");
-    d.append(el("summary", null, `${s.elenenler.length} olay uçuşla ilgisiz bulunup elendi`));
+    d.append(el("summary", null, T().elenen(elenenler.length)));
     const l = el("ul");
-    for (const e of s.elenenler) l.append(el("li", null, e));
+    for (const e of elenenler) l.append(el("li", null, e));
     d.append(l);
     ray.append(d);
   }
@@ -405,31 +922,39 @@ function goster(s) {
     li.onmouseenter = () => vurgula(i);
     li.append(el("span", "no", i + 1));
     const g = el("div");
-    g.append(el("div", "seviye", [M.seviye[b.seviye], b.suren ? "SÜREN KISIT" : "", M.iliski[b.iliski], M.tehlike[b.tehlike] ?? M.tehlike.diger].filter(Boolean).join(" · ")));
-    g.append(el("p", "iddia", b.iddia));
-    const yayinci = `${b.bagimsiz} ayrı haber`;
-    const dil = b.diller.map((d) => M.dil[d] ?? d).join(", ");
-    g.append(el("p", "meta", [b.olayTarihi, yayinci, dil, b.rotayaKm != null ? `rotaya ${b.rotayaKm} km` : b.konum?.tur === "ulke" ? `${ulkeAd(b.konum.ad)} geneli` : ""].filter(Boolean).join(" · ")));
+    const sira = el("div", "ust-sira");
+    sira.append(el("span", "rozet", T().seviye[b.seviye]));
+    const ilgi = el("span", "ilgi", [b.suren ? T().suren : "", T().iliski[b.iliski], T().tehlike[b.tehlike] ?? T().tehlike.diger].filter(Boolean).join(" · "));
+    ilgi.prepend(ikon(ikonAdi(b)));
+    sira.append(ilgi);
+    g.append(sira);
+    g.append(el("p", "iddia", dil === "en" ? b.iddiaEn ?? b.iddia : b.iddia));
+    // Seviyeyi degistirecek kaynak sayisi: teyit 3 ayri yayincidan baslar (kapi.ts).
+    const degisim = b.seviye === "teyitli" ? T().dusme(b.bagimsiz - 2) : b.seviye === "kismen" || b.seviye === "tek-kaynak" ? T().gelme(3 - b.bagimsiz) : "";
+    const diller = b.diller.map(dilAd).join(", ");
+    g.append(el("p", "meta", [b.olayTarihi, T().haber(b.bagimsiz), degisim, diller, b.rotayaKm != null ? T().rotaya(b.rotayaKm) : b.konum?.tur === "ulke" ? T().geneli(ulkeAd(b.konum.ad)) : ""].filter(Boolean).join(" · ")));
     li.append(g);
     if (b.kanitlar.length || b.celiski.length) {
       const dt = el("details");
-      dt.open = i === 0;
-      dt.append(el("summary", null, `Haber kanıtı (${b.kanitlar.length + b.celiski.length})`));
+      dt.open = i === 0 && !matchMedia("(max-width:860px)").matches;
+      dt.append(el("summary", null, T().kanit(b.kanitlar.length + b.celiski.length, b.bagimsiz + b.celiski.length)));
       for (const k of [...b.kanitlar, ...b.celiski]) dt.append(kanitKart(k));
       li.append(dt);
     }
+    if (b.konum && b.olayTarihi && b.seviye !== "kanit-yok" && OLAY_UYDU.includes(b.tehlike)) li.append(olayUyduKart(b));
     ol.append(li);
   });
   ray.append(ol);
-  ray.append(el("p", "not", "SEZ kanıtı gösterir, uçuş kararını operasyon ekibi verir. Seviyeyi model yazmaz; kod ayrı haber sayısından hesaplar. Kanıtlar haber kaynaklarından gelir, resmî kayıt yerine geçmez. Olayın doğrulanması, uçuşa etkisinin kanıtlandığı anlamına gelmez."));
+  ray.append(el("p", "not", T().not));
 }
 
 let sahne = null, sahneAdim = 0;
 const sahneKapat = () => { $("sahneGorsel").hidden = true; };
 
 async function sahneAc(i = 0) {
-  sahne ??= await (await fetch("/api/sahne")).json();
+  sahne ??= await (await fetch(`/api/sahne?dil=${dil}`)).json();
   kaynak?.close();
+  gorunum = "sahne";
   $("gonder").disabled = false;
   $("sahneGorsel").hidden = false;
   sahneCiz(i);
@@ -438,7 +963,8 @@ async function sahneAc(i = 0) {
 function sahneAnahtar(a) {
   const z = matchMedia("(max-width:860px)").matches ? 1.7 : 1; // mobilde pist yakinlastirilir
   const { width: w, height: h } = $("sahneGorsel").getBoundingClientRect();
-  const satirlar = a.sonucYok ? [["serit", "Pist: yöntemler uyuşmuyor, oran yok"]] : [["#c9391a", "İki yöntem de su diyor"], ["#f3eee2", "İki yöntem birlikte su demiyor"]];
+  // Renkler goruntuye basili bindirmeyle ayni olmali.
+  const satirlar = a.sonucYok ? [["serit", T().anahtarYok]] : [["#c9391a", T().anahtarIki], ["#f3eee2", T().anahtarYokSu]];
   const k = $("anahtar"); k.replaceChildren();
   for (const [r, m] of satirlar) {
     const s = el("span"), c = el("i", r === "serit" ? "serit" : "");
@@ -446,23 +972,25 @@ function sahneAnahtar(a) {
     s.append(c, document.createTextNode(m)); k.append(s);
   }
   const o = el("span", "olcekcik"); o.style.width = `${(1000 * Math.max(w, h) * z) / sahne.kareMetre}px`;
-  k.append(o, el("small", null, "1 km · Kuzey yukarıda"));
+  k.append(o, el("small", null, T().olcek));
   $("anahtarMetin").textContent = z > 1 ? `${satirlar.map((x) => x[1]).join(" · ")} · ` : "";
 }
 
 function sahneCiz(i) {
   const a = sahne.adimlar[i];
   $("sahneResim").src = a.gorsel;
-  $("sahneResim").alt = `${sahne.meydan} pisti, ${a.gun} uydu görüntüsü. ${a.baslik}`;
+  $("sahneResim").alt = T().gorselAlt(sahne.meydan, a.gun, a.baslik);
   $("cekim").textContent = a.cekim;
   $("isleme").textContent = a.isleme;
   $("sahneAd").textContent = a.sahne;
   $("sahneYer").textContent = sahne.meydan;
+  sonOrnek = null;
+  alanlariYaz(null);
   sahneAdim = i;
   sahneAnahtar(a);
   ray.replaceChildren();
   const se = el("p", "senaryo");
-  se.append(el("b", null, "SENARYO. "), document.createTextNode(`Pist ölçümleri gerçek Sentinel-2 görüntülerinden gelir. Üç uçuş, yedek meydan planı ve %${sahne.senaryoEsik} sınırı kurgusaldır.`));
+  se.append(el("b", null, `${T().senaryo}. `), document.createTextNode(T().senaryoMetin(sahne.senaryoEsik)));
   ray.append(se);
   const sec = el("ol", "adim-sec");
   sahne.adimlar.forEach((x, n) => {
@@ -472,48 +1000,68 @@ function sahneCiz(i) {
     li.append(b); sec.append(li);
   });
   ray.append(sec);
-  ray.append(el("h2", "karar" + (a.sonucYok ? " yok" : ""), a.baslik));
-  ray.append(el("p", "durumlar" + (a.sonucYok ? " yok" : ""), `KANIT DURUMU: ${a.kanit}`));
+  const kk = el("section", "kartc");
+  kk.append(el("h2", "karar" + (a.sonucYok ? " yok" : ""), a.baslik));
+  kk.append(el("p", "durumlar" + (a.sonucYok ? " yok" : ""), `${T().kanitDurum}: ${a.kanit}`));
   const k = el("dl", "kart");
   const satir = (ad, metin, sinif = "") => { const d = el("div", `satir ${sinif}`); d.append(el("dt", null, ad)); const dd = el("dd", null, metin); d.append(dd); k.append(d); return dd; };
-  satir("ÖNCE", a.once);
-  const sim = satir("ŞİMDİ", a.simdi);
+  satir(T().once, a.once);
+  const sim = satir(T().simdi, a.simdi);
   const ol = el("div", "yontem" + (a.sonucYok ? " yok" : ""));
   for (const [ad, v] of [["NDWI", a.olcum.ndwi], ["SCL", a.olcum.scl]]) {
     const p = el("p"), c = el("i"), d = el("span"); d.style.width = `${v}%`; c.append(d);
-    p.append(el("span", null, ad), c, el("em", null, `%${v.toLocaleString("tr-TR")}`)); ol.append(p);
+    p.append(el("span", null, ad), c, el("em", null, T().yuzde(v))); ol.append(p);
   }
   sim.append(ol);
-  satir("NEDEN", a.neden, "neden");
-  const et = satir("OPERASYONEL ETKİ", a.etki);
+  satir(T().neden, a.neden, "neden");
+  const et = satir(T().etki, a.etki);
   const u = el("ul", "ucuslar");
   for (const f of sahne.ucuslar) u.append(el("li", null, `${f.kod} ${f.hat}`));
   et.append(u);
-  satir("BEKLEYEN", a.bekleyen).prepend(el("span", "takip", a.takip));
-  ray.append(k);
-  ray.append(el("p", "not", `NDWI: görüntünün yeşil ve yakın kızılötesi bantlarından hesaplanan su göstergesi. SCL: Avrupa Uzay Ajansı sahne sınıflandırması. İki yöntem ${a.olcum.sinir} puandan çok ayrılırsa SEZ oran yazmaz. Uçuş kararını operasyon ekibi verir.`));
+  satir(T().bekleyen, a.bekleyen).prepend(el("span", "takip", a.takip));
+  kk.append(k);
+  ray.append(kk);
+  ray.append(el("p", "not", T().kartNot(a.olcum.sinir)));
 }
 
-function sorgula(s) {
+function sorgula(s, anahtar = s) {
   kaynak?.close();
   sahneKapat();
+  gorunum = "yukleniyor";
+  // Eski sorunun haritasi yeni sonuc gibi gorunmesin.
+  sonSonuc = null;
+  ciz(null);
   $("gonder").disabled = true;
   ray.replaceChildren();
-  const liste = el("ol", "adimlar"); ray.append(liste);
+  const kutu = el("div", "kartc"), liste = el("ol", "adimlar"); kutu.append(liste); ray.append(kutu);
   const bitir = () => { kaynak.close(); $("gonder").disabled = false; };
-  kaynak = new EventSource(`/api/sor?s=${encodeURIComponent(s)}`);
+  kaynak = new EventSource(`/api/sor?s=${encodeURIComponent(s)}&k=${encodeURIComponent(anahtar)}`);
   kaynak.onmessage = (o) => {
     const d = JSON.parse(o.data);
-    if (d.tip === "ilerleme") liste.append(el("li", null, d.metin));
+    if (d.tip === "ilerleme") liste.append(el("li", null, dil === "en" ? d.en : d.metin));
     if (d.tip === "sonuc") { bitir(); goster(d.sonuc); }
-    if (d.tip === "hata") { bitir(); ray.replaceChildren(el("p", "hata", d.metin)); }
+    if (d.tip === "hata") { bitir(); ray.replaceChildren(el("p", "hata", dil === "en" ? d.en ?? d.metin : d.metin)); }
   };
-  kaynak.onerror = () => { bitir(); ray.replaceChildren(el("p", "hata", "Sunucuyla bağlantı kesildi.")); };
+  kaynak.onerror = () => { bitir(); ray.replaceChildren(el("p", "hata", T().baglanti)); };
 }
 
+oneriBagla($("nereden"), $("neredenL"));
+oneriBagla($("nereye"), $("nereyeL"));
+document.querySelectorAll("[data-mod]").forEach((b) => { b.onclick = () => { sonOrnek = null; modSec(b.dataset.mod); $("nereden").focus(); }; });
+modSec("rota");
 $("sahneAc").onclick = () => sahneAc();
-$("form").onsubmit = (o) => { o.preventDefault(); sorgula($("soru").value.trim()); };
-let son; addEventListener("resize", () => { clearTimeout(son); son = setTimeout(() => { ciz(sonSonuc); if (!$("sahneGorsel").hidden) sahneAnahtar(sahne.adimlar[sahneAdim]); }, 150); });
+$("form").onsubmit = (o) => {
+  o.preventDefault();
+  const [a, b, t] = [kodu($("nereden").value.trim()), kodu($("nereye").value.trim()), mod === "ulke" ? "" : $("tarih").value];
+  // Ayni ornek elle yazilirsa kayitli sonuc kullanilir, para harcanmaz.
+  const ornek = ORNEKLER.find((x) => x.a?.[dil]?.toLowerCase() === a.toLowerCase() && (x.b?.[dil] ?? "").toLowerCase() === b.toLowerCase() && (x.t ?? "") === t);
+  if (ornek) { ornekSor(ornek); return; }
+  sonOrnek = null;
+  if (mod === "rota" && !b) { $("nereye").focus(); return; }
+  sorgula(mod === "ulke" ? T().soruUlke(a) : t ? T().soruTarih(a, b, t) : T().soruHafta(a, b));
+};
+document.querySelectorAll("[data-dil]").forEach((b) => { b.onclick = () => dilDegis(b.dataset.dil); });
+let son; addEventListener("resize", () => { clearTimeout(son); son = setTimeout(() => { ciz(sonSonuc, false); if (!$("sahneGorsel").hidden) sahneAnahtar(sahne.adimlar[sahneAdim]); }, 150); });
 hazirla();
 </script>
 </body>

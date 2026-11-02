@@ -3,8 +3,8 @@
 import type { Aday, Dil } from "./topla.ts";
 
 export type Karar = "destekliyor" | "celisiyor" | "ilgisiz";
-export type ModelKarari = { id: number; karar: Karar; alinti: string; ceviri: string };
-export type Kanit = Aday & { karar: Karar; alinti: string; ceviri: string };
+export type ModelKarari = { id: number; karar: Karar; alinti: string; ceviri: string; ceviriEn?: string };
+export type Kanit = Aday & { karar: Karar; alinti: string; ceviri: string; ceviriEn: string };
 export type Red = { baslik: string; yayinci: string; sebep: string };
 export type Seviye = "teyitli" | "kismen" | "tek-kaynak" | "celiskili" | "kanit-yok";
 
@@ -21,12 +21,14 @@ export type Sonuc = {
 };
 
 /** Baskasinin haberini yeniden yayimlayan siteler: bagimsiz kaynak sayilmaz. */
-const TOPLAYICILAR = ["yahoo.", "msn.com", "aol.com", "47news.jp", "infoseek.co.jp", "newsbreak.com", "news.google."];
+const TOPLAYICILAR = ["yahoo.", "msn.com", "aol.com", "47news.jp", "infoseek.co.jp", "newsbreak.com", "news.google.", "newscord"];
+/** Sosyal paylasim yayinci degildir; kisa ad baska alan adinin ortasinda eslesmesin diye tam aranir. */
+const SOSYAL = /(^|\.)(x\.com|twitter\.com|t\.me|facebook\.com|instagram\.com|tiktok\.com|reddit\.com)$/;
 
 const sade = (s: string) =>
   s.normalize("NFKC").toLocaleLowerCase("tr").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
-const toplayiciMi = (k: Aday) => TOPLAYICILAR.some((t) => k.alanAdi.includes(t));
+const toplayiciMi = (k: Aday) => TOPLAYICILAR.some((t) => k.alanAdi.includes(t)) || SOSYAL.test(k.alanAdi);
 
 /** Kelimelerinin %70'i ortak olan iki baslik yeniden yazilmis ayni ajans haberidir. */
 function kelimeOrtusmesi(a: string, b: string) {
@@ -79,7 +81,7 @@ export function degerlendir(
     else if (etiketMi(alinti)) reddet("alıntı olay anlatmıyor");
     else if (a.tarih < pencere.ilk || a.tarih > pencere.son) reddet("yayın tarihi iddia penceresinin dışında");
     else if (!yerler.some((y) => sade(a.baslik).includes(y))) reddet("yer adı başlıkta geçmiyor");
-    else kabul.push({ ...a, karar: m.karar, alinti, ceviri: m.ceviri.replace(/[<>]/g, "").slice(0, 300) });
+    else kabul.push({ ...a, karar: m.karar, alinti, ceviri: m.ceviri.replace(/[<>]/g, "").slice(0, 300), ceviriEn: (m.ceviriEn ?? "").replace(/[<>]/g, "").slice(0, 300) });
   }
 
   const destek = kabul.filter((k) => k.karar === "destekliyor");

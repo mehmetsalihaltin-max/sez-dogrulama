@@ -31,6 +31,7 @@ test("su sinirin ustune cikinca degerlendirme degisir ve sebebi yazilir", () => 
 
 test("baslik gecisi gosterir, oran yoksa sonuc yok yazar", () => {
   assert.deepEqual(sahneKur(veri).map((a) => a.baslik), ["Su oranı %0", "Su oranı %0 → %79,4", "Su oranı %79,4 → sonuç yok"]);
+  assert.deepEqual(sahneKur(veri, "en").map((a) => a.baslik), ["Water share 0%", "Water share 0% → 79.4%", "Water share 79.4% → no result"]);
 });
 
 test("cekim ve isleme zamani ayri tasinir", () => {

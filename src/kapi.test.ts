@@ -40,10 +40,21 @@ test("ayni basligi basan yayincilar tek kaynak sayilir", () => {
 
 test("sonuna ek yapilan kopya baslik da tek kaynak sayilir (Heathrow vakasi)", () => {
   const b = "All the Heathrow and Gatwick flights cancelled as Storm Boelo continues to hit travel";
-  const a = [aday(`${b} | Framing Analysis`, "NewsCord", "en"), aday(b, "AOL.com", "en", undefined, "aol.com")];
+  const a = [aday(`${b} | Framing Analysis`, "Gazete", "en"), aday(b, "AOL.com", "en", undefined, "aol.com")];
   const s = degerlendir(a, a.map((x, i) => d(i, x.baslik)), pencere, ["Heathrow"]);
   assert.equal(s.bagimsizYayinci, 1);
   assert.equal(s.seviye, "tek-kaynak");
+});
+
+test("sosyal paylasim ve toplayici yayinci sayilmaz, benzer alan adi sayilir", () => {
+  const a = [
+    aday("Pist kapatildi bugun", "X", "tr", undefined, "x.com"),
+    aday("Meydan yagmurdan sular altinda", "Telegram", "tr", undefined, "t.me"),
+    aday("Runway flooded after the storm", "NewsCord", "en", undefined, "newscord.org"),
+    aday("Havalimani ucuslari durdurdu", "Netflix", "tr", undefined, "netflix.com"),
+  ];
+  const s = degerlendir(a, a.map((x, i) => d(i, x.baslik)), pencere, yer);
+  assert.equal(s.bagimsizYayinci, 1);
 });
 
 test("yeniden yazilmis ajans haberi tek kaynak sayilir (Heathrow vakasi)", () => {

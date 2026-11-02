@@ -3,6 +3,7 @@ import { aramali, sayarak, yapili } from "./muse.ts";
 import { iddiaDogrula, iddialariCikar, sinirli } from "./dogrula.ts";
 import { jsonDizisi } from "./govde.ts";
 import { bagimsizKaynaklar, type Seviye } from "./kapi.ts";
+import { izGetir, izGuncelMi } from "./iz.ts";
 import { KAYITLI_IZLER, buyukDaire, hatAc, havalimani, merkez, rotayaUzaklikKm, ucusUlkeleri, ulkeBul, ulkedekiParcalar, yerBul, type Havalimani, type Nokta } from "./harita.ts";
 
 const TARAMA_MODELI = process.env.TARAMA_MODELI ?? "muse-spark-1.3";
@@ -20,10 +21,15 @@ const GENIS_ETKILI = ["savas", "saldiri", "dron", "gps", "siber", "kul"];
 export const TEHLIKELER = ["savas", "hava", "saldiri", "deprem", "sel", "grev", "yakit", "ariza", "kul", "dron", "gps", "siber", "diger"] as const;
 
 export type Soru = { tur: "mevcut-rota" | "yeni-rota" | "ulke"; kalkis: string; varis: string; ulke: string; tarih: string };
-type Risk = { iddia: string; tehlike: string; iata: string; yer_adi: string; ulke: string; hava_sahasi: boolean; suren: boolean; olay_tarihi: string };
+type Risk = { iddia: string; tehlike: string; iata: string; yer_adi: string; ulke: string; hava_sahasi: boolean; suren: boolean; baska_hat: boolean; olay_tarihi: string; iddia_en: string };
 export type Iliski = "koridorda" | "bolgesel" | "konum-genel" | "ulke-ici";
 export type Durum = "hava-sahasi-kesisimi" | "koridorda-teyitli" | "ulkede-teyitli" | "bolgesel-gelisme" | "dogrulanmamis-isaret" | "bulgu-yok";
-export type Ilerleme = { adim: string; metin: string };
+export type Ilerleme = { adim: string; metin: string; en: string };
+
+export class IkiDilliHata extends Error {
+  en: string;
+  constructor(metin: string, en: string) { super(metin); this.en = en; }
+}
 
 export async function soruCoz(soru: string): Promise<Soru> {
   return yapili<Soru>(
@@ -50,7 +56,8 @@ export async function soruCoz(soru: string): Promise<Soru> {
 
 export function pencereKur(tarih: string, simdi = Date.now()) {
   const t = Date.parse(tarih);
-  const son = Number.isNaN(t) ? simdi : t + GUN;
+  // Sorulan gunden sonra olan olay o gunun degerlendirmesine giremez.
+  const son = Number.isNaN(t) ? simdi : t;
   return { ilk: new Date(son - 8 * GUN).toISOString().slice(0, 10), son: new Date(son).toISOString().slice(0, 10) };
 }
 
@@ -61,18 +68,33 @@ async function riskTara(yerler: string[], pencere: { ilk: string; son: string })
       `disrupt flight operations at or over: ${yerler.join(", ")}. Include airspace restrictions and NOTAMs, conflict-related airspace risk, ` +
       `severe weather, natural disasters, industrial action, fuel supply, airport infrastructure faults, volcanic ash, drones, navigation signal ` +
       `interference and security incidents reported by news media or authorities. Search in English and in the local languages. Answer with a JSON array only, at most ${AZAMI_BULGU} items, most serious first. Each item: ` +
-      `{"iddia": one checkable factual sentence in Turkish naming the place, "tehlike": one of ${TEHLIKELER.join(", ")}, ` +
+      `{"iddia": one checkable factual sentence in Turkish naming the place, "iddia_en": the same sentence in English, "tehlike": one of ${TEHLIKELER.join(", ")}, ` +
       `"iata": IATA code when the event is at an airport, otherwise empty, "yer_adi": English name of the city or district where it happened, ` +
       `empty if the event is country-wide, "ulke": English country name, "hava_sahasi": true only when the event closes or restricts the ` +
       `airspace of that country, "suren": true when this is a long-running restriction or conflict that began before the period rather than a new ` +
-      `event inside it, "olay_tarihi": YYYY-MM-DD}. ` +
+      `event inside it, "baska_hat": true when the event only affects a different route that merely starts or ends at one of these places, ` +
+      `and the place itself and the asked route keep operating, "olay_tarihi": YYYY-MM-DD}. ` +
       `Only events that happened and could affect flights to, from or over these places; skip local incidents with no bearing on flight operations and events at distant airports. No forecasts. Return [] if there are none.`,
     TARAMA_MODELI,
   );
-  return (jsonDizisi(metin) as Risk[]).filter((r) => typeof r?.iddia === "string").slice(0, AZAMI_BULGU);
+  return (jsonDizisi(metin) as Risk[]).filter((r) => typeof r?.iddia === "string" && pencereIcinde(r, pencere)).slice(0, AZAMI_BULGU);
 }
 
-async function konumBul(r: Risk): Promise<{ nokta: Nokta; ad: string; tur: "nokta" | "ulke" } | null> {
+/** Aralik disindaki olay o aralik icin bulgu sayilmaz; suren kisit daha once baslamis olabilir. */
+export const pencereIcinde = (r: { olay_tarihi: string; suren?: boolean }, p: { ilk: string; son: string }) =>
+  !(r.olay_tarihi > p.son) && (r.suren === true || !(r.olay_tarihi < p.ilk));
+
+const KAPANIS = /\b(clos(e|es|ed|ure|ing)|shut\w*|suspend\w*|prohibit\w*|restrict\w*|bann?ed)\b/i;
+/** Hava sahasi basligi yalniz modelin isaretine birakilmaz: iddianin kendisi kapanis soylemeli. */
+export const kapanisMi = (metin: string) => /\bairspace\b/i.test(metin) && KAPANIS.test(metin);
+/** "Iasi cevresinde kisit" ulke kapanisi degildir; ulkenin kendi hava sahasi anilmali. */
+export const ulkeGeneliKapanis = (metin: string, ulke: string) =>
+  kapanisMi(metin) && new RegExp(`\\b(${ulke.replace(/[^\p{L} ]/gu, ".")}'?s?|its|national|entire|whole|country'?s?) airspace\\b`, "iu").test(metin);
+
+export async function konumBul(r: Risk): Promise<{ nokta: Nokta; ad: string; tur: "nokta" | "ulke" } | null> {
+  // Ulke kapanisi, model bir sehir adi da yazsa ulke duzeyinde kalir.
+  const kapali = r.hava_sahasi === true && ulkeGeneliKapanis(r.iddia_en, r.ulke) ? await ulkeBul(r.ulke) : undefined;
+  if (kapali) return { nokta: merkez(kapali), ad: kapali.properties.name, tur: "ulke" };
   const h = r.iata ? await havalimani(r.iata) : undefined;
   if (h) return { nokta: [h.lon, h.lat], ad: h.iata, tur: "nokta" };
   const y = await yerBul(r.yer_adi, r.ulke).catch(() => null);
@@ -82,9 +104,11 @@ async function konumBul(r: Risk): Promise<{ nokta: Nokta; ad: string; tur: "nokt
 }
 
 /** Olay teyitli olsa da rotayla iliskisi ayri hesaplanir; yalniz koddaki koordinat ve sinir verisinden. */
-export function iliskiVer(k: { tur: "nokta" | "ulke"; km: number | null; rotaVar: boolean; havaSahasiRotada: boolean; ulkeRotada?: boolean }): Iliski {
+export function iliskiVer(k: { tur: "nokta" | "ulke"; km: number | null; rotaVar: boolean; havaSahasiRotada: boolean; ulkeRotada?: boolean; baskaHat?: boolean }): Iliski {
   if (!k.rotaVar) return "ulke-ici";
   if (k.havaSahasiRotada) return "koridorda";
+  // Ayni meydandan kalkan baska hattin olayi bu hatti ilgilendirmez (Singapur-Dubai vakasi).
+  if (k.baskaHat) return "bolgesel";
   if (k.ulkeRotada === false) return "bolgesel";
   if (k.tur === "ulke" || k.km == null) return "konum-genel";
   return k.km <= KORIDOR_KM ? "koridorda" : "bolgesel";
@@ -94,6 +118,11 @@ export function iliskiVer(k: { tur: "nokta" | "ulke"; km: number | null; rotaVar
 export function gurultuMu(r: { tehlike: string; iata: string; hava_sahasi: boolean }, meydanaKm: number | null) {
   if (r.iata || r.hava_sahasi === true || GENIS_ETKILI.includes(r.tehlike)) return false;
   return meydanaKm == null || meydanaKm > MEYDAN_YAKINI_KM;
+}
+
+/** Ulke hava sahasi uyarisi yalniz ulke geneli ve en az iki yayinciyla kurulur: tek noktadaki gecici kisit hatti kapatmaz (Iasi vakasi). */
+export function hatKesisirMi(b: { havaSahasi: boolean; iddiaEn: string; seviye: Seviye; ulke: string; konum?: { tur: string } | null }, gecilen: string[]) {
+  return b.havaSahasi && kapanisMi(b.iddiaEn) && b.konum?.tur === "ulke" && (b.seviye === "teyitli" || b.seviye === "kismen") && gecilen.includes(b.ulke);
 }
 
 export function durumVer(b: { seviye: Seviye; iliski: Iliski }[], kesisim: { seviye: Seviye }[] = []): Durum {
@@ -113,7 +142,7 @@ export async function sor(soru: string, ilerle: (i: Ilerleme) => void) {
 }
 
 async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
-  ilerle({ adim: "soru", metin: "Soru çözülüyor" });
+  ilerle({ adim: "soru", metin: "Soru çözülüyor", en: "Reading the question" });
   const s = await soruCoz(soru);
   const pencere = pencereKur(s.tarih);
 
@@ -122,45 +151,52 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
   let gecilen: string[] = [];
   let hedef: Record<string, unknown>;
   let meydanlar: Nokta[] = [];
-  let hatKaynagi: { ucus: string; tarih: string } | null = null;
+  let hatKaynagi: { ucus: string; tarih: string; canli?: boolean; sonraki?: boolean } | null = null;
   if (s.tur === "ulke") {
     const u = await ulkeBul(s.ulke);
-    if (!u) throw new Error(`"${s.ulke}" ülke verisinde yok`);
+    if (!u) throw new IkiDilliHata(`"${s.ulke}" ülke verisinde yok`, `"${s.ulke}" is not in the country data`);
     yerler = [u.properties.name];
     hedef = { ulke: u.properties.name };
   } else {
     const [a, b] = await Promise.all([havalimani(s.kalkis), havalimani(s.varis)]);
-    if (!a || !b) throw new Error(`Havalimanı bulunamadı: ${s.kalkis}, ${s.varis}`);
-    const iz = KAYITLI_IZLER[`${a.iata}-${b.iata}`];
+    if (!a || !b) throw new IkiDilliHata(`Havalimanı bulunamadı: ${s.kalkis}, ${s.varis}`, `Airport not found: ${s.kalkis}, ${s.varis}`);
+    // Once son seferin gercek izi, yoksa kayitli iz, o da yoksa teorik hat.
+    const guncel = izGuncelMi(s.tarih);
+    const iz = (guncel ? await izGetir(a, b).catch(() => null) : null) ?? KAYITLI_IZLER[`${a.iata}-${b.iata}`];
     rota = iz ? hatAc(iz.noktalar) : buyukDaire([a.lon, a.lat], [b.lon, b.lat]);
-    hatKaynagi = iz ? { ucus: iz.ucus, tarih: iz.tarih } : null;
+    hatKaynagi = iz ? { ucus: iz.ucus, tarih: iz.tarih, canli: "canli" in iz, sonraki: !guncel } : null;
     meydanlar = [[a.lon, a.lat], [b.lon, b.lat]];
     gecilen = await ucusUlkeleri(rota);
     yerler = [`${a.ad} (${a.iata})`, `${b.ad} (${b.iata})`, ...gecilen];
     hedef = { kalkis: uc(a), varis: uc(b), rota, ulkeler: gecilen, hatKaynagi };
-    ilerle({ adim: "rota", metin: `Rota çizildi: ${gecilen.join(", ")}` });
+    ilerle({ adim: "rota", metin: `Rota çizildi: ${gecilen.join(", ")}`, en: `Route drawn: ${gecilen.join(", ")}` });
   }
 
-  ilerle({ adim: "tarama", metin: `Muse ${pencere.ilk} / ${pencere.son} aralığını tarıyor` });
+  ilerle({ adim: "tarama", metin: `Muse ${pencere.ilk} / ${pencere.son} aralığını tarıyor`, en: `Muse is scanning ${pencere.ilk} to ${pencere.son}` });
   const taranan = await riskTara(yerler, pencere);
   // Elenen bulgu para harcamasin diye konum, dogrulamadan once bulunur.
-  const konumlu = await sinirli(taranan, AYNI_ANDA_DOGRULAMA, async (r) => ({ r, konum: await konumBul(r) }));
+  const konumlu = await sinirli(taranan, AYNI_ANDA_DOGRULAMA, async (r) => {
+    r.ulke = (await ulkeBul(r.ulke ?? ""))?.properties.name ?? r.ulke; // gecilen ulke listesiyle ayni ad
+    return { r, konum: await konumBul(r) };
+  });
   const riskler = konumlu.filter(({ r, konum }) => {
     const nokta = konum?.tur === "nokta" ? konum.nokta : null;
     if (nokta && rota.length && rotayaUzaklikKm(nokta, rota) > ILGI_SINIRI_KM) return false;
     return !gurultuMu(r, nokta && meydanlar.length ? rotayaUzaklikKm(nokta, meydanlar) : null);
   });
-  ilerle({ adim: "dogrulama", metin: `${riskler.length} bulgu kanıt kapısına giriyor, ${taranan.length - riskler.length} yerel olay elendi` });
+  ilerle({ adim: "dogrulama", metin: `${riskler.length} bulgu kanıt kapısına giriyor, ${taranan.length - riskler.length} yerel olay elendi`, en: `${riskler.length} findings entering the evidence gate, ${taranan.length - riskler.length} local events dropped` });
 
   const bugun = new Date().toISOString().slice(0, 10);
   let biten = 0;
   const bulgular = await sinirli(riskler, AYNI_ANDA_DOGRULAMA, async ({ r, konum }) => {
     const [iddia] = await iddialariCikar(`${r.olay_tarihi}: ${r.iddia}`, bugun);
     const d = await iddiaDogrula(iddia ?? { iddia: r.iddia, yer: r.ulke, yer_adlari: [r.ulke], olay_tarihi: r.olay_tarihi, sorgular: [] });
-    ilerle({ adim: "kapi", metin: `${++biten}/${riskler.length}: ${d.sonuc.seviye}` });
+    biten++;
+    ilerle({ adim: "kapi", metin: `${biten}/${riskler.length}: ${d.sonuc.seviye}`, en: `${biten}/${riskler.length}: ${d.sonuc.seviye}` });
     const rotayaKm = konum?.tur === "nokta" && rota.length ? rotayaUzaklikKm(konum.nokta, rota) : null;
     return {
       iddia: r.iddia,
+      iddiaEn: r.iddia_en || r.iddia,
       tehlike: r.tehlike,
       olayTarihi: r.olay_tarihi,
       seviye: d.sonuc.seviye,
@@ -179,6 +215,7 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
         // Tek noktadaki olay ulkenin hava sahasi sayilmaz (Maumere vakasi).
         havaSahasiRotada: konum?.tur === "ulke" && r.hava_sahasi === true && gecilen.includes(r.ulke),
         ulkeRotada: gecilen.includes(r.ulke),
+        baskaHat: r.baska_hat === true,
       }),
       kanitlar: bagimsizKaynaklar(d.sonuc.destek).slice(0, 4).map((k) => ({
         yayinci: k.yayinci,
@@ -187,8 +224,9 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
         dil: k.dil,
         alinti: k.alinti,
         ceviri: k.ceviri,
+        ceviriEn: k.ceviriEn,
       })),
-      celiski: d.sonuc.celiski.slice(0, 2).map((k) => ({ yayinci: k.yayinci, url: k.url, alinti: k.alinti, ceviri: k.ceviri })),
+      celiski: d.sonuc.celiski.slice(0, 2).map((k) => ({ yayinci: k.yayinci, url: k.url, alinti: k.alinti, ceviri: k.ceviri, ceviriEn: k.ceviriEn })),
     };
   });
 
@@ -199,7 +237,7 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
   const kesisim = [];
   if (meydanlar.length) {
     for (const b of bulgular) {
-      if (!b.havaSahasi || b.seviye === "kanit-yok" || !gecilen.includes(b.ulke)) continue;
+      if (!hatKesisirMi(b, gecilen)) continue;
       kesisim.push({ ulke: b.ulke, seviye: b.seviye, parcalar: await ulkedekiParcalar(rota, b.ulke) });
     }
   }
@@ -214,6 +252,7 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
     koridorKm: KORIDOR_KM,
     elenen: taranan.length - riskler.length,
     elenenler: taranan.filter((r) => !riskler.some((k) => k.r === r)).map((r) => r.iddia),
+    elenenlerEn: taranan.filter((r) => !riskler.some((k) => k.r === r)).map((r) => r.iddia_en || r.iddia),
     zaman: new Date().toISOString(),
   };
 }

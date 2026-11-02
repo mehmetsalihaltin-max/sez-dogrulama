@@ -87,14 +87,31 @@ export async function sahneBul(lon: number, lat: number, gun: string) {
   return f;
 }
 
-async function pencere(href: string, lon: number, lat: number): Promise<Bant> {
+/** Noktayi kapsayan sahneler, en yenisi once. */
+export async function sahneleriBul(lon: number, lat: number, ilk: string, son: string): Promise<any[]> {
+  const r = await fetch(STAC, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      collections: ["sentinel-2-l2a"],
+      intersects: { type: "Point", coordinates: [lon, lat] },
+      datetime: `${ilk}T00:00:00Z/${son}T23:59:59Z`,
+      sortby: [{ field: "properties.datetime", direction: "desc" }],
+      limit: 20,
+    }),
+  });
+  if (!r.ok) throw new Error(`STAC ${r.status}`);
+  return (await r.json()).features ?? [];
+}
+
+async function pencere(href: string, lon: number, lat: number, kare = KARE_METRE): Promise<Bant> {
   const im = await (await fromUrl(href)).getImage();
   const epsg = im.getGeoKeys().ProjectedCSTypeGeoKey;
   const p = proj4(`+proj=utm +zone=${epsg % 100} ${epsg < 32700 ? "" : "+south"} +datum=WGS84`);
   const [x, y] = p.forward([lon, lat]);
   const [ox, oy] = im.getOrigin();
   const [rx, ry] = im.getResolution();
-  const R = KARE_METRE / 2 / Math.abs(rx);
+  const R = kare / 2 / Math.abs(rx);
   const px = (x - ox) / rx;
   const py = (y - oy) / ry;
   const w = [px - R, py - R, px + R, py + R].map(Math.round);
@@ -109,6 +126,10 @@ export async function bantlariOku(f: any, lon: number, lat: number): Promise<Ban
   return { yesil, nir, scl };
 }
 
-export async function gorunurOku(f: any, lon: number, lat: number): Promise<Bant> {
-  return pencere(f.assets.visual.href, lon, lat);
+export async function sclOku(f: any, lon: number, lat: number, kare?: number): Promise<Bant> {
+  return pencere(f.assets.scl.href, lon, lat, kare);
+}
+
+export async function gorunurOku(f: any, lon: number, lat: number, kare?: number): Promise<Bant> {
+  return pencere(f.assets.visual.href, lon, lat, kare);
 }

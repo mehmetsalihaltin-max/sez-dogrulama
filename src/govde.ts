@@ -70,7 +70,7 @@ const ISTEM = (iddia: string, tarih: string) =>
   `Find news reports or official notices about this aviation-safety claim: "${iddia}"${tarih ? ` (date: ${tarih})` : ""}. ` +
   `Search in English and in the local language of the place. Answer with a JSON array only. Each item: ` +
   `{"url": source page, "alinti": one full sentence copied character for character from that page, in the page's language, ` +
-  `naming the place, "ceviri": its Turkish translation, "dil": one of ${Object.keys(DILLER).join(", ")}}. ` +
+  `naming the place, "ceviri": its Turkish translation, "ceviriEn": its English translation, "dil": one of ${Object.keys(DILLER).join(", ")}}. ` +
   `Use aviation authorities, airlines, aviation press or news outlets, never tourism, immigration, freight marketing or blog pages. Include only sources that report this same event; when the claim names a cause, the sentence must state that same cause. If nothing supports the claim return [].`;
 
 /** Dogrulanan cumleleri kapinin bildigi aday + karar bicimine cevirir; son karari yine kapi verir. */
@@ -96,7 +96,7 @@ export async function govdeKanitlari(iddia: string, tarih: string): Promise<{ ad
       }
       const alanAdi = new URL(g.url).hostname.replace(/^www\./, "");
       adaylar.push({ baslik: g.alinti, yayinci: alanAdi, alanAdi, url: g.url, tarih: tarihi, dil: (g.dil in DILLER ? g.dil : "en") as Dil });
-      kararlar.push({ karar: "destekliyor", alinti: g.alinti, ceviri: g.ceviri ?? "" });
+      kararlar.push({ karar: "destekliyor", alinti: g.alinti, ceviri: g.ceviri ?? "", ceviriEn: g.ceviriEn ?? "" });
     } catch (e) {
       red.push({ url: g.url, sebep: e instanceof Error ? e.message : String(e) });
     }

@@ -77,6 +77,19 @@ export async function yapili<T>(sistem: string, kullanici: string, ad: string, s
   return JSON.parse(d.choices[0].message.content) as T;
 }
 
+/** Gorsel okuyan JSON cevap: gorseller verilen sirayla modele gider. */
+export async function gorselYapili<T>(sistem: string, metin: string, jpegler: Buffer[], ad: string, sema: object): Promise<T> {
+  const d = await istek("/chat/completions", {
+    model: MODEL,
+    messages: [
+      { role: "system", content: sistem },
+      { role: "user", content: [{ type: "text", text: metin }, ...jpegler.map((j) => ({ type: "image_url", image_url: { url: `data:image/jpeg;base64,${j.toString("base64")}` } }))] },
+    ],
+    response_format: { type: "json_schema", json_schema: { name: ad, schema: sema } },
+  });
+  return JSON.parse(d.choices[0].message.content) as T;
+}
+
 export type Atif = { url: string; baslik: string; alinti: string };
 
 /** Web aramali cevap (Responses API + web_search). Atiflari url_citation'dan okur. */
