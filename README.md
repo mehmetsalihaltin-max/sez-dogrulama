@@ -29,6 +29,7 @@ Everything in this repository was written during the building period. The first 
 | Muse Spark 1.3 | `src/rota.ts`, `src/dogrula.ts`, `src/govde.ts` | Question parsing, event scan with web search, claim extraction, headline matching with exact quotes |
 | Muse Spark 1.3 (vision) | `src/meydan.ts` | Reads Sentinel-2 images of airports and event sites |
 | SAM 3.1 | `src/sam.ts`, `src/pist.ts` | Runway segmentation from a single point prompt |
+| Muse Image 1.0 | `web/tehlike/` | One illustration per hazard type on the finding cards, labelled in code as "AI illustration, not evidence". No text or numbers come from the model. |
 
 ## Run it
 
