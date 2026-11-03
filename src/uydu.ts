@@ -1,4 +1,4 @@
-// Sentinel-2 ile pist su olcumu. Oran model degil fizik: iki bagimsiz yontem uyusmadan rakam verilmez.
+// Sentinel-2 ile pist su olcumu. Oran model degil fizik: ayni uydu gozleminden turetilen iki yontem (NDWI ve ESA SCL su sinifi) uyusmadan rakam verilmez. Ikisi istatistiksel olarak bagimsiz degildir.
 import { fromUrl } from "geotiff";
 import proj4 from "proj4";
 

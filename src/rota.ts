@@ -1,7 +1,7 @@
 // Tek soru, tek hat: soru cozulur, cografya kodla kurulur, Muse risk tarar, her bulgu kapidan gecer.
 import { aramali, sayarak, yapili } from "./muse.ts";
 import { iddiaDogrula, iddialariCikar, sinirli } from "./dogrula.ts";
-import { jsonDizisi } from "./govde.ts";
+import { jsonDiziAyikla } from "./govde.ts";
 import { bagimsizKaynaklar, type Seviye } from "./kapi.ts";
 import { izGetir, izGuncelMi } from "./iz.ts";
 import { KAYITLI_IZLER, buyukDaire, hatAc, havalimani, merkez, rotayaUzaklikKm, ucusUlkeleri, ulkeBul, ulkedekiParcalar, yerBul, type Havalimani, type Nokta } from "./harita.ts";
@@ -23,7 +23,7 @@ export const TEHLIKELER = ["catisma", "hava", "saldiri", "deprem", "sel", "grev"
 export type Soru = { tur: "mevcut-rota" | "yeni-rota" | "ulke"; kalkis: string; varis: string; ulke: string; tarih: string };
 type Risk = { iddia: string; tehlike: string; iata: string; yer_adi: string; ulke: string; hava_sahasi: boolean; suren: boolean; baska_hat: boolean; olay_tarihi: string; iddia_en: string };
 export type Iliski = "koridorda" | "bolgesel" | "konum-genel" | "ulke-ici";
-export type Durum = "hava-sahasi-kesisimi" | "koridorda-teyitli" | "ulkede-teyitli" | "bolgesel-gelisme" | "dogrulanmamis-isaret" | "bulgu-yok";
+export type Durum = "hava-sahasi-kesisimi" | "koridorda-teyitli" | "ulkede-teyitli" | "bolgesel-gelisme" | "dogrulanmamis-isaret" | "bulgu-yok" | "tarama-tamamlanamadi";
 export type Ilerleme = { adim: string; metin: string; en: string };
 
 export class IkiDilliHata extends Error {
@@ -61,7 +61,8 @@ export function pencereKur(tarih: string, simdi = Date.now()) {
   return { ilk: new Date(son - 8 * GUN).toISOString().slice(0, 10), son: new Date(son).toISOString().slice(0, 10) };
 }
 
-async function riskTara(yerler: string[], pencere: { ilk: string; son: string }): Promise<Risk[]> {
+/** Yanit okunamazsa ya da hicbir oge beklenen yapida degilse null: teknik hata "olay yok" sayilmaz. */
+async function riskTara(yerler: string[], pencere: { ilk: string; son: string }): Promise<Risk[] | null> {
   // Meta icerik filtresi siddet kelimeleri siralanan istemi reddediyor (istanbul-izmir vakasi); operasyon dili geciyor.
   const { metin } = await aramali(
     `You support an airline operations safety desk. Find publicly reported events between ${pencere.ilk} and ${pencere.son} that could ` +
@@ -77,7 +78,15 @@ async function riskTara(yerler: string[], pencere: { ilk: string; son: string })
       `Only events that happened and could affect flights to, from or over these places; skip local incidents with no bearing on flight operations and events at distant airports. No forecasts. Return [] if there are none.`,
     TARAMA_MODELI,
   );
-  return (jsonDizisi(metin) as Risk[]).filter((r) => typeof r?.iddia === "string" && pencereIcinde(r, pencere)).slice(0, AZAMI_BULGU);
+  return taramaSuz(metin, pencere);
+}
+
+export function taramaSuz(metin: string, pencere: { ilk: string; son: string }): Risk[] | null {
+  const d = jsonDiziAyikla(metin);
+  if (!d) return null;
+  const gecerli = (d as Risk[]).filter((r) => typeof r?.iddia === "string");
+  if (d.length && !gecerli.length) return null;
+  return gecerli.filter((r) => pencereIcinde(r, pencere)).slice(0, AZAMI_BULGU);
 }
 
 /** Aralik disindaki olay o aralik icin bulgu sayilmaz; suren kisit daha once baslamis olabilir. */
@@ -125,7 +134,8 @@ export function hatKesisirMi(b: { havaSahasi: boolean; iddiaEn: string; seviye: 
   return b.havaSahasi && kapanisMi(b.iddiaEn) && b.konum?.tur === "ulke" && (b.seviye === "teyitli" || b.seviye === "kismen") && gecilen.includes(b.ulke);
 }
 
-export function durumVer(b: { seviye: Seviye; iliski: Iliski }[], kesisim: { seviye: Seviye }[] = []): Durum {
+export function durumVer(b: { seviye: Seviye; iliski: Iliski }[], kesisim: { seviye: Seviye }[] = [], taramaOkundu = true): Durum {
+  if (!taramaOkundu) return "tarama-tamamlanamadi";
   if (kesisim.length) return "hava-sahasi-kesisimi";
   const teyitli = b.filter((x) => x.seviye === "teyitli");
   if (teyitli.some((x) => x.iliski === "koridorda")) return "koridorda-teyitli";
@@ -173,7 +183,9 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
   }
 
   ilerle({ adim: "tarama", metin: `Muse ${pencere.ilk} / ${pencere.son} aralığını tarıyor`, en: `Muse is scanning ${pencere.ilk} to ${pencere.son}` });
-  const taranan = await riskTara(yerler, pencere);
+  const okunan = await riskTara(yerler, pencere);
+  if (!okunan) ilerle({ adim: "tarama", metin: "Tarama yanıtı okunamadı; sonuç \"kanıt yok\" sayılmayacak", en: "Scan response could not be read; this will not be reported as no evidence" });
+  const taranan = okunan ?? [];
   // Elenen bulgu para harcamasin diye konum, dogrulamadan once bulunur.
   const konumlu = await sinirli(taranan, AYNI_ANDA_DOGRULAMA, async (r) => {
     r.ulke = (await ulkeBul(r.ulke ?? ""))?.properties.name ?? r.ulke; // gecilen ulke listesiyle ayni ad
@@ -247,7 +259,7 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
     hedef,
     pencere,
     bulgular,
-    durum: durumVer(bulgular, kesisim),
+    durum: durumVer(bulgular, kesisim, okunan !== null),
     kesisim,
     koridorKm: KORIDOR_KM,
     elenen: taranan.length - riskler.length,

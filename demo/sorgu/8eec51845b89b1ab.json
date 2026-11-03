@@ -1,0 +1,216 @@
+{
+  "soru": "What is the flight safety situation in Lebanon?",
+  "tur": "ulke",
+  "hedef": {
+    "ulke": "Lebanon"
+  },
+  "pencere": {
+    "ilk": "2026-10-25",
+    "son": "2026-11-02"
+  },
+  "bulgular": [
+    {
+      "iddia": "EASA, 16 Kasım 2026'ya kadar Lübnan hava sahasından kaçınılmasını, Beyrut'a deniz üzerinden yapılan yaklaşmalar hariç tavsiye etti.",
+      "iddiaEn": "EASA advised operators to avoid the airspace of Lebanon until 16 November 2026, except for operations to/from Beirut that approach from the sea.",
+      "tehlike": "catisma",
+      "olayTarihi": "2026-07-08",
+      "seviye": "teyitli",
+      "gerekce": "4 dilde 6 bağımsız yayıncı",
+      "bagimsiz": 6,
+      "diller": [
+        "tr",
+        "en",
+        "ar",
+        "fr"
+      ],
+      "konum": {
+        "nokta": [
+          35.87799817639761,
+          33.921224329824256
+        ],
+        "ad": "Lebanon",
+        "tur": "ulke"
+      },
+      "rotayaKm": null,
+      "havaSahasi": true,
+      "suren": true,
+      "ulke": "Lebanon",
+      "iliski": "ulke-ici",
+      "kanitlar": [
+        {
+          "yayinci": "Bloomberght",
+          "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOZjhrbWYxTklCaGJuZlQtVjEtbEVGT1hRVjZ6ekVhWmtzd2tFUnJHSkdjVUV0aXFBanBkcmJDeGY4dkhyOTA2dEtLWEwycy0tVy1VNTZuUlMxbXdob1RRLUFqTWNKTmE5dmJUenR6dXhVcFBtY1FWYkRhX2FnM2NiRDIzbXRlY1NGZXc?oc=5",
+          "tarih": "2026-07-08",
+          "dil": "tr",
+          "alinti": "Lübnan hava sahası",
+          "ceviri": "Lübnan hava sahası",
+          "ceviriEn": "Lebanon airspace"
+        },
+        {
+          "yayinci": "Kurdistan24",
+          "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1ZdjQ3SUREZF9BSnFLYmUyRTc0X1FYZGlPS09pLTNDeW5wU2pnSXl3ckQzTW51bVVBYVI0Qi1JUXprMGhTdzJVX2lqNWZTWkFMTVJLTEJR?oc=5",
+          "tarih": "2026-07-08",
+          "dil": "tr",
+          "alinti": "Lübnan hava sahasından uzak durun",
+          "ceviri": "Lübnan hava sahasından uzak durun",
+          "ceviriEn": "stay away from Lebanon airspace"
+        },
+        {
+          "yayinci": "AzerNews",
+          "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5lZXR4NGp0cjRxbnh5RGdEWlUtNEN0MFlvbERWbHJWVlpPQk9JdzFHbGVWMjZCUUpsekZlMDNvX0JrYnhEZy05dEZjYnVwdGlXQ1pXaQ?oc=5",
+          "tarih": "2026-07-08",
+          "dil": "en",
+          "alinti": "avoid Iran, Iraq, Lebanon airspace",
+          "ceviri": "İran, Irak, Lübnan hava sahasından kaçının",
+          "ceviriEn": "avoid Iran, Iraq, Lebanon airspace"
+        },
+        {
+          "yayinci": "The Times of Israel",
+          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPc25pcUxzcWFrWkdZSk1ZeVA1SWFpanVRNW5wRmstYmMxWGRnUk5YWlJhR0VPUnZXMFdoYXNjVGpoZVZQdDM1UU96U3hJcmc5YlVNYlBab2pySlFHSGhzaVlrTUx0ZlJ1WDg0ekh4QXFvVkJVLXV2WGIyN1VFU0pRUVNLVmp5b2hQdDdiYzY2UUNJeEhubUI0WHBsYlFmNW9KLXo3cl90b3NXcWhq0gGyAUFVX3lxTE9NNUZJTF9samlHYlFCN2Uyc21HMUpHelVpMHNaYzZMMndob3FUaUh0T0VHSXRhcmhpcTlRd3dLUXlYQXlsNnRkamR5RVNQTXZpdDQtandTTGJNM0RSTVN5R19vRG9BNjRCbk1ucGlzSXpWc054eWdvQk52R2FoNDZ3d3FmMWx6Zk1yeGo3WWVCNVhGNGNzZGtWUkR5QnJKTVVYMmVoQ1BhenVVXzJ2akMyMnc?oc=5",
+          "tarih": "2026-07-09",
+          "dil": "en",
+          "alinti": "avoiding Iran, Iraq, Lebanon airspaces",
+          "ceviri": "İran, Irak ve Lübnan hava sahalarından kaçınılması",
+          "ceviriEn": "avoiding Iran, Iraq, Lebanon airspaces"
+        }
+      ],
+      "celiski": []
+    },
+    {
+      "iddia": "Birleşik Krallık, 23 Ekim 2026'da Lübnan hava sahasına girilmemesini, Beyrut Havalimanı'na deniz üzerinden yapılan seferler hariç tavsiye etti.",
+      "iddiaEn": "The United Kingdom recommended on 23 October 2026 not to enter Lebanese airspace (Beirut FIR), except for flights to/from Beirut airport over the sea.",
+      "tehlike": "catisma",
+      "olayTarihi": "2026-10-23",
+      "seviye": "kanit-yok",
+      "gerekce": "kapıdan geçen kanıt yok",
+      "bagimsiz": 0,
+      "diller": [],
+      "konum": {
+        "nokta": [
+          35.87799817639761,
+          33.921224329824256
+        ],
+        "ad": "Lebanon",
+        "tur": "ulke"
+      },
+      "rotayaKm": null,
+      "havaSahasi": true,
+      "suren": true,
+      "ulke": "Lebanon",
+      "iliski": "ulke-ici",
+      "kanitlar": [],
+      "celiski": []
+    },
+    {
+      "iddia": "29 Ekim 2026'da İsrail, Beyrut'ta Şuveyfat'ta Lübnan uluslararası havalimanı yakınında hedefli bir hava saldırısı düzenledi.",
+      "iddiaEn": "On 29 October 2026 Israel carried out a targeted strike in Shuwayfat in Beirut near Lebanon's international airport.",
+      "tehlike": "catisma",
+      "olayTarihi": "2026-10-29",
+      "seviye": "kanit-yok",
+      "gerekce": "kapıdan geçen kanıt yok",
+      "bagimsiz": 0,
+      "diller": [],
+      "konum": {
+        "nokta": [
+          35.48344,
+          33.80925
+        ],
+        "ad": "Beirut",
+        "tur": "nokta"
+      },
+      "rotayaKm": null,
+      "havaSahasi": false,
+      "suren": false,
+      "ulke": "Lebanon",
+      "iliski": "ulke-ici",
+      "kanitlar": [],
+      "celiski": []
+    },
+    {
+      "iddia": "Lübnan, 15 Ağustos 2026'da Beyrut FIR'da GPS/GNSS sinyal kaybı ve karıştırma olabileceği uyarısı yayımladı.",
+      "iddiaEn": "Lebanon issued a warning on 15 August 2026 about possible loss of GPS/GNSS signal and jamming/spoofing in the Beirut FIR.",
+      "tehlike": "gps",
+      "olayTarihi": "2026-08-15",
+      "seviye": "kanit-yok",
+      "gerekce": "kapıdan geçen kanıt yok",
+      "bagimsiz": 0,
+      "diller": [],
+      "konum": {
+        "nokta": [
+          35.87799817639761,
+          33.921224329824256
+        ],
+        "ad": "Lebanon",
+        "tur": "ulke"
+      },
+      "rotayaKm": null,
+      "havaSahasi": false,
+      "suren": true,
+      "ulke": "Lebanon",
+      "iliski": "ulke-ici",
+      "kanitlar": [],
+      "celiski": []
+    },
+    {
+      "iddia": "29 Ekim 2026'da İsrail, Lübnan genelinde Marjeyun, Baalbek ve Hermel'deki Hizbullah tünellerine hava saldırıları düzenledi.",
+      "iddiaEn": "On 29 October 2026 Israel carried out airstrikes on Hezbollah tunnel shafts in the Marjaayoun area, near Baalbek and in Hermel across Lebanon.",
+      "tehlike": "catisma",
+      "olayTarihi": "2026-10-29",
+      "seviye": "kanit-yok",
+      "gerekce": "kapıdan geçen kanıt yok",
+      "bagimsiz": 0,
+      "diller": [],
+      "konum": {
+        "nokta": [
+          35.87799817639761,
+          33.921224329824256
+        ],
+        "ad": "Lebanon",
+        "tur": "ulke"
+      },
+      "rotayaKm": null,
+      "havaSahasi": false,
+      "suren": false,
+      "ulke": "Lebanon",
+      "iliski": "ulke-ici",
+      "kanitlar": [],
+      "celiski": []
+    },
+    {
+      "iddia": "2 Kasım 2026'da İsrail savaş uçakları Lübnan'da Marjeyun'da El-Kuseyr'i vurdu ve Beni Hayyan'da patlatma gerçekleştirdi.",
+      "iddiaEn": "On 2 November 2026 Israeli warplanes struck Al-Qusayr in Marjeyoun in Lebanon while forces carried out an explosion in Bani Hayyan.",
+      "tehlike": "catisma",
+      "olayTarihi": "2026-11-02",
+      "seviye": "kanit-yok",
+      "gerekce": "kapıdan geçen kanıt yok",
+      "bagimsiz": 0,
+      "diller": [],
+      "konum": {
+        "nokta": [
+          35.87799817639761,
+          33.921224329824256
+        ],
+        "ad": "Lebanon",
+        "tur": "ulke"
+      },
+      "rotayaKm": null,
+      "havaSahasi": false,
+      "suren": false,
+      "ulke": "Lebanon",
+      "iliski": "ulke-ici",
+      "kanitlar": [],
+      "celiski": []
+    }
+  ],
+  "durum": "ulkede-teyitli",
+  "kesisim": [],
+  "koridorKm": 150,
+  "elenen": 0,
+  "elenenler": [],
+  "elenenlerEn": [],
+  "zaman": "2026-11-02T23:41:06.409Z",
+  "maliyet": {
+    "dolar": 2.806,
+    "arama": 113
+  }
+}

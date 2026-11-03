@@ -1,6 +1,6 @@
 // Yerel demo sunucusu: node --env-file=.env src/sunucu.ts
 import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { havalimani, havalimaniAra } from "./harita.ts";
 import { meydanUydu, olayUydu } from "./meydan.ts";
@@ -11,6 +11,9 @@ import { sahneKur } from "./sahne.ts";
 const PORT = Number(process.env.PORT ?? 4173);
 const kok = (y: string) => new URL(`../${y}`, import.meta.url);
 const KAYIT = "cikti/sorgu";
+
+// Temiz klonda cikti/ bos: depodaki secilmis demo kayitlari kopyalanir, var olan dosyanin ustune yazilmaz.
+await cp(kok("demo"), kok("cikti"), { recursive: true, force: false }).catch(() => {});
 
 // Yalniz bu dosyalar sunulur; adres diske hic dogrudan baglanmaz.
 const STATIK: Record<string, [string, string]> = {
@@ -139,7 +142,7 @@ createServer(async (istek, yanit) => {
         let sonuc;
         try {
           if (u.searchParams.get("yeni")) throw new Error("yeniden");
-          sonuc = JSON.parse(await readFile(yol, "utf-8"));
+          sonuc = { ...JSON.parse(await readFile(yol, "utf-8")), kayitli: true };
         } catch {
           let is = suren.get(yol);
           if (!is) { is = isBaslat(soru, yol); suren.set(yol, is); }

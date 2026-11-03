@@ -1,0 +1,46 @@
+{
+  "RWY 06L/24R CLSD FOR ACFT TKOF/LDG. APPROACH CHARTS RWY06L/RWY24R SHALL NOT BE USED.": {
+    "tr": "Pist 06L/24R uçak kalkış ve inişine kapalı ve RWY06L/RWY24R yaklaşma kartları kullanılmamalıdır.",
+    "en": "Runway 06L/24R is closed for aircraft takeoff and landing, and approach charts RWY06L/RWY24R shall not be used."
+  },
+  "RWY 16L/34R CLSD TO LANDING TFC DUE TO CONST.": {
+    "tr": "Pist 16L/34R inşaat nedeniyle iniş trafiğine kapalı.",
+    "en": "Runway 16L/34R is closed to landing traffic due to construction."
+  },
+  "RWY 17R/35L CLSD TO LANDING TFC DUE TO CONST.": {
+    "tr": "Pist 17R/35L inşaat nedeniyle iniş trafiğine kapalı.",
+    "en": "Runway 17R/35L is closed to landing traffic due to construction."
+  },
+  "GBAS CH 22237 U/S, GLS PROC NOT PROVIDED.": {
+    "tr": "GBAS CH 22237 kullanılamıyor ve GLS prosedürü sağlanmıyor.",
+    "en": "GBAS CH 22237 is out of service and GLS procedure is not provided."
+  },
+  "AD AP CLSD TO NON SKED TRANSIENT GA ACFT EXC 24HR PPR CTC ATLANTIC AVIATION 310-258-9884 OR SIGNATURE AVIATION 310-410-9605": {
+    "tr": "Havalimanı, 24 saat önceden izin hariç tarifesiz geçici genel havacılık uçaklarına kapalıdır, iletişim: Atlantic Aviation 310-258-9884 veya Signature Aviation 310-410-9605.",
+    "en": "The airport is closed to non-scheduled transient general aviation aircraft except with 24-hour prior permission, contact Atlantic Aviation 310-258-9884 or Signature Aviation 310-410-9605."
+  },
+  "RWY 12R/30L CLSD.": {
+    "tr": "12R/30L pisti kapalı.",
+    "en": "Runway 12R/30L is closed."
+  },
+  "RWY 06L/24R CLSD": {
+    "tr": "06L/24R pisti kapalı.",
+    "en": "Runway 06L/24R is closed."
+  },
+  "RWY 07L/25R CLSD": {
+    "tr": "07L/25R pisti kapalı.",
+    "en": "Runway 07L/25R is closed."
+  },
+  "RWY 16R/34L CLSD DUE TO MAINT RMK: 1.AVBL CROSS RWY 16R/34L VIA TWY OTHER THAN CLSD TWY 2.SEE AIP RJTT AD2.23": {
+    "tr": "16R/34L pisti bakım nedeniyle kapalı, kapalı taksi yolları dışındaki taksi yollarından geçiş yapılabilir, bkz. AIP RJTT AD2.23.",
+    "en": "Runway 16R/34L is closed due to maintenance, crossing is available via taxiways other than closed taxiways, see AIP RJTT AD2.23."
+  },
+  "RWY 04/22 CLSD DUE TO MAINT RMK: 1.AVBL CROSS RWY 04/22 VIA TWY OTHER THAN CLSD TWY 2.SEE AIP RJTT AD2.23": {
+    "tr": "04/22 pisti bakım nedeniyle kapalı, kapalı taksi yolları dışındaki taksi yollarından geçiş yapılabilir, bkz. AIP RJTT AD2.23.",
+    "en": "Runway 04/22 is closed due to maintenance, crossing is available via taxiways other than closed taxiways, see AIP RJTT AD2.23."
+  },
+  "RWY 09L/27R AND RWY 09R/27L CLSD. RWY 09R/27L CAN BE MADE AVBL FOR EMERG TFC AT 30 MIN NOTICE. START OF RWY CLSD WILL BE DELAYED UNTIL SKED MOV ARE COMPLETE. MOV DELAYED INTO NIGHT QUOTA PERIOD ARE STILL SUBJ AD AUTHORITY APPROVAL. FOR INFO CTC AD DUTY MANAGER 020 8745 737": {
+    "tr": "09L/27R ve 09R/27L pistleri kapalı, 09R/27L pisti 30 dakika bildirimle acil durum trafiğine açılabilir, kapatma başlangıcı planlı hareketler tamamlanana kadar ertelenecek, gece kota dönemine kalan hareketler havalimanı otorite onayına tabi, bilgi için havalimanı nöbetçi müdürü 020 8745 737 ile irtibat kurun.",
+    "en": "Runways 09L/27R and 09R/27L are closed, runway 09R/27L can be made available for emergency traffic with 30 minute notice, start of closure will be delayed until scheduled movements are complete, movements delayed into the night quota period still need aerodrome authority approval, for information contact aerodrome duty manager 020 8745 737."
+  }
+}

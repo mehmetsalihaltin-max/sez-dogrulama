@@ -292,16 +292,16 @@ summary:hover{color:var(--sinyal)}
 <script>
 const M = {
   en: {
-    rozet: { "hava-sahasi-kesisimi": "Airspace issue", "koridorda-teyitli": "Confirmed on route", "ulkede-teyitli": "Confirmed in country", "bolgesel-gelisme": "Regional only", "dogrulanmamis-isaret": "Unconfirmed", "bulgu-yok": "No evidence" },
+    rozet: { "hava-sahasi-kesisimi": "Airspace issue", "koridorda-teyitli": "Confirmed on route", "ulkede-teyitli": "Confirmed in country", "bolgesel-gelisme": "Regional only", "dogrulanmamis-isaret": "Unconfirmed", "bulgu-yok": "No evidence", "tarama-tamamlanamadi": "Scan incomplete" },
     modRota: "Route", modUlke: "Country", nereden: "From", nereye: "To", tarih: "Date, leave empty for this week", ipucuA: "From", ipucuB: "To", ipucuU: "Country, for example Syria",
     soruUlke: (a) => `What is the flight safety situation in ${a}?`, soruHafta: (a, b) => `How is the ${a}–${b} route this week?`, soruTarih: (a, b, t) => `How is the ${a}–${b} route for ${t}?`,
     kanitsizAd: (n) => `${n} unconfirmed claim${n === 1 ? "" : "s"}, listed on the right`, uyduOnce: (t) => `Taken before the event of ${t}; it does not show the effect.`, olayUzak: (k) => `Event location is ${k.toLocaleString("en-GB")} km from the route.`, olayUydu: "Satellite check", olayAra: "Looking for passes before and after the event", olayYok: "No usable pass around this date.", olaySonra: "AFTER", olayNot: (y) => `Muse reading of the images, independent of the news. Does not change the evidence level. Copernicus Sentinel data (${y}), processed.`,
     uyduBas: "Satellite · Sentinel-2", uyduModel: "Muse reading of the image. Not an evidence level.", uyduNot: "Not live: the last clear pass. Top: 20 km square of the surroundings. Bottom: 8 km square of the airport, about 10 m per pixel.", uyduAra: "Looking for the last clear pass", uyduYok: "No clear pass in the last 45 days.", uyduAlt: (i, t) => `Satellite image of ${i}, ${t}`, uyduKunye: (t, b) => `${t} UTC · cloud ${b}%`, uyduGecis: (t) => `Later pass on ${t} was cloudy or partial`, uyduHak: (y) => `Copernicus Sentinel data (${y}), processed`,
     notamAc: "Plain language", notamModel: "Model translation. The original above is the binding text.",
-    kanitla: "Show evidence", sahneDugme: "New evidence scene", gTeyitli: "Confirmed", gZayif: "Partial or single source", gYok: "No evidence", gGenel: "Country-wide", gKapali: "Airspace reported closed",
+    kanitla: "Show evidence", sahneDugme: "New evidence scene", gTeyitli: "Confirmed by news", gZayif: "Partial or single source", gYok: "No evidence", gGenel: "Country-wide", gKapali: "Airspace reported closed",
     senaryo: "SCENARIO", cekim: "CAPTURE TIME", isleme: "PROCESSING TIME", copernicus: "Copernicus Sentinel data (2024), processed", harita: "Route and event map",
     soruBas: "Which event, on what evidence?",
-    seviye: { teyitli: "Confirmed", kismen: "Partial", "tek-kaynak": "Single source", celiskili: "Contradicted", "kanit-yok": "No evidence" },
+    seviye: { teyitli: "Confirmed by news", kismen: "Partial", "tek-kaynak": "Single source", celiskili: "Contradicted", "kanit-yok": "No evidence" },
     tehlike: { catisma: "Conflict", hava: "Weather", saldiri: "Security", deprem: "Earthquake", sel: "Flood", grev: "Strike", yakit: "Fuel", ariza: "Fault", kul: "Volcanic ash", dron: "Drone", gps: "GPS interference", siber: "Cyber", diger: "Other" },
     iliski: { koridorda: "In corridor", bolgesel: "Regional", "konum-genel": "Country-wide", "ulke-ici": "" },
     durum: {
@@ -311,20 +311,24 @@ const M = {
       "bolgesel-gelisme": () => "No confirmed event in the corridor.",
       "dogrulanmamis-isaret": () => "Signals, no confirmation.",
       "bulgu-yok": () => "No evidence passed the gate.",
+      "tarama-tamamlanamadi": () => "The scan could not be completed.",
     },
     durumAlt: {
       "hava-sahasi-kesisimi": (n, s) => s.kesisim[0].seviye === "teyitli" ? "This shortest line cannot be used; the route needs replanning. The team decides." : "Not fully confirmed. The team should check the official source.",
-      "koridorda-teyitli": "Confirmed by separate reports. The team assesses the effect on the flight.",
-      "ulkede-teyitli": "Confirmed by separate reports. The team assesses the effect on the flight.",
+      "koridorda-teyitli": "Confirmed by separate news reports, not by an official source. The team checks the official status and assesses the effect on the flight.",
+      "ulkede-teyitli": "Confirmed by separate news reports, not by an official source. The team checks the official status and assesses the effect on the flight.",
       "bolgesel-gelisme": (n) => `${n} confirmed regional development, no direct link to the route shown.`,
       "dogrulanmamis-isaret": "Not enough for a decision on its own.",
       "bulgu-yok": "This does not mean safe; only that no evidence was found in this period.",
+      "tarama-tamamlanamadi": "The model response could not be read. This is a technical failure, not a finding; run the query again.",
     },
     aralik: (a, b) => `Period checked: ${a} to ${b}.`,
     saTaranan: "Events scanned", saTeyitli: "Confirmed in corridor", saKoridor: "Confirmed elsewhere",
     hatIz: (u, t, k) => `Route is an approximate drawing taken by hand from the Flightradar24 track of ${u} on ${t}. Band: ${k} km either side.`,
     hatCanli: (u, t, k) => `Route is the real Flightradar24 track of ${u} on ${t}. Band: ${k} km either side.`,
     hatSonra: "This track is from a later date, not the day asked; it shows the usual path.",
+    kosuKayitli: (z, d) => `Saved result${z ? `, evaluated on ${z}` : ""}.${d != null ? ` That run cost $${d.toLocaleString("en-GB", { maximumFractionDigits: 2 })};` : ""} No new spend for this view.`,
+    kosuYeni: (d) => `This query ran just now${d != null ? `; cost $${d.toLocaleString("en-GB", { maximumFractionDigits: 2 })}` : ""}.`,
     hatYok: (k) => `No recorded track for this route; the line is the theoretical shortest path, not the real flight path. Band: ${k} km either side.`,
     notamBas: "Official notices · NOTAM", notamOkunuyor: "Reading notices", notamGecmis: "Live notices in force today, not of the date asked.", notamHata: "NOTAM source could not be reached.", notamYok: "NOTAM source is not connected here.",
     notamSay: (i, n) => `${n} operational notice${n === 1 ? "" : "s"} in force for ${i}.`,
@@ -343,16 +347,16 @@ const M = {
     baglanti: "Connection to the server was lost.",
   },
   tr: {
-    rozet: { "hava-sahasi-kesisimi": "Hava sahası sorunu", "koridorda-teyitli": "Rotada teyitli", "ulkede-teyitli": "Ülkede teyitli", "bolgesel-gelisme": "Yalnız bölgesel", "dogrulanmamis-isaret": "Teyitsiz", "bulgu-yok": "Kanıt yok" },
+    rozet: { "hava-sahasi-kesisimi": "Hava sahası sorunu", "koridorda-teyitli": "Rotada teyitli", "ulkede-teyitli": "Ülkede teyitli", "bolgesel-gelisme": "Yalnız bölgesel", "dogrulanmamis-isaret": "Teyitsiz", "bulgu-yok": "Kanıt yok", "tarama-tamamlanamadi": "Tarama tamamlanamadı" },
     modRota: "Rota", modUlke: "Ülke", nereden: "Nereden", nereye: "Nereye", tarih: "Tarih, boş bırakılırsa bu hafta", ipucuA: "Nereden", ipucuB: "Nereye", ipucuU: "Ülke, örneğin Suriye",
     soruUlke: (a) => `${a} için uçuş güvenliği durumu nedir?`, soruHafta: (a, b) => `${a}–${b} rotası bu hafta nasıl?`, soruTarih: (a, b, t) => `${a}–${b} rotası ${t} için nasıl?`,
     kanitsizAd: (n) => `${n} kanıtsız iddia, sağdaki listede`, uyduOnce: (t) => `${t} tarihli olaydan önce çekildi; olayın etkisini göstermez.`, olayUzak: (k) => `Olay yeri rotaya ${k.toLocaleString("tr-TR")} km uzakta.`, olayUydu: "Uydu kontrolü", olayAra: "Olay öncesi ve sonrası geçişler aranıyor", olayYok: "Bu tarihlerde kullanılabilir geçiş yok.", olaySonra: "SONRA", olayNot: (y) => `Muse'un görüntü yorumu, haberlerden bağımsızdır. Kanıt seviyesini değiştirmez. Copernicus Sentinel verisi (${y}), işlenmiş.`,
     uyduBas: "Uydu · Sentinel-2", uyduModel: "Muse'un görüntü yorumu. Kanıt seviyesi değildir.", uyduNot: "Canlı değildir: son açık geçiştir. Üstte 20 km kare çevre, altta 8 km kare meydan, yaklaşık 10 m/piksel.", uyduAra: "Son açık geçiş aranıyor", uyduYok: "Son 45 günde açık geçiş yok.", uyduAlt: (i, t) => `${i} uydu görüntüsü, ${t}`, uyduKunye: (t, b) => `${t} UTC · bulut %${b}`, uyduGecis: (t) => `${t} tarihli sonraki geçiş bulutlu ya da yarım`, uyduHak: (y) => `Copernicus Sentinel verisi (${y}), işlenmiş`,
     notamAc: "Düz anlatım", notamModel: "Model çevirisi. Bağlayıcı metin yukarıdaki orijinaldir.",
-    kanitla: "Kanıtla", sahneDugme: "Yeni kanıt sahnesi", gTeyitli: "Teyitli", gZayif: "Kısmen, tek kaynak", gYok: "Kanıt yok", gGenel: "Ülke geneli", gKapali: "Kapalı bildirilen hava sahası",
+    kanitla: "Kanıtla", sahneDugme: "Yeni kanıt sahnesi", gTeyitli: "Haberle teyitli", gZayif: "Kısmen, tek kaynak", gYok: "Kanıt yok", gGenel: "Ülke geneli", gKapali: "Kapalı bildirilen hava sahası",
     senaryo: "SENARYO", cekim: "ÇEKİM ZAMANI", isleme: "İŞLEME ZAMANI", copernicus: "Copernicus Sentinel verisi (2024), işlenmiş", harita: "Hat ve olay haritası",
     soruBas: "Hangi olay, hangi kanıtla?",
-    seviye: { teyitli: "Teyitli", kismen: "Kısmen", "tek-kaynak": "Tek kaynak", celiskili: "Çelişkili", "kanit-yok": "Kanıt yok" },
+    seviye: { teyitli: "Haberle teyitli", kismen: "Kısmen", "tek-kaynak": "Tek kaynak", celiskili: "Çelişkili", "kanit-yok": "Kanıt yok" },
     tehlike: { catisma: "Çatışma", hava: "Hava", saldiri: "Saldırı", deprem: "Deprem", sel: "Sel", grev: "Grev", yakit: "Yakıt", ariza: "Arıza", kul: "Volkan külü", dron: "Dron", gps: "GPS karıştırma", siber: "Siber", diger: "Diğer" },
     iliski: { koridorda: "Hat koridoru", bolgesel: "Bölgesel", "konum-genel": "Ülke geneli", "ulke-ici": "" },
     durum: {
@@ -362,20 +366,24 @@ const M = {
       "bolgesel-gelisme": () => "Koridorda teyitli olay yok.",
       "dogrulanmamis-isaret": () => "İşaret var, teyit yok.",
       "bulgu-yok": () => "Kapıdan geçen kanıt yok.",
+      "tarama-tamamlanamadi": () => "Tarama tamamlanamadı.",
     },
     durumAlt: {
       "hava-sahasi-kesisimi": (n, s) => s.kesisim[0].seviye === "teyitli" ? "Bu en kısa hat kullanılamaz, rotanın yeniden planlanması gerekir. Kararı ekip verir." : "Bilgi tam teyit edilmedi, ekip resmî kaynaktan doğrulamalı.",
-      "koridorda-teyitli": "Ayrı haberlerle doğrulandı. Uçuşa etkisini ekip değerlendirir.",
-      "ulkede-teyitli": "Ayrı haberlerle doğrulandı. Uçuşa etkisini ekip değerlendirir.",
+      "koridorda-teyitli": "Ayrı haberlerle doğrulandı, resmî kaynakla değil. Ekip resmî durumu kontrol eder ve uçuşa etkisini değerlendirir.",
+      "ulkede-teyitli": "Ayrı haberlerle doğrulandı, resmî kaynakla değil. Ekip resmî durumu kontrol eder ve uçuşa etkisini değerlendirir.",
       "bolgesel-gelisme": (n) => `Bölgede ${n} teyitli gelişme var, rotaya doğrudan bağı gösterilmedi.`,
       "dogrulanmamis-isaret": "Tek başına karar için yeterli değil.",
       "bulgu-yok": "Bu, güvenli demek olmaz; yalnız bu aralıkta kanıt bulunamadı.",
+      "tarama-tamamlanamadi": "Model yanıtı okunamadı. Bu bir bulgu değil, teknik hatadır; sorguyu yeniden çalıştırın.",
     },
     aralik: (a, b) => `Taranan aralık: ${a} / ${b}.`,
     saTaranan: "Taranan olay", saTeyitli: "Koridorda teyitli", saKoridor: "Diğer teyitli",
     hatIz: (u, t, k) => `Hat, ${u} uçuşunun ${t} tarihli Flightradar24 izinden elle alınmış yaklaşık çizimdir. Bant: hattın iki yanında ${k} km.`,
     hatCanli: (u, t, k) => `Hat, ${u} uçuşunun ${t} tarihli gerçek Flightradar24 izidir. Bant: hattın iki yanında ${k} km.`,
     hatSonra: "Bu iz sorulan güne ait değil, daha sonraki bir tarihten; hattın olağan yolunu gösterir.",
+    kosuKayitli: (z, d) => `Kayıtlı sonuç${z ? `: ${z} tarihinde değerlendirildi` : ""}.${d != null ? ` O koşunun maliyeti ${d.toLocaleString("tr-TR", { maximumFractionDigits: 2 })} $ idi;` : ""} Bu gösterim için yeni harcama yapılmadı.`,
+    kosuYeni: (d) => `Bu sorgu şimdi çalıştı${d != null ? `; maliyeti ${d.toLocaleString("tr-TR", { maximumFractionDigits: 2 })} $` : ""}.`,
     hatYok: (k) => `Bu rota için kayıtlı uçuş izi yok; çizgi en kısa teorik hattır, gerçek uçuş yolu değildir. Bant: hattın iki yanında ${k} km.`,
     notamBas: "Resmî yayın · NOTAM", notamOkunuyor: "Yayınlar okunuyor", notamGecmis: "Bugün geçerli canlı yayınlar, sorulan tarihe ait değil.", notamHata: "NOTAM kaynağına ulaşılamadı.", notamYok: "NOTAM kaynağı bu kurulumda bağlı değil.",
     notamSay: (i, n) => `${i} için ${n} operasyonel yayın geçerli.`,
@@ -943,7 +951,7 @@ function goster(s) {
   const teyitli = s.bulgular.filter((b) => b.seviye === "teyitli");
   const kor = teyitli.filter((b) => b.iliski === "koridorda" || b.iliski === "ulke-ici").length;
   const ust = el("section", "kartc");
-  const renk = { "hava-sahasi-kesisimi": " durum-kirmizi", "koridorda-teyitli": " durum-kirmizi", "ulkede-teyitli": " durum-kirmizi", "bolgesel-gelisme": " durum-kahve", "dogrulanmamis-isaret": " durum-kahve" }[s.durum] ?? "";
+  const renk = { "hava-sahasi-kesisimi": " durum-kirmizi", "koridorda-teyitli": " durum-kirmizi", "ulkede-teyitli": " durum-kirmizi", "bolgesel-gelisme": " durum-kahve", "dogrulanmamis-isaret": " durum-kahve", "tarama-tamamlanamadi": " durum-kahve" }[s.durum] ?? "";
   ust.append(el("span", `rozet durum-rozet${renk}`, T().rozet[s.durum]));
   ust.append(el("h2", "karar", T().durum[s.durum](kor, s)));
   const alt = T().durumAlt[s.durum];
@@ -955,6 +963,9 @@ function goster(s) {
   ust.append(sayilar);
   const km = s.koridorKm ?? 150;
   if (s.hedef.rota) ust.append(el("p", "dipnot", s.hedef.hatKaynagi ? `${T()[s.hedef.hatKaynagi.canli ? "hatCanli" : "hatIz"](s.hedef.hatKaynagi.ucus, s.hedef.hatKaynagi.tarih, km)}${s.hedef.hatKaynagi.sonraki ? ` ${T().hatSonra}` : ""}` : T().hatYok(km)));
+  const z = s.zaman ? new Date(s.zaman).toLocaleString(dil === "tr" ? "tr-TR" : "en-GB", { dateStyle: "medium", timeStyle: "short" }) : null;
+  const d = typeof s.maliyet?.dolar === "number" ? s.maliyet.dolar : null;
+  ust.append(el("p", "dipnot", s.kayitli ? T().kosuKayitli(z, d) : T().kosuYeni(d)));
   ray.append(ust);
   if (s.hedef.kalkis) { const k = el("section", "kartc notam"); ray.append(k); notamEkle(s, k); }
   if (s.hedef.kalkis) { const k = el("section", "kartc"); ray.append(k); uyduEkle(s, k); }

@@ -1,0 +1,317 @@
+{
+  "soru": "How is the Singapore–Bali route for 20 June 2025?",
+  "tur": "mevcut-rota",
+  "hedef": {
+    "kalkis": {
+      "iata": "SIN",
+      "ad": "Singapore Changi Airport",
+      "sehir": "Singapore",
+      "nokta": [
+        103.994003,
+        1.35019
+      ]
+    },
+    "varis": {
+      "iata": "DPS",
+      "ad": "Denpasar I Gusti Ngurah Rai International Airport",
+      "sehir": "Kuta, Badung",
+      "nokta": [
+        115.167123,
+        -8.748409
+      ]
+    },
+    "rota": [
+      [
+        103.99000000000001,
+        1.3599999999999999
+      ],
+      [
+        104.0916831772756,
+        1.2666756560394739
+      ],
+      [
+        104.19335903037532,
+        1.1733473241679038
+      ],
+      [
+        104.29502809929093,
+        1.080015298555247
+      ],
+      [
+        104.39669092395563,
+        0.9866798733046441
+      ],
+      [
+        104.49834804424866,
+        0.89334134245774
+      ],
+      [
+        104.6,
+        0.8
+      ],
+      [
+        104.6,
+        0.7083333333333335
+      ],
+      [
+        104.6,
+        0.6166666666666668
+      ],
+      [
+        104.6,
+        0.525
+      ],
+      [
+        104.6,
+        0.43333333333333335
+      ],
+      [
+        104.6,
+        0.34166666666666673
+      ],
+      [
+        104.6,
+        0.25
+      ],
+      [
+        104.73333468250168,
+        0.19166820858153594
+      ],
+      [
+        104.86666845679181,
+        0.13333537919334557
+      ],
+      [
+        105.00000159927333,
+        0.07500182773954821
+      ],
+      [
+        105.1333343863576,
+        0.01666787012218586
+      ],
+      [
+        105.26666709446076,
+        -0.04166617775786815
+      ],
+      [
+        105.4,
+        -0.09999999999999999
+      ],
+      [
+        106.4970262309981,
+        -0.9519184266378905
+      ],
+      [
+        107.59459454176398,
+        -1.8034877854130857
+      ],
+      [
+        108.69319023638512,
+        -2.6543951757584896
+      ],
+      [
+        109.7932989224401,
+        -3.5043267700453655
+      ],
+      [
+        110.89540664362386,
+        -4.352967376076479
+      ],
+      [
+        112.00000000000001,
+        -5.2
+      ],
+      [
+        112.23296547752334,
+        -5.383564991502876
+      ],
+      [
+        112.46607163865306,
+        -5.567041448967097
+      ],
+      [
+        112.69932332570306,
+        -5.750426280086426
+      ],
+      [
+        112.93272538326661,
+        -5.933716386480777
+      ],
+      [
+        113.16628265826613,
+        -6.116908663495382
+      ],
+      [
+        113.40000000000002,
+        -6.3
+      ],
+      [
+        113.58315006766377,
+        -6.400165700830187
+      ],
+      [
+        113.76637195738792,
+        -6.500266521586338
+      ],
+      [
+        113.94966678327064,
+        -6.600301412790063
+      ],
+      [
+        114.13303565816342,
+        -6.700269324014557
+      ],
+      [
+        114.31647969364582,
+        -6.800169203871827
+      ],
+      [
+        114.50000000000001,
+        -6.9
+      ],
+      [
+        114.61126504112471,
+        -7.208404701299928
+      ],
+      [
+        114.72268167701306,
+        -7.516782468027374
+      ],
+      [
+        114.83425667240073,
+        -7.825132095746514
+      ],
+      [
+        114.94599682719858,
+        -8.13345237344055
+      ],
+      [
+        115.05790897806602,
+        -8.44174208321538
+      ],
+      [
+        115.17,
+        -8.75
+      ]
+    ],
+    "ulkeler": [
+      "Singapore",
+      "Indonesia"
+    ],
+    "hatKaynagi": {
+      "ucus": "SQ938",
+      "tarih": "2026-11-01",
+      "canli": false,
+      "sonraki": true
+    }
+  },
+  "pencere": {
+    "ilk": "2025-06-12",
+    "son": "2025-06-20"
+  },
+  "bulgular": [
+    {
+      "iddia": "Denpasar'daki I Gusti Ngurah Rai Havalimanı'nda 18 Haziran 2025'te Lewotobi Laki-Laki külü nedeniyle onlarca uçuş iptal edildi. ",
+      "iddiaEn": "Dozens of flights were cancelled at I Gusti Ngurah Rai Airport in Denpasar on 18 June 2025 due to ash from Lewotobi Laki-Laki. ",
+      "tehlike": "kul",
+      "olayTarihi": "2025-06-18",
+      "seviye": "teyitli",
+      "gerekce": "1 dilde 3 bağımsız yayıncı",
+      "bagimsiz": 3,
+      "diller": [
+        "en"
+      ],
+      "konum": {
+        "nokta": [
+          115.167123,
+          -8.748409
+        ],
+        "ad": "DPS",
+        "tur": "nokta"
+      },
+      "rotayaKm": 0,
+      "havaSahasi": false,
+      "suren": false,
+      "ulke": "Indonesia",
+      "iliski": "koridorda",
+      "kanitlar": [
+        {
+          "yayinci": "BBC",
+          "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBzbExjYmc5OU5hdlU2ajVUMC11R1NoT3NmbWNPS0QwZVZacTNBa096U1lGV193NEhDb01Ld0tLb3VtT0EzTWIzQlMyN3RiZllBcFB6NDhXSzl4UQ?oc=5",
+          "tarih": "2025-06-18",
+          "dil": "en",
+          "alinti": "Bali flights cancelled after Indonesia's Lewotobi volcano erupts",
+          "ceviri": "Endonezya'nın Lewotobi yanardağı patladıktan sonra Bali uçuşları iptal edildi",
+          "ceviriEn": "Bali flights cancelled after Indonesia's Lewotobi volcano erupts"
+        },
+        {
+          "yayinci": "aljazeera.com",
+          "url": "https://www.aljazeera.com/news/2025/6/18/dozens-of-bali-flights-cancelled-after-indonesia-volcano-erupts",
+          "tarih": "2025-06-18",
+          "dil": "en",
+          "alinti": "“Due to volcano activity of Lewotobi Laki-Laki in East Nusa Tenggara, several flights at I Gusti Ngurah Rai Airport are cancelled,” airport operator Angkasa Pura Indonesia said in a statement.",
+          "ceviri": "“Doğu Nusa Tenggara'daki Lewotobi Laki-Laki'nin volkanik faaliyeti nedeniyle I Gusti Ngurah Rai Havalimanı'nda birkaç uçuş iptal edildi,” diye havalimanı işletmecisi Angkasa Pura Indonesia açıklamada bulundu.",
+          "ceviriEn": "“Due to volcano activity of Lewotobi Laki-Laki in East Nusa Tenggara, several flights at I Gusti Ngurah Rai Airport are cancelled,” airport operator Angkasa Pura Indonesia said in a statement."
+        },
+        {
+          "yayinci": "srnnews.com",
+          "url": "https://srnnews.com/many-flights-to-indonesias-bali-cancelled-after-volcano-eruption/",
+          "tarih": "2025-06-18",
+          "dil": "en",
+          "alinti": "JAKARTA (Reuters) -More than 20 flights to and from the Indonesian resort island of Bali were cancelled or delayed and three airports in East Nusa Tenggara province were closed due to the eruption of Mount Lewotobi Laki-laki, officials said on Wednesday.",
+          "ceviri": "Cakarta (Reuters) - Yetkililerin çarşamba günü yaptığı açıklamaya göre, Lewotobi Laki-laki Dağı'nın patlaması nedeniyle Bali'ye gidiş-dönüş 20'den fazla uçuş iptal edildi veya ertelendi ve Doğu Nusa Tenggara eyaletindeki üç havalimanı kapatıldı.",
+          "ceviriEn": "JAKARTA (Reuters) -More than 20 flights to and from the Indonesian resort island of Bali were cancelled or delayed and three airports in East Nusa Tenggara province were closed due to the eruption of Mount Lewotobi Laki-laki, officials said on Wednesday."
+        }
+      ],
+      "celiski": []
+    },
+    {
+      "iddia": "Maumere'deki Fransiskus Xaverius Seda Havalimanı 18-19 Haziran 2025'te Lewotobi Laki-Laki külü nedeniyle kapatıldı. ",
+      "iddiaEn": "Fransiskus Xaverius Seda Airport in Maumere was closed on 18-19 June 2025 due to ash from Lewotobi Laki-Laki. ",
+      "tehlike": "kul",
+      "olayTarihi": "2025-06-18",
+      "seviye": "tek-kaynak",
+      "gerekce": "tek bağımsız yayıncı",
+      "bagimsiz": 1,
+      "diller": [
+        "en"
+      ],
+      "konum": {
+        "nokta": [
+          122.238135,
+          -8.639514
+        ],
+        "ad": "MOF",
+        "tur": "nokta"
+      },
+      "rotayaKm": 777,
+      "havaSahasi": false,
+      "suren": false,
+      "ulke": "Indonesia",
+      "iliski": "bolgesel",
+      "kanitlar": [
+        {
+          "yayinci": "thehindubusinessline.com",
+          "url": "https://www.thehindubusinessline.com/news/world/many-flights-to-indonesias-bali-cancelled-after-volcano-eruption/article69708835.ece",
+          "tarih": "2025-06-18",
+          "dil": "en",
+          "alinti": "Several flights to the Indonesian resort island of Bali were cancelled and the airport in Maumere in East Nusa Tenggara province was closed due to the eruption of Mount Lewotobi Laki-laki, officials said on Wednesday.",
+          "ceviri": "Endonezya'nın tatil adası Bali'ye düzenlenen birkaç uçuş iptal edildi ve Doğu Nusa Tenggara eyaletinde Maumere'deki havalimanı Lewotobi Laki-Laki Dağı'nın patlaması nedeniyle kapatıldı, yetkililer Çarşamba günü açıkladı.",
+          "ceviriEn": "Several flights to the Indonesian resort island of Bali were cancelled and the airport in Maumere in East Nusa Tenggara province was closed due to the eruption of Mount Lewotobi Laki-laki, officials said on Wednesday."
+        }
+      ],
+      "celiski": []
+    }
+  ],
+  "durum": "koridorda-teyitli",
+  "kesisim": [],
+  "koridorKm": 150,
+  "elenen": 0,
+  "elenenler": [],
+  "elenenlerEn": [],
+  "zaman": "2026-11-03T00:14:25.504Z",
+  "maliyet": {
+    "dolar": 2.27,
+    "arama": 75
+  }
+}

@@ -10,16 +10,55 @@ const OZEL_ADRES = /^(localhost$|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2
 export type GovdeAdayi = { url: string; alinti: string; ceviri: string; ceviriEn?: string; dil: string };
 export type GovdeRed = { url: string; sebep: string };
 
-/** Modelin anlatimi arasindan son JSON dizisini ayiklar; bozuksa bos doner. */
-export function jsonDizisi(metin: string): any[] {
-  const b = metin.lastIndexOf("[{");
-  try {
-    const d = JSON.parse(b >= 0 ? metin.slice(b, metin.lastIndexOf("]") + 1) : "[]");
-    return Array.isArray(d) ? d : [];
-  } catch {
-    return [];
+/** i konumundaki "[" ile eslesen "]"; tirnak icindeki parantez sayilmaz. Eslesme yoksa -1. */
+function diziSonu(m: string, i: number): number {
+  let derin = 0, tirnak = false, kacis = false;
+  for (let j = i; j < m.length; j++) {
+    const c = m[j];
+    if (tirnak) {
+      if (kacis) kacis = false;
+      else if (c === "\\") kacis = true;
+      else if (c === '"') tirnak = false;
+    } else if (c === '"') tirnak = true;
+    else if (c === "[") derin++;
+    else if (c === "]" && --derin === 0) return j;
   }
+  return -1;
 }
+
+const nesneDizisi = (d: any[]) => d.length > 0 && d.every((x) => x !== null && typeof x === "object" && !Array.isArray(x));
+
+/**
+ * Modelin anlatimi arasindan JSON dizisini ayiklar. Okunamazsa null doner: "bulunamadi" ile "okunamadi" ayri kalir.
+ * Oncelik: son nesne dizisi > son bos dizi > baska dizi. Bir dizinin icindeki dizi ayrica aday sayilmaz.
+ */
+export function jsonDiziAyikla(metin: string): any[] | null {
+  const m = metin.replace(/```[a-z]*/gi, "").trim();
+  try {
+    const d = JSON.parse(m);
+    if (Array.isArray(d)) return d;
+  } catch {}
+  let nesne: any[] | null = null, bos: any[] | null = null, diger: any[] | null = null;
+  for (let i = m.indexOf("["); i >= 0; i = m.indexOf("[", i + 1)) {
+    const son = diziSonu(m, i);
+    if (son < 0) continue;
+    let d: unknown;
+    try {
+      d = JSON.parse(m.slice(i, son + 1));
+    } catch {
+      continue;
+    }
+    if (!Array.isArray(d)) continue;
+    if (nesneDizisi(d)) nesne = d;
+    else if (d.length === 0) bos = d;
+    else diger = d;
+    i = son;
+  }
+  return nesne ?? bos ?? diger;
+}
+
+/** Okunamayan yanit bos sayilir; yalniz ikincil kanallarda kullanilir. */
+export const jsonDizisi = (metin: string): any[] => jsonDiziAyikla(metin) ?? [];
 
 export const jsonDizi = (metin: string): GovdeAdayi[] =>
   jsonDizisi(metin).filter((x) => typeof x?.url === "string" && typeof x?.alinti === "string");
