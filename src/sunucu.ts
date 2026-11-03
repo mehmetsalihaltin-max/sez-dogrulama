@@ -5,7 +5,7 @@ import { createServer } from "node:http";
 import { havalimani, havalimaniAra } from "./harita.ts";
 import { meydanUydu, olayUydu } from "./meydan.ts";
 import { notamAnlat, notamGetir } from "./notam.ts";
-import { IkiDilliHata, sor, type Ilerleme } from "./rota.ts";
+import { IkiDilliHata, TEHLIKELER, sor, type Ilerleme } from "./rota.ts";
 import { sahneKur } from "./sahne.ts";
 
 const PORT = Number(process.env.PORT ?? 4173);
@@ -32,6 +32,8 @@ const STATIK: Record<string, [string, string]> = {
   "/v/dunya.json": ["node_modules/world-atlas/countries-10m.json", "application/json"],
 };
 for (const a of ["volcano", "air", "rainy", "weather_snowy", "thunderstorm", "foggy", "cyclone", "earthquake", "flood", "local_gas_station", "groups", "shield", "build", "drone", "shield_lock", "report", "warning", "crisis_alert", "flight"]) STATIK[`/ikon/${a}.svg`] = [`web/ikon/${a}.svg`, "image/svg+xml"];
+// Tehlike turu basina Muse Image cizimi (web/tehlike/), kanit degildir.
+for (const t of TEHLIKELER) STATIK[`/tehlike/${t}.jpg`] = [`web/tehlike/${t}.jpg`, "image/jpeg"];
 
 // Ayni soru bitmeden yeniden gelirse ikinci kez para harcanmaz; acik olan is izlenir.
 type Is = { dinleyen: Set<(i: Ilerleme) => void>; sonuc: Promise<unknown> };
