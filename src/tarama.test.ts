@@ -1,4 +1,4 @@
-// Tarama yaniti okunamazsa sonuc "kanit yok" degil "tarama tamamlanamadi" olmali (Orkun denetimi, madde A).
+// Tarama yaniti okunamazsa sonuc "kanit yok" degil "tarama tamamlanamadi" olmali (bagimsiz denetim bulgusu A).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { jsonDiziAyikla } from "./govde.ts";
