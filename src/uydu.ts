@@ -106,7 +106,8 @@ export async function sahneleriBul(lon: number, lat: number, ilk: string, son: s
 
 async function pencere(href: string, lon: number, lat: number, kare = KARE_METRE): Promise<Bant> {
   const im = await (await fromUrl(href)).getImage();
-  const epsg = im.getGeoKeys().ProjectedCSTypeGeoKey;
+  const epsg = im.getGeoKeys()?.ProjectedCSTypeGeoKey;
+  if (!epsg) throw new Error("sahnede izdusum bilgisi yok");
   const p = proj4(`+proj=utm +zone=${epsg % 100} ${epsg < 32700 ? "" : "+south"} +datum=WGS84`);
   const [x, y] = p.forward([lon, lat]);
   const [ox, oy] = im.getOrigin();

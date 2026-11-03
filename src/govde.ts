@@ -7,7 +7,7 @@ import type { ModelKarari } from "./kapi.ts";
 const AZAMI_BAYT = 3_000_000;
 const OZEL_ADRES = /^(localhost$|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.|\[)/;
 
-export type GovdeAdayi = { url: string; alinti: string; ceviri: string; dil: string };
+export type GovdeAdayi = { url: string; alinti: string; ceviri: string; ceviriEn?: string; dil: string };
 export type GovdeRed = { url: string; sebep: string };
 
 /** Modelin anlatimi arasindan son JSON dizisini ayiklar; bozuksa bos doner. */

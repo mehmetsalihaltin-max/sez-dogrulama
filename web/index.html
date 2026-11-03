@@ -90,6 +90,7 @@ svg{display:block;width:100%;height:100%}
 .im3.s-teyitli{background:var(--sinyal)}
 .im3.s-kanit-yok{background:var(--yuzey);color:var(--soluk);border-color:var(--kiyi)}
 .im3.genel{border-style:dashed}
+.im3.yigin{width:36px;height:36px;background:var(--yuzey);color:var(--murekkep);border-color:var(--kiyi);font:600 13px/1 var(--baslik)}
 .im3.etkin{outline:2px solid var(--murekkep);outline-offset:2px}
 .im3 small{position:absolute;right:-6px;top:-6px;min-width:16px;height:16px;padding:0 2px;border-radius:8px;background:var(--murekkep);color:#fff;font:600 11px/16px var(--govde);text-align:center}
 .im3ad{position:absolute;left:calc(100% + 8px);top:50%;translate:0 -50%;white-space:nowrap;padding:0 var(--s1);border-radius:2px;background:var(--yuzey);color:var(--murekkep);font:500 13px/20px var(--govde);box-shadow:var(--golge)}
@@ -103,6 +104,7 @@ svg{display:block;width:100%;height:100%}
 .uydular{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2);margin-top:var(--s2)}
 .uydular figure{margin:0;min-width:0}
 .uydular img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:var(--yuzey2);border-radius:4px}
+.uydular a+a img{margin-top:var(--s1)}
 .uydular figcaption{margin-top:var(--s1);font-size:13px;line-height:1.4}
 .uydular figcaption b{font:600 13px/1.4 var(--baslik);letter-spacing:.06em}
 .uydular small{display:block;color:var(--soluk);font-size:12px}
@@ -293,14 +295,14 @@ const M = {
     rozet: { "hava-sahasi-kesisimi": "Airspace issue", "koridorda-teyitli": "Confirmed on route", "ulkede-teyitli": "Confirmed in country", "bolgesel-gelisme": "Regional only", "dogrulanmamis-isaret": "Unconfirmed", "bulgu-yok": "No evidence" },
     modRota: "Route", modUlke: "Country", nereden: "From", nereye: "To", tarih: "Date, leave empty for this week", ipucuA: "From", ipucuB: "To", ipucuU: "Country, for example Syria",
     soruUlke: (a) => `What is the flight safety situation in ${a}?`, soruHafta: (a, b) => `How is the ${a}–${b} route this week?`, soruTarih: (a, b, t) => `How is the ${a}–${b} route for ${t}?`,
-    uyduOnce: (t) => `Taken before the event of ${t}; it does not show the effect.`, olayUzak: (k) => `Event location is ${k.toLocaleString("en-GB")} km from the route.`, olayUydu: "Satellite check", olayAra: "Looking for passes before and after the event", olayYok: "No usable pass around this date.", olaySonra: "AFTER", olayNot: (y) => `Muse reading of the images, independent of the news. Does not change the evidence level. Copernicus Sentinel data (${y}), processed.`,
-    uyduBas: "Satellite · Sentinel-2", uyduModel: "Muse reading of the image. Not an evidence level.", uyduNot: "Not live: the last clear pass over each airport and its surroundings. Roughly 20 km square.", uyduAra: "Looking for the last clear pass", uyduYok: "No clear pass in the last 45 days.", uyduAlt: (i, t) => `Satellite image of ${i}, ${t}`, uyduKunye: (t, b) => `${t} UTC · cloud ${b}%`, uyduGecis: (t) => `Later pass on ${t} was cloudy or partial`, uyduHak: (y) => `Copernicus Sentinel data (${y}), processed`,
+    kanitsizAd: (n) => `${n} unconfirmed claim${n === 1 ? "" : "s"}, listed on the right`, uyduOnce: (t) => `Taken before the event of ${t}; it does not show the effect.`, olayUzak: (k) => `Event location is ${k.toLocaleString("en-GB")} km from the route.`, olayUydu: "Satellite check", olayAra: "Looking for passes before and after the event", olayYok: "No usable pass around this date.", olaySonra: "AFTER", olayNot: (y) => `Muse reading of the images, independent of the news. Does not change the evidence level. Copernicus Sentinel data (${y}), processed.`,
+    uyduBas: "Satellite · Sentinel-2", uyduModel: "Muse reading of the image. Not an evidence level.", uyduNot: "Not live: the last clear pass. Top: 20 km square of the surroundings. Bottom: 8 km square of the airport, about 10 m per pixel.", uyduAra: "Looking for the last clear pass", uyduYok: "No clear pass in the last 45 days.", uyduAlt: (i, t) => `Satellite image of ${i}, ${t}`, uyduKunye: (t, b) => `${t} UTC · cloud ${b}%`, uyduGecis: (t) => `Later pass on ${t} was cloudy or partial`, uyduHak: (y) => `Copernicus Sentinel data (${y}), processed`,
     notamAc: "Plain language", notamModel: "Model translation. The original above is the binding text.",
     kanitla: "Show evidence", sahneDugme: "New evidence scene", gTeyitli: "Confirmed", gZayif: "Partial or single source", gYok: "No evidence", gGenel: "Country-wide", gKapali: "Airspace reported closed",
     senaryo: "SCENARIO", cekim: "CAPTURE TIME", isleme: "PROCESSING TIME", copernicus: "Copernicus Sentinel data (2024), processed", harita: "Route and event map",
     soruBas: "Which event, on what evidence?",
     seviye: { teyitli: "Confirmed", kismen: "Partial", "tek-kaynak": "Single source", celiskili: "Contradicted", "kanit-yok": "No evidence" },
-    tehlike: { savas: "Conflict", hava: "Weather", saldiri: "Security", deprem: "Earthquake", sel: "Flood", grev: "Strike", yakit: "Fuel", ariza: "Fault", kul: "Volcanic ash", dron: "Drone", gps: "GPS interference", siber: "Cyber", diger: "Other" },
+    tehlike: { catisma: "Conflict", hava: "Weather", saldiri: "Security", deprem: "Earthquake", sel: "Flood", grev: "Strike", yakit: "Fuel", ariza: "Fault", kul: "Volcanic ash", dron: "Drone", gps: "GPS interference", siber: "Cyber", diger: "Other" },
     iliski: { koridorda: "In corridor", bolgesel: "Regional", "konum-genel": "Country-wide", "ulke-ici": "" },
     durum: {
       "hava-sahasi-kesisimi": (n, s) => `This route crosses ${ulkeAd(s.kesisim[0].ulke)} airspace, reported closed.`,
@@ -332,7 +334,7 @@ const M = {
     suren: "Ongoing restriction", haber: (n) => `${n} separate report${n === 1 ? "" : "s"}`,
     dusme: (n) => `${n} source${n === 1 ? "" : "s"} lost ends confirmation`, gelme: (n) => `${n} more source${n === 1 ? "" : "s"} confirms`,
     rotaya: (k) => `${k} km from route`, geneli: (u) => `${u}, country-wide`, kanit: (n, t) => t > n ? `News evidence (${n} of ${t} shown)` : `News evidence (${n})`,
-    not: "SEZ shows the evidence; the operations team makes the flight decision. The model does not write the level: code counts separate reports. News does not replace official records. Confirming an event does not prove its effect on a flight.",
+    not: "Map imagery is from Google and has no date; the satellite check shows the day itself. SEZ shows the evidence; the operations team makes the flight decision. The model does not write the level: code counts separate reports. News does not replace official records. Confirming an event does not prove its effect on a flight.",
     senaryoMetin: (e) => `Runway measurements come from real Sentinel-2 images. The three flights, the alternate plan and the ${e}% limit are fictional.`,
     anahtarYok: "Runway: methods disagree, no share", anahtarIki: "Both methods say water", anahtarYokSu: "Methods do not both say water", olcek: "1 km · North up",
     gorselAlt: (m, g, b) => `${m} runway, satellite image of ${g}. ${b}`,
@@ -344,14 +346,14 @@ const M = {
     rozet: { "hava-sahasi-kesisimi": "Hava sahası sorunu", "koridorda-teyitli": "Rotada teyitli", "ulkede-teyitli": "Ülkede teyitli", "bolgesel-gelisme": "Yalnız bölgesel", "dogrulanmamis-isaret": "Teyitsiz", "bulgu-yok": "Kanıt yok" },
     modRota: "Rota", modUlke: "Ülke", nereden: "Nereden", nereye: "Nereye", tarih: "Tarih, boş bırakılırsa bu hafta", ipucuA: "Nereden", ipucuB: "Nereye", ipucuU: "Ülke, örneğin Suriye",
     soruUlke: (a) => `${a} için uçuş güvenliği durumu nedir?`, soruHafta: (a, b) => `${a}–${b} rotası bu hafta nasıl?`, soruTarih: (a, b, t) => `${a}–${b} rotası ${t} için nasıl?`,
-    uyduOnce: (t) => `${t} tarihli olaydan önce çekildi; olayın etkisini göstermez.`, olayUzak: (k) => `Olay yeri rotaya ${k.toLocaleString("tr-TR")} km uzakta.`, olayUydu: "Uydu kontrolü", olayAra: "Olay öncesi ve sonrası geçişler aranıyor", olayYok: "Bu tarihlerde kullanılabilir geçiş yok.", olaySonra: "SONRA", olayNot: (y) => `Muse'un görüntü yorumu, haberlerden bağımsızdır. Kanıt seviyesini değiştirmez. Copernicus Sentinel verisi (${y}), işlenmiş.`,
-    uyduBas: "Uydu · Sentinel-2", uyduModel: "Muse'un görüntü yorumu. Kanıt seviyesi değildir.", uyduNot: "Canlı değildir: her meydanın ve çevresinin üzerinden son açık geçiştir. Yaklaşık 20 km kare.", uyduAra: "Son açık geçiş aranıyor", uyduYok: "Son 45 günde açık geçiş yok.", uyduAlt: (i, t) => `${i} uydu görüntüsü, ${t}`, uyduKunye: (t, b) => `${t} UTC · bulut %${b}`, uyduGecis: (t) => `${t} tarihli sonraki geçiş bulutlu ya da yarım`, uyduHak: (y) => `Copernicus Sentinel verisi (${y}), işlenmiş`,
+    kanitsizAd: (n) => `${n} kanıtsız iddia, sağdaki listede`, uyduOnce: (t) => `${t} tarihli olaydan önce çekildi; olayın etkisini göstermez.`, olayUzak: (k) => `Olay yeri rotaya ${k.toLocaleString("tr-TR")} km uzakta.`, olayUydu: "Uydu kontrolü", olayAra: "Olay öncesi ve sonrası geçişler aranıyor", olayYok: "Bu tarihlerde kullanılabilir geçiş yok.", olaySonra: "SONRA", olayNot: (y) => `Muse'un görüntü yorumu, haberlerden bağımsızdır. Kanıt seviyesini değiştirmez. Copernicus Sentinel verisi (${y}), işlenmiş.`,
+    uyduBas: "Uydu · Sentinel-2", uyduModel: "Muse'un görüntü yorumu. Kanıt seviyesi değildir.", uyduNot: "Canlı değildir: son açık geçiştir. Üstte 20 km kare çevre, altta 8 km kare meydan, yaklaşık 10 m/piksel.", uyduAra: "Son açık geçiş aranıyor", uyduYok: "Son 45 günde açık geçiş yok.", uyduAlt: (i, t) => `${i} uydu görüntüsü, ${t}`, uyduKunye: (t, b) => `${t} UTC · bulut %${b}`, uyduGecis: (t) => `${t} tarihli sonraki geçiş bulutlu ya da yarım`, uyduHak: (y) => `Copernicus Sentinel verisi (${y}), işlenmiş`,
     notamAc: "Düz anlatım", notamModel: "Model çevirisi. Bağlayıcı metin yukarıdaki orijinaldir.",
     kanitla: "Kanıtla", sahneDugme: "Yeni kanıt sahnesi", gTeyitli: "Teyitli", gZayif: "Kısmen, tek kaynak", gYok: "Kanıt yok", gGenel: "Ülke geneli", gKapali: "Kapalı bildirilen hava sahası",
     senaryo: "SENARYO", cekim: "ÇEKİM ZAMANI", isleme: "İŞLEME ZAMANI", copernicus: "Copernicus Sentinel verisi (2024), işlenmiş", harita: "Hat ve olay haritası",
     soruBas: "Hangi olay, hangi kanıtla?",
     seviye: { teyitli: "Teyitli", kismen: "Kısmen", "tek-kaynak": "Tek kaynak", celiskili: "Çelişkili", "kanit-yok": "Kanıt yok" },
-    tehlike: { savas: "Çatışma", hava: "Hava", saldiri: "Saldırı", deprem: "Deprem", sel: "Sel", grev: "Grev", yakit: "Yakıt", ariza: "Arıza", kul: "Volkan külü", dron: "Dron", gps: "GPS karıştırma", siber: "Siber", diger: "Diğer" },
+    tehlike: { catisma: "Çatışma", hava: "Hava", saldiri: "Saldırı", deprem: "Deprem", sel: "Sel", grev: "Grev", yakit: "Yakıt", ariza: "Arıza", kul: "Volkan külü", dron: "Dron", gps: "GPS karıştırma", siber: "Siber", diger: "Diğer" },
     iliski: { koridorda: "Hat koridoru", bolgesel: "Bölgesel", "konum-genel": "Ülke geneli", "ulke-ici": "" },
     durum: {
       "hava-sahasi-kesisimi": (n, s) => `Bu hat ${ulkeAd(s.kesisim[0].ulke)} hava sahasından geçiyor. Hava sahası kapalı bildiriliyor.`,
@@ -383,7 +385,7 @@ const M = {
     suren: "Süren kısıt", haber: (n) => `${n} ayrı haber`,
     dusme: (n) => `${n} kaynak düşerse teyit biter`, gelme: (n) => `${n} kaynak daha gelirse teyitli olur`,
     rotaya: (k) => `rotaya ${k} km`, geneli: (u) => `${u} geneli`, kanit: (n, t) => t > n ? `Haber kanıtı (${t} haberin ${n} tanesi)` : `Haber kanıtı (${n})`,
-    not: "SEZ kanıtı gösterir, uçuş kararını operasyon ekibi verir. Seviyeyi model yazmaz; kod ayrı haber sayısından hesaplar. Kanıtlar haber kaynaklarından gelir, resmî kayıt yerine geçmez. Olayın doğrulanması, uçuşa etkisinin kanıtlandığı anlamına gelmez.",
+    not: "Harita görüntüsü Google'dandır, tarihi belli değildir; o günü uydu kontrolü gösterir. SEZ kanıtı gösterir, uçuş kararını operasyon ekibi verir. Seviyeyi model yazmaz; kod ayrı haber sayısından hesaplar. Kanıtlar haber kaynaklarından gelir, resmî kayıt yerine geçmez. Olayın doğrulanması, uçuşa etkisinin kanıtlandığı anlamına gelmez.",
     senaryoMetin: (e) => `Pist ölçümleri gerçek Sentinel-2 görüntülerinden gelir. Üç uçuş, yedek meydan planı ve %${e} sınırı kurgusaldır.`,
     anahtarYok: "Pist: yöntemler uyuşmuyor, oran yok", anahtarIki: "İki yöntem de su diyor", anahtarYokSu: "İki yöntem birlikte su demiyor", olcek: "1 km · Kuzey yukarıda",
     gorselAlt: (m, g, b) => `${m} pisti, ${g} uydu görüntüsü. ${b}`,
@@ -410,9 +412,9 @@ const NS = "http://www.w3.org/2000/svg";
 const $ = (id) => document.getElementById(id);
 const el = (ad, sinif, metin) => { const e = document.createElement(ad); if (sinif) e.className = sinif; if (metin != null) e.textContent = metin; return e; };
 const sv = (ad, oz = {}) => { const e = document.createElementNS(NS, ad); for (const k in oz) e.setAttribute(k, oz[k]); return e; };
-const IKON = { savas: "swords", saldiri: "crisis_alert", kul: "volcano", deprem: "earthquake", sel: "flood", grev: "groups", yakit: "local_gas_station", ariza: "build", dron: "drone", gps: "report", siber: "shield_lock", diger: "warning" };
+const IKON = { catisma: "shield", saldiri: "crisis_alert", kul: "volcano", deprem: "earthquake", sel: "flood", grev: "groups", yakit: "local_gas_station", ariza: "build", dron: "drone", gps: "report", siber: "shield_lock", diger: "warning" };
 const svg = $("svg"), ray = $("ray");
-let dunya = [], kaynak, sonSonuc = null, sonOrnek = null, gorunum = "acilis";
+let dunya = [], kaynak, sonSonuc = null, sonOrnek = null, sonSoru = null, gorunum = "acilis";
 
 let mod = "rota";
 function modSec(m) {
@@ -482,8 +484,18 @@ function dilUygula() {
 }
 
 function dilDegis(y) {
-  dil = y;
   localStorage.setItem("sezDil", y);
+  // Google harita adlarinin dili yalniz yuklemede secilir: sayfa yeni dille acilir, sonuc kayittan doner.
+  if (gm && y !== dil) {
+    const u = new URL(location);
+    u.searchParams.set("dil", y);
+    u.searchParams.delete("sahne");
+    if (gorunum === "sahne") u.searchParams.set("sahne", sahneAdim);
+    else if (sonSoru) sessionStorage.setItem("sezGeri", JSON.stringify({ ...sonSoru, o: ORNEKLER.indexOf(sonOrnek), mod, a: $("nereden").value, b: $("nereye").value, t: $("tarih").value }));
+    location.href = u;
+    return;
+  }
+  dil = y;
   dilUygula();
   if (gorunum === "sahne") { sahne = null; sahneAc(sahneAdim); }
   else if (gorunum === "sonuc") goster(sonSonuc);
@@ -504,6 +516,15 @@ async function hazirla() {
   ciz(null);
   acilis();
   if (adres.has("sahne")) { sahneAc(+adres.get("sahne") || 0); return; }
+  const geri = JSON.parse(sessionStorage.getItem("sezGeri") ?? "null");
+  sessionStorage.removeItem("sezGeri");
+  if (geri?.o >= 0) { ornekSor(ORNEKLER[geri.o]); return; }
+  if (geri) {
+    modSec(geri.mod);
+    $("nereden").value = geri.a; $("nereye").value = geri.b; $("tarih").value = geri.t;
+    sorgula(geri.s, geri.k);
+    return;
+  }
   // Ekran bos acilmasin: ana ornek kayittan yuklenir, para harcamaz.
   if (!adres.has("bos")) ornekSor(ORNEKLER[0]);
 }
@@ -547,7 +568,18 @@ const enlem = ([lng, lat]) => ({ lat, lng });
 function gKur() {
   gHazir ??= (async () => {
     const { anahtar } = await (await fetch("/api/ayar")).json();
-    if (!anahtar) return false;
+    if (!anahtar || !document.createElement("canvas").getContext("webgl2")) return false;
+    // Google anahtari yuklemeden sonra reddederse ekran bos kalmaz, duz haritaya donulur.
+    // 3D harita gm_authFailure cagirmiyor, hatayi yalniz konsola yaziyor (gecersiz anahtarla olculdu).
+    const yazici = console.error;
+    console.error = (...a) => {
+      yazici(...a);
+      if (!String(a[0]).includes("Google Maps JavaScript API error") || !gm) return;
+      cancelAnimationFrame(ucakKare);
+      gm.remove(); gm = null;
+      gHazir = Promise.resolve(false);
+      $("harita").classList.remove("uc");
+    };
     await new Promise((tamam, red) => {
       const b = document.createElement("script");
       window.gYuklendi = tamam;
@@ -602,19 +634,28 @@ function isaretKoy(lat, lng, icerik) {
   return m;
 }
 
+const KUME_ACI = [-90, 90, 180, -135, 135];
+
 function olayIsaretleri(s) {
   const yerler = [], hedef = s.hedef ?? {}, etiketli = new Set();
+  // Ayni yerdeki isaretler halkaya dizilir; sag taraf ilk isaretin etiketine birakilir.
+  const halka = (d, sira) => {
+    const aci = KUME_ACI[sira - 1] ?? sira * 60;
+    d.style.translate = `${58 * Math.cos(aci * Math.PI / 180)}px ${58 * Math.sin(aci * Math.PI / 180)}px`;
+  };
   s.bulgular.forEach((b, i) => {
     if (!b.konum) return;
     const [lng, lat] = b.konum.nokta;
-    const kume = yerler.filter((p) => d3.geoDistance(p, [lng, lat]) * 6371 < 120).length;
-    yerler.push([lng, lat]);
+    let yer = yerler.find((p) => d3.geoDistance(p.nokta, [lng, lat]) * 6371 < 120);
+    // Kanitsiz iddialar ayni noktada isaret yigmaz: tek rozette toplanir, ayrintisi listededir.
+    if (yer && b.seviye === "kanit-yok") { yer.kanitsiz.push(i); return; }
+    if (!yer) { yer = { nokta: [lng, lat], dolu: 0, kanitsiz: [] }; yerler.push(yer); }
+    const kume = yer.dolu++;
     const genel = b.konum.tur === "ulke" && b.iliski !== "koridorda";
     const tehlike = T().tehlike[b.tehlike] ?? T().tehlike.diger;
     const d = el("div", `im3 s-${b.seviye}${genel ? " genel" : ""}${b.iliski === "bolgesel" ? " uzak" : ""}`);
     d.dataset.no = i; d.title = tehlike; d.tabIndex = 0; d.setAttribute("role", "button"); d.setAttribute("aria-label", `${i + 1}, ${tehlike}`);
-    const aci = -Math.PI / 2 + kume * (Math.PI / 3);
-    if (kume) d.style.translate = `${40 * Math.cos(aci)}px ${40 * Math.sin(aci)}px`;
+    if (kume) halka(d, kume);
     d.append(ikon(ikonAdi(b)), el("small", null, i + 1));
     // Meydandaki olayda meydan kodu ikonun yanina gecer: ayri etiket ikonun ustune binmesin.
     const meydan = hedef.rota && [hedef.kalkis, hedef.varis].find((u) => d3.geoDistance(u.nokta, [lng, lat]) * 6371 < 60);
@@ -624,6 +665,14 @@ function olayIsaretleri(s) {
     d.onclick = () => { vurgula(i); document.getElementById(`bulgu-${i}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" }); };
     isaretKoy(lat, lng, d);
   });
+  for (const y of yerler) {
+    if (!y.kanitsiz.length) continue;
+    const d = el("div", "im3 yigin", `+${y.kanitsiz.length}`);
+    d.title = T().kanitsizAd(y.kanitsiz.length); d.tabIndex = 0; d.setAttribute("role", "button"); d.setAttribute("aria-label", d.title);
+    halka(d, y.dolu);
+    d.onclick = () => document.getElementById(`bulgu-${y.kanitsiz[0]}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    isaretKoy(y.nokta[1], y.nokta[0], d);
+  }
   for (const u of hedef.rota ? [hedef.kalkis, hedef.varis] : []) if (!etiketli.has(u.iata)) isaretKoy(u.nokta[1], u.nokta[0], el("div", "uc3", u.iata));
 }
 
@@ -848,9 +897,11 @@ function uyduEkle(s, k) {
     fetch(`/api/uydu?iata=${u.iata}&gun=${s.pencere.son}`).then((y) => y.json()).then(({ sonuc: v }) => {
       if (sonSonuc !== s || !k.isConnected) return;
       if (!v) { yazi.lastChild.textContent = T().uyduYok; return; }
-      const a = el("a"); a.href = `/api/uydu-gorsel?ad=${v.ad}`; a.target = "_blank"; a.rel = "noopener";
-      const g = el("img"); g.src = a.href; g.alt = T().uyduAlt(u.iata, v.cekim.slice(0, 10)); g.loading = "lazy";
-      a.append(g); f.prepend(a);
+      for (const ad of [v.yakin, v.ad]) {
+        const a = el("a"); a.href = `/api/uydu-gorsel?ad=${ad}`; a.target = "_blank"; a.rel = "noopener";
+        const g = el("img"); g.src = a.href; g.alt = T().uyduAlt(u.iata, v.cekim.slice(0, 10)); g.loading = "lazy";
+        a.append(g); f.prepend(a);
+      }
       yazi.lastChild.textContent = T().uyduKunye(v.cekim.slice(0, 16).replace("T", " "), v.bulut);
       if (v.sonGecis.slice(0, 10) !== v.cekim.slice(0, 10)) yazi.append(el("small", null, T().uyduGecis(v.sonGecis.slice(0, 10))));
       const olay = s.bulgular.find((b) => b.konum?.ad === u.iata && b.seviye !== "kanit-yok" && b.olayTarihi > v.cekim.slice(0, 10));
@@ -1025,6 +1076,7 @@ function sahneCiz(i) {
 }
 
 function sorgula(s, anahtar = s) {
+  sonSoru = { s, k: anahtar };
   kaynak?.close();
   sahneKapat();
   gorunum = "yukleniyor";

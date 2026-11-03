@@ -114,7 +114,7 @@ test("kapanis cumlesi iddianin kendisinden okunur", () => {
 });
 
 test("ulke kapanisi sehir adi yazilsa da ulke duzeyinde kalir", async () => {
-  const r = { iddia: "", iddia_en: "Lebanon closed its airspace.", tehlike: "savas", iata: "", yer_adi: "Beirut", ulke: "Lebanon", hava_sahasi: true, suren: false, baska_hat: false, olay_tarihi: "2026-10-01" };
+  const r = { iddia: "", iddia_en: "Lebanon closed its airspace.", tehlike: "catisma", iata: "", yer_adi: "Beirut", ulke: "Lebanon", hava_sahasi: true, suren: false, baska_hat: false, olay_tarihi: "2026-10-01" };
   const k = await konumBul(r);
   assert.equal(k?.tur, "ulke");
   assert.equal(k?.ad, "Lebanon");

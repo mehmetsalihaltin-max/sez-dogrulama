@@ -43,7 +43,7 @@ function anahtar(): string {
   return a;
 }
 
-async function istek(yol: string, govde: { model: string }): Promise<any> {
+async function istek(yol: string, govde: { model: string; [alan: string]: unknown }): Promise<any> {
   for (let deneme = 0; ; deneme++) {
     const yanit = await fetch(`${TABAN}${yol}`, {
       method: "POST",

@@ -28,7 +28,7 @@ const STATIK: Record<string, [string, string]> = {
   "/v/topojson.js": ["node_modules/topojson-client/dist/topojson-client.min.js", "text/javascript"],
   "/v/dunya.json": ["node_modules/world-atlas/countries-10m.json", "application/json"],
 };
-for (const a of ["volcano", "air", "rainy", "weather_snowy", "thunderstorm", "foggy", "cyclone", "earthquake", "flood", "local_gas_station", "groups", "swords", "build", "drone", "shield_lock", "report", "warning", "crisis_alert", "flight"]) STATIK[`/ikon/${a}.svg`] = [`web/ikon/${a}.svg`, "image/svg+xml"];
+for (const a of ["volcano", "air", "rainy", "weather_snowy", "thunderstorm", "foggy", "cyclone", "earthquake", "flood", "local_gas_station", "groups", "shield", "build", "drone", "shield_lock", "report", "warning", "crisis_alert", "flight"]) STATIK[`/ikon/${a}.svg`] = [`web/ikon/${a}.svg`, "image/svg+xml"];
 
 // Ayni soru bitmeden yeniden gelirse ikinci kez para harcanmaz; acik olan is izlenir.
 type Is = { dinleyen: Set<(i: Ilerleme) => void>; sonuc: Promise<unknown> };
@@ -53,8 +53,9 @@ createServer(async (istek, yanit) => {
   try {
     const st = STATIK[u.pathname];
     if (st) {
+      const icerik = await readFile(kok(st[0])); // dosya yoksa baslik yazilmadan hata yoluna duser
       yanit.writeHead(200, { "Content-Type": st[1] });
-      yanit.end(await readFile(kok(st[0])));
+      yanit.end(icerik);
       return;
     }
     if (u.pathname === "/api/sahne") {
@@ -107,8 +108,9 @@ createServer(async (istek, yanit) => {
     if (u.pathname === "/api/uydu-gorsel") {
       const ad = u.searchParams.get("ad") ?? "";
       if (!/^[A-Za-z0-9-]{3,40}$/.test(ad)) { yanit.writeHead(400).end(); return; }
+      const gorsel = await readFile(kok(`cikti/meydan-uydu/${ad}.jpg`));
       yanit.writeHead(200, { "Content-Type": "image/jpeg" });
-      yanit.end(await readFile(kok(`cikti/meydan-uydu/${ad}.jpg`)));
+      yanit.end(gorsel);
       return;
     }
     if (u.pathname === "/api/notam") {
@@ -157,7 +159,8 @@ createServer(async (istek, yanit) => {
     }
     yanit.writeHead(404).end();
   } catch (e) {
-    yanit.writeHead(500).end(e instanceof Error ? e.message : "hata");
+    if (yanit.headersSent) yanit.end();
+    else yanit.writeHead(500).end(e instanceof Error ? e.message : "hata");
   }
 }).listen(PORT, "127.0.0.1", () => {
   console.log(`http://127.0.0.1:${PORT}`);

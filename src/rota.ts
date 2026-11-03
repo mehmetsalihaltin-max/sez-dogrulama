@@ -17,8 +17,8 @@ const MEYDAN_YAKINI_KM = 100;
 /** Rotadan bu kadar uzak olay bolgesel gelisme de sayilmaz (New York-Dubai sorgusunda Las Vegas vakasi). */
 const ILGI_SINIRI_KM = 1000;
 /** Hava sahasi boyunca etkisi olan turler: yerel olay diye elenmez. */
-const GENIS_ETKILI = ["savas", "saldiri", "dron", "gps", "siber", "kul"];
-export const TEHLIKELER = ["savas", "hava", "saldiri", "deprem", "sel", "grev", "yakit", "ariza", "kul", "dron", "gps", "siber", "diger"] as const;
+const GENIS_ETKILI = ["catisma", "saldiri", "dron", "gps", "siber", "kul"];
+export const TEHLIKELER = ["catisma", "hava", "saldiri", "deprem", "sel", "grev", "yakit", "ariza", "kul", "dron", "gps", "siber", "diger"] as const;
 
 export type Soru = { tur: "mevcut-rota" | "yeni-rota" | "ulke"; kalkis: string; varis: string; ulke: string; tarih: string };
 type Risk = { iddia: string; tehlike: string; iata: string; yer_adi: string; ulke: string; hava_sahasi: boolean; suren: boolean; baska_hat: boolean; olay_tarihi: string; iddia_en: string };
