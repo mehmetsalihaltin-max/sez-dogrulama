@@ -95,11 +95,11 @@ export function yayinTarihi(html: string): string | null {
   return null;
 }
 
-async function sayfaGetir(url: string): Promise<string> {
+export async function sayfaGetir(url: string): Promise<string> {
   const u = new URL(url);
   if (u.protocol !== "https:" && u.protocol !== "http:") throw new Error("adres turu");
   if (OZEL_ADRES.test(u.hostname)) throw new Error("ozel adres");
-  const r = await fetch(u, { headers: { "User-Agent": "Mozilla/5.0 SEZ-dogrulama" }, signal: AbortSignal.timeout(15_000) });
+  const r = await fetch(u, { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36", "Accept": "text/html,application/xhtml+xml", "Accept-Language": "en-US,en;q=0.9" }, signal: AbortSignal.timeout(15_000) });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   const metin = await r.text();
   return metin.slice(0, AZAMI_BAYT);

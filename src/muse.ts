@@ -45,12 +45,20 @@ function anahtar(): string {
 
 async function istek(yol: string, govde: { model: string; [alan: string]: unknown }): Promise<any> {
   for (let deneme = 0; ; deneme++) {
-    const yanit = await fetch(`${TABAN}${yol}`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${anahtar()}`, "Content-Type": "application/json" },
-      body: JSON.stringify(govde),
-      signal: AbortSignal.timeout(300_000),
-    });
+    let yanit: Response;
+    try {
+      yanit = await fetch(`${TABAN}${yol}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${anahtar()}`, "Content-Type": "application/json" },
+        body: JSON.stringify(govde),
+        signal: AbortSignal.timeout(300_000),
+      });
+    } catch (e) {
+      // Baglanti kopmasi (fetch failed, UND_ERR_SOCKET) da gecici hatadir: sinavda Naha satiri bununla dustu.
+      if (deneme >= 3) throw e;
+      await new Promise((c) => setTimeout(c, 1000 * 2 ** deneme));
+      continue;
+    }
     if (yanit.ok) {
       const d = await yanit.json();
       say(d, govde.model);
@@ -93,12 +101,9 @@ export async function gorselYapili<T>(sistem: string, metin: string, jpegler: Bu
 export type Atif = { url: string; baslik: string; alinti: string };
 
 /** Web aramali cevap (Responses API + web_search). Atiflari url_citation'dan okur. */
-export async function aramali(girdi: string, model = MODEL): Promise<{ metin: string; atiflar: Atif[] }> {
-  const d = await istek("/responses", {
-    model,
-    input: [{ role: "user", content: girdi }],
-    tools: [{ type: "web_search" }],
-  });
+export async function aramali(girdi: string, model = MODEL, arkaPlan = false): Promise<{ metin: string; atiflar: Atif[] }> {
+  const govde = { model, input: [{ role: "user", content: girdi }], tools: [{ type: "web_search" }] };
+  const d = arkaPlan ? await arkaPlandaBekle(govde) : await istek("/responses", govde);
   let metin = "";
   const atiflar: Atif[] = [];
   for (const parca of d.output ?? []) {
@@ -113,4 +118,29 @@ export async function aramali(girdi: string, model = MODEL): Promise<{ metin: st
     }
   }
   return { metin, atiflar };
+}
+
+/**
+ * Uzun ajan isi (Muse Wonder + web aramasi) tek baglantida beklenince Meta baglantiyi kapatiyor (UND_ERR_SOCKET, 4 Kas olcumu).
+ * background: true ile is siraya alinir, sonuc GET /v1/responses/{id} ile yoklanir.
+ */
+async function arkaPlandaBekle(govde: { model: string; [alan: string]: unknown }, azamiSn = 1200): Promise<any> {
+  const ilk = await fetch(`${TABAN}/responses`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${anahtar()}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ ...govde, background: true }),
+    signal: AbortSignal.timeout(60_000),
+  });
+  if (!ilk.ok) throw new Error(`Meta API ${ilk.status}: ${(await ilk.text()).slice(0, 300)}`);
+  const { id } = await ilk.json();
+  const son = Date.now() + azamiSn * 1000;
+  while (Date.now() < son) {
+    await new Promise((c) => setTimeout(c, 5000));
+    const r = await fetch(`${TABAN}/responses/${id}`, { headers: { Authorization: `Bearer ${anahtar()}` }, signal: AbortSignal.timeout(60_000) }).catch(() => null);
+    if (!r?.ok) continue;
+    const d = await r.json();
+    if (d.status === "completed") { say(d, govde.model); return d; }
+    if (d.status === "failed" || d.status === "cancelled" || d.status === "incomplete") throw new Error(`Meta API arka plan isi ${d.status}: ${JSON.stringify(d.error ?? d.incomplete_details ?? {}).slice(0, 300)}`);
+  }
+  throw new Error(`Meta API arka plan isi ${azamiSn} sn icinde bitmedi`);
 }

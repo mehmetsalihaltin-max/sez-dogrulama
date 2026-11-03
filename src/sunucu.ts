@@ -5,6 +5,7 @@ import { createServer } from "node:http";
 import { havalimani, havalimaniAra } from "./harita.ts";
 import { meydanUydu, olayUydu } from "./meydan.ts";
 import { notamAnlat, notamGetir } from "./notam.ts";
+import { resmiKaynakAra } from "./resmi.ts";
 import { IkiDilliHata, TEHLIKELER, sor, type Ilerleme } from "./rota.ts";
 import { sahneKur } from "./sahne.ts";
 
@@ -116,6 +117,15 @@ createServer(async (istek, yanit) => {
       const gorsel = await readFile(kok(`cikti/meydan-uydu/${ad}.jpg`));
       yanit.writeHead(200, { "Content-Type": "image/jpeg" });
       yanit.end(gorsel);
+      return;
+    }
+    if (u.pathname === "/api/resmi") {
+      const q = u.searchParams;
+      const iddia = (q.get("iddia") ?? "").trim().slice(0, 400), gun = q.get("gun") ?? "";
+      const yerler = (q.get("yerler") ?? "").split("|").map((y) => y.trim().slice(0, 80)).filter(Boolean).slice(0, 8);
+      if (!iddia || !/^\d{4}-\d{2}-\d{2}$/.test(gun)) { yanit.writeHead(400).end(); return; }
+      yanit.writeHead(200, { "Content-Type": "application/json" });
+      yanit.end(JSON.stringify(await resmiKaynakAra(iddia, gun, yerler).catch((e) => ({ hata: e instanceof Error ? e.message : String(e) }))));
       return;
     }
     if (u.pathname === "/api/notam") {
