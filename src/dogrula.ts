@@ -3,6 +3,7 @@ import { yapili } from "./muse.ts";
 import { DILLER, haberAra, type Aday, type Dil } from "./topla.ts";
 import { degerlendir, type ModelKarari, type Sonuc } from "./kapi.ts";
 import { govdeKanitlari, type GovdeRed } from "./govde.ts";
+import { hafizaOku, hafizaYaz, hafizadanSec, silinenleriBul } from "./hafiza.ts";
 
 export type Iddia = {
   iddia: string;
@@ -13,9 +14,12 @@ export type Iddia = {
   sorgular: { dil: Dil; sorgu: string }[];
 };
 export type SorguDurumu = { dil: Dil; sorgu: string; aday: number; hata?: string };
+/** hatirlanan: onceki sorgulardan gelip bu sorguda bulunmayan aday; hepsiSilindi: hatirlanan her kaynak 404/410 dondu. */
+export type HafizaDurumu = { hatirlanan: number; silinen: number; hepsiSilindi: boolean; destekleyen: number };
 export type IddiaSonucu = Iddia & {
   adaySayisi: number;
   sonuc: Sonuc;
+  hafiza: HafizaDurumu;
   denetim: { sorgular: SorguDurumu[]; adaylar: Aday[]; kararlar: ModelKarari[]; govdeRed: GovdeRed[] };
 };
 
@@ -95,7 +99,21 @@ const KARAR_SEMASI = {
   additionalProperties: false,
 };
 
+const GRUP = 15;
+const AYNI_ANDA_ESLE = 4;
+
+/** Uzun liste tek istekte sorulunca model cogu basligi "ilgisiz" isaretliyor (Bali: 72 adayin 64'u, 3 Kas olcumu); gruplar ayri sorulur. */
 async function esle(iddia: Iddia, adaylar: Aday[]): Promise<ModelKarari[]> {
+  const gruplar = Array.from({ length: Math.ceil(adaylar.length / GRUP) }, (_, g) => g * GRUP);
+  const sonuc = await sinirli(gruplar, AYNI_ANDA_ESLE, async (bas) => {
+    const grup = adaylar.slice(bas, bas + GRUP);
+    // Grup disi id baska grubun adayina kaymasin.
+    return (await grupEsle(iddia, grup)).filter((k) => Number.isInteger(k.id) && k.id >= 0 && k.id < grup.length).map((k) => ({ ...k, id: k.id + bas }));
+  });
+  return sonuc.flat();
+}
+
+async function grupEsle(iddia: Iddia, adaylar: Aday[]): Promise<ModelKarari[]> {
   const temiz = (s: string) => s.replace(/[<>]/g, " ");
   const liste = adaylar.map((a, i) => `<source id="${i}" lang="${a.dil}">${temiz(a.baslik)}</source>`).join("\n");
   const sonuc = await yapili<{ kararlar: ModelKarari[] }>(
@@ -155,8 +173,16 @@ export async function iddiaDogrula(iddia: Iddia): Promise<IddiaSonucu> {
       sorgular.push({ ...s, aday: 0, hata: e instanceof Error ? e.message : String(e) });
     }
   });
-  const kararlar = adaylar.length ? await esle(iddia, adaylar) : [];
   const yerler = [...iddia.yer_adlari, iddia.yer];
+  // Onceki sorgularin buldugu kaynak kaybolmaz: aday olarak geri gelir ve ayni kapidan yeniden gecer.
+  const hatirlanan = hafizadanSec(await hafizaOku(), yerler, iddia.olay_tarihi).filter((a) => !gorulen.has(a.url));
+  const silinen = await silinenleriBul(hatirlanan);
+  for (const a of hatirlanan) {
+    if (silinen.has(a.url)) continue;
+    gorulen.add(a.url);
+    adaylar.push(a);
+  }
+  const kararlar = adaylar.length ? await esle(iddia, adaylar) : [];
   let sonuc = degerlendir(adaylar, kararlar, pencere, yerler);
   let govdeRed: GovdeRed[] = [];
   // Baslik yetmediyse haber govdesine inilir; uydurma iddia da burada ikinci kez sinanir.
@@ -168,5 +194,14 @@ export async function iddiaDogrula(iddia: Iddia): Promise<IddiaSonucu> {
     kararlar.push(...g.kararlar.map((k, i) => ({ ...k, id: ilk + i })));
     sonuc = degerlendir(adaylar, kararlar, pencere, yerler);
   }
-  return { ...iddia, adaySayisi: adaylar.length, sonuc, denetim: { sorgular, adaylar, kararlar, govdeRed } };
+  const kabul = [...sonuc.destek, ...sonuc.celiski].map(({ baslik, yayinci, alanAdi, url, tarih, dil }) => ({ baslik, yayinci, alanAdi, url, tarih, dil }));
+  await hafizaYaz(yerler, iddia.olay_tarihi, kabul, silinen);
+  const eskiUrl = new Set(hatirlanan.map((a) => a.url));
+  const hafiza: HafizaDurumu = {
+    hatirlanan: hatirlanan.length,
+    silinen: silinen.size,
+    hepsiSilindi: hatirlanan.length > 0 && silinen.size === hatirlanan.length,
+    destekleyen: sonuc.destek.filter((k) => eskiUrl.has(k.url)).length,
+  };
+  return { ...iddia, adaySayisi: adaylar.length, sonuc, hafiza, denetim: { sorgular, adaylar, kararlar, govdeRed } };
 }

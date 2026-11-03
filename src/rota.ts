@@ -214,6 +214,7 @@ async function sorgula(soru: string, ilerle: (i: Ilerleme) => void) {
       seviye: d.sonuc.seviye,
       gerekce: d.sonuc.gerekce,
       bagimsiz: d.sonuc.bagimsizYayinci,
+      hafiza: d.hafiza,
       diller: d.sonuc.diller,
       konum,
       rotayaKm,

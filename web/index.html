@@ -328,6 +328,9 @@ const M = {
     hatCanli: (u, t, k) => `Route is the real Flightradar24 track of ${u} on ${t}. Band: ${k} km either side.`,
     hatSonra: "This track is from a later date, not the day asked; it shows the usual path.",
     kosuKayitli: (z, d) => `Saved result${z ? `, evaluated on ${z}` : ""}.${d != null ? ` That run cost $${d.toLocaleString("en-GB", { maximumFractionDigits: 2 })};` : ""} No new spend for this view.`,
+    hafizaDestek: (n) => `${n} supporting source${n === 1 ? "" : "s"} from earlier queries, rechecked now`,
+    hafizaSilinen: (n) => `${n} earlier source${n === 1 ? "" : "s"} removed by the publisher, not counted`,
+    hafizaHepsi: "Every earlier source for this event has been removed by its publisher",
     kosuYeni: (d) => `This query ran just now${d != null ? `; cost $${d.toLocaleString("en-GB", { maximumFractionDigits: 2 })}` : ""}.`,
     hatYok: (k) => `No recorded track for this route; the line is the theoretical shortest path, not the real flight path. Band: ${k} km either side.`,
     notamBas: "Official notices · NOTAM", notamOkunuyor: "Reading notices", notamGecmis: "Live notices in force today, not of the date asked.", notamHata: "NOTAM source could not be reached.", notamYok: "NOTAM source is not connected here.",
@@ -383,6 +386,9 @@ const M = {
     hatCanli: (u, t, k) => `Hat, ${u} uçuşunun ${t} tarihli gerçek Flightradar24 izidir. Bant: hattın iki yanında ${k} km.`,
     hatSonra: "Bu iz sorulan güne ait değil, daha sonraki bir tarihten; hattın olağan yolunu gösterir.",
     kosuKayitli: (z, d) => `Kayıtlı sonuç${z ? `: ${z} tarihinde değerlendirildi` : ""}.${d != null ? ` O koşunun maliyeti ${d.toLocaleString("tr-TR", { maximumFractionDigits: 2 })} $ idi;` : ""} Bu gösterim için yeni harcama yapılmadı.`,
+    hafizaDestek: (n) => `Destekleyen ${n} kaynak önceki sorgulardan geldi, şimdi yeniden denetlendi`,
+    hafizaSilinen: (n) => `Önceki ${n} kaynak yayıncısı tarafından kaldırılmış, sayılmadı`,
+    hafizaHepsi: "Bu olayın önceki kaynaklarının hepsi yayıncıları tarafından kaldırılmış",
     kosuYeni: (d) => `Bu sorgu şimdi çalıştı${d != null ? `; maliyeti ${d.toLocaleString("tr-TR", { maximumFractionDigits: 2 })} $` : ""}.`,
     hatYok: (k) => `Bu rota için kayıtlı uçuş izi yok; çizgi en kısa teorik hattır, gerçek uçuş yolu değildir. Bant: hattın iki yanında ${k} km.`,
     notamBas: "Resmî yayın · NOTAM", notamOkunuyor: "Yayınlar okunuyor", notamGecmis: "Bugün geçerli canlı yayınlar, sorulan tarihe ait değil.", notamHata: "NOTAM kaynağına ulaşılamadı.", notamYok: "NOTAM kaynağı bu kurulumda bağlı değil.",
@@ -995,6 +1001,8 @@ function goster(s) {
     const degisim = b.seviye === "teyitli" ? T().dusme(b.bagimsiz - 2) : b.seviye === "kismen" || b.seviye === "tek-kaynak" ? T().gelme(3 - b.bagimsiz) : "";
     const diller = b.diller.map(dilAd).join(", ");
     g.append(el("p", "meta", [b.olayTarihi, T().haber(b.bagimsiz), degisim, diller, b.rotayaKm != null ? T().rotaya(b.rotayaKm) : b.konum?.tur === "ulke" ? T().geneli(ulkeAd(b.konum.ad)) : ""].filter(Boolean).join(" · ")));
+    const hz = b.hafiza;
+    if (hz && (hz.destekleyen || hz.silinen)) g.append(el("p", "meta", (hz.hepsiSilindi ? [T().hafizaHepsi] : [hz.destekleyen ? T().hafizaDestek(hz.destekleyen) : "", hz.silinen ? T().hafizaSilinen(hz.silinen) : ""]).filter(Boolean).join(" · ")));
     li.append(g);
     if (b.kanitlar.length || b.celiski.length) {
       const dt = el("details");
