@@ -148,6 +148,7 @@ svg{display:block;width:100%;height:100%}
 .notam .kanit .ceviri{color:var(--murekkep);font-size:14px;font-weight:600}
 .notam .kanit q{font:400 13px/1.45 var(--govde);color:var(--soluk)}
 .bulgular{list-style:none}
+.resmi-liste{margin:0 0 var(--s1);padding-left:var(--s2)}.resmi-liste li{margin:0 0 var(--s1)}.resmi-liste b{display:block;font-weight:600}.resmi-liste span{display:block;color:var(--soluk);font-size:14px;line-height:20px}
 .bulgu .tg{grid-column:1/-1;position:relative;margin:calc(-1 * var(--s2)) calc(-1 * var(--s2)) var(--s2);overflow:hidden;border-radius:5px 5px 0 0}
 .bulgu .tg img{display:block;width:100%;aspect-ratio:16/5;object-fit:cover;filter:saturate(.9)}
 .bulgu .tg figcaption{position:absolute;left:var(--s1);bottom:var(--s1);padding:2px var(--s1);background:rgba(21,42,56,.78);color:#fbfbf9;font:600 11px/16px var(--baslik);letter-spacing:.06em;text-transform:uppercase;border-radius:2px}
@@ -304,7 +305,7 @@ const M = {
     rozet: { "hava-sahasi-kesisimi": "Airspace issue", "koridorda-teyitli": "Confirmed on route", "ulkede-teyitli": "Confirmed in country", "bolgesel-gelisme": "Regional only", "dogrulanmamis-isaret": "Unconfirmed", "bulgu-yok": "No evidence", "tarama-tamamlanamadi": "Scan incomplete" },
     modRota: "Route", modUlke: "Country", nereden: "From", nereye: "To", tarih: "Date, leave empty for this week", ipucuA: "From", ipucuB: "To", ipucuU: "Country, for example Syria",
     soruUlke: (a) => `What is the flight safety situation in ${a}?`, soruHafta: (a, b) => `How is the ${a}–${b} route this week?`, soruTarih: (a, b, t) => `How is the ${a}–${b} route for ${t}?`,
-    kanitsizAd: (n) => `${n} unconfirmed claim${n === 1 ? "" : "s"}, listed on the right`, uyduOnce: (t) => `Taken before the event of ${t}; it does not show the effect.`, olayUzak: (k) => `Event location is ${k.toLocaleString("en-GB")} km from the route.`, poaYer: "Rio Grande do Sul, southern Brazil", resmiBas: "Official source · Muse Wonder", resmiAra: "Muse Wonder is searching official pages (airport operator, aviation authority, agencies). This can take a few minutes.", resmiYok: "No official page with a matching sentence was found.", resmiHata: "The official search could not be completed.", resmiNot: "Page opened and sentence checked by code. Organisation name comes from the model. Does not change the evidence level.", resmiAlan: "official domain", resmiKayit: (z) => `Saved search, ${z}`, resmiRed: (n) => `${n} page${n === 1 ? "" : "s"} rejected by the code check`,
+    kanitsizAd: (n) => `${n} unconfirmed claim${n === 1 ? "" : "s"}, listed on the right`, uyduOnce: (t) => `Taken before the event of ${t}; it does not show the effect.`, olayUzak: (k) => `Event location is ${k.toLocaleString("en-GB")} km from the route.`, poaYer: "Rio Grande do Sul, southern Brazil", resmiBas: "Check before deciding", resmiAra: "Preparing the list of official sources", resmiHata: "The list could not be prepared.", resmiNot: "Suggestion: SEZ did not open these sources. Organisation names come from Muse Spark. SEZ reads NOTAMs itself (box above).", resmiKayit: (z) => `Saved, ${z}`,
     olayUydu: "Satellite check", olayAra: "Looking for passes before and after the event", olayYok: "No usable pass around this date.", olaySonra: "AFTER", olayNot: (y) => `Muse reading of the images, independent of the news. Does not change the evidence level. Copernicus Sentinel data (${y}), processed.`,
     uyduBas: "Satellite · Sentinel-2", uyduModel: "Muse reading of the image. Not an evidence level.", uyduNot: "Not live: the last clear pass. Top: 20 km square of the surroundings. Bottom: 8 km square of the airport, about 10 m per pixel.", uyduAra: "Looking for the last clear pass", uyduYok: "No clear pass in the last 45 days.", uyduAlt: (i, t) => `Satellite image of ${i}, ${t}`, uyduKunye: (t, b) => `${t} UTC · cloud ${b}%`, uyduGecis: (t) => `Later pass on ${t} was cloudy or partial`, uyduHak: (y) => `Copernicus Sentinel data (${y}), processed`,
     notamAc: "Plain language", notamModel: "Model translation. The original above is the binding text.",
@@ -366,7 +367,7 @@ const M = {
     rozet: { "hava-sahasi-kesisimi": "Hava sahası sorunu", "koridorda-teyitli": "Rotada teyitli", "ulkede-teyitli": "Ülkede teyitli", "bolgesel-gelisme": "Yalnız bölgesel", "dogrulanmamis-isaret": "Teyitsiz", "bulgu-yok": "Kanıt yok", "tarama-tamamlanamadi": "Tarama tamamlanamadı" },
     modRota: "Rota", modUlke: "Ülke", nereden: "Nereden", nereye: "Nereye", tarih: "Tarih, boş bırakılırsa bu hafta", ipucuA: "Nereden", ipucuB: "Nereye", ipucuU: "Ülke, örneğin Suriye",
     soruUlke: (a) => `${a} için uçuş güvenliği durumu nedir?`, soruHafta: (a, b) => `${a}–${b} rotası bu hafta nasıl?`, soruTarih: (a, b, t) => `${a}–${b} rotası ${t} için nasıl?`,
-    kanitsizAd: (n) => `${n} kanıtsız iddia, sağdaki listede`, uyduOnce: (t) => `${t} tarihli olaydan önce çekildi; olayın etkisini göstermez.`, olayUzak: (k) => `Olay yeri rotaya ${k.toLocaleString("tr-TR")} km uzakta.`, poaYer: "Rio Grande do Sul, Brezilya'nın güneyi", resmiBas: "Resmî kaynak · Muse Wonder", resmiAra: "Muse Wonder resmî sayfaları arıyor (havalimanı işletmecisi, havacılık otoritesi, kurumlar). Birkaç dakika sürebilir.", resmiYok: "Cümlesi tutan resmî bir sayfa bulunamadı.", resmiHata: "Resmî kaynak araması tamamlanamadı.", resmiNot: "Sayfa kod tarafından açıldı ve cümle denetlendi. Kurum adı modelden gelir. Kanıt seviyesini değiştirmez.", resmiAlan: "resmî alan adı", resmiKayit: (z) => `Kayıtlı arama, ${z}`, resmiRed: (n) => `${n} sayfa kod denetiminde reddedildi`,
+    kanitsizAd: (n) => `${n} kanıtsız iddia, sağdaki listede`, uyduOnce: (t) => `${t} tarihli olaydan önce çekildi; olayın etkisini göstermez.`, olayUzak: (k) => `Olay yeri rotaya ${k.toLocaleString("tr-TR")} km uzakta.`, poaYer: "Rio Grande do Sul, Brezilya'nın güneyi", resmiBas: "Karardan önce bakılacak resmî kaynaklar", resmiAra: "Resmî kaynak listesi hazırlanıyor", resmiHata: "Liste hazırlanamadı.", resmiNot: "Öneridir: SEZ bu kaynakları açmadı. Kurum adları Muse Spark'tan gelir. NOTAM'ları SEZ kendisi okur (yukarıdaki kutu).", resmiKayit: (z) => `Kayıtlı, ${z}`,
     olayUydu: "Uydu kontrolü", olayAra: "Olay öncesi ve sonrası geçişler aranıyor", olayYok: "Bu tarihlerde kullanılabilir geçiş yok.", olaySonra: "SONRA", olayNot: (y) => `Muse'un görüntü yorumu, haberlerden bağımsızdır. Kanıt seviyesini değiştirmez. Copernicus Sentinel verisi (${y}), işlenmiş.`,
     uyduBas: "Uydu · Sentinel-2", uyduModel: "Muse'un görüntü yorumu. Kanıt seviyesi değildir.", uyduNot: "Canlı değildir: son açık geçiştir. Üstte 20 km kare çevre, altta 8 km kare meydan, yaklaşık 10 m/piksel.", uyduAra: "Son açık geçiş aranıyor", uyduYok: "Son 45 günde açık geçiş yok.", uyduAlt: (i, t) => `${i} uydu görüntüsü, ${t}`, uyduKunye: (t, b) => `${t} UTC · bulut %${b}`, uyduGecis: (t) => `${t} tarihli sonraki geçiş bulutlu ya da yarım`, uyduHak: (y) => `Copernicus Sentinel verisi (${y}), işlenmiş`,
     notamAc: "Düz anlatım", notamModel: "Model çevirisi. Bağlayıcı metin yukarıdaki orijinaldir.",
@@ -874,7 +875,7 @@ function kanitKart(k) {
 const OLAY_UYDU = ["kul", "sel", "hava", "deprem"];
 
 // Olay yerinin once ve sonrasi, acilinca istenir: haberden bagimsiz ikinci kanal, seviye hesabina girmez.
-/** Muse Wonder resmi sayfa arar; kod her sayfayi acip cumleyi denetler. Acilinca istenir: pahali ve yavas. */
+/** Karardan once bakilacak resmi kaynaklar: oneridir, SEZ bu sayfalari acmaz. Acilinca istenir. */
 function resmiKart(b) {
   const dt = el("details", "olay-uydu");
   dt.append(el("summary", null, T().resmiBas));
@@ -884,19 +885,13 @@ function resmiKart(b) {
     if (!dt.open || alan.dataset.yuklu) return;
     alan.dataset.yuklu = "1";
     alan.replaceChildren(el("p", "notam-oz", T().resmiAra));
-    const q = new URLSearchParams({ iddia: b.iddiaEn || b.iddia, gun: b.olayTarihi, yerler: [b.konum?.ad, b.ulke].filter(Boolean).join("|") });
+    const q = new URLSearchParams({ iddia: b.iddiaEn || b.iddia, tehlike: b.tehlike, ulke: b.ulke ?? "", iata: b.konum?.tur === "nokta" && /^[A-Z0-9]{3}$/.test(b.konum.ad) ? b.konum.ad : "" });
     const v = await (await fetch(`/api/resmi?${q}`)).json().catch(() => ({ hata: "ag" }));
     if (v.hata) { alan.replaceChildren(el("p", "notam-oz", T().resmiHata)); return; }
-    alan.replaceChildren();
-    if (!v.kaynaklar.length) alan.append(el("p", "notam-oz", T().resmiYok));
-    for (const k of v.kaynaklar) {
-      const blok = el("blockquote", "kanit");
-      blok.append(el("p", null, dil === "tr" ? (k.ceviri || k.alinti) : (k.ceviriEn || k.alinti)));
-      const a = el("a", null, k.kurum || k.alanAdi); a.href = k.url; a.target = "_blank"; a.rel = "noopener";
-      const m = el("p", "meta"); m.append(a, document.createTextNode([" ", k.alanAdi, k.tarih?.slice(0, 10), k.resmiAlan ? T().resmiAlan : ""].filter(Boolean).join(" · ")));
-      blok.append(m); alan.append(blok);
-    }
-    const alt = [T().resmiNot, v.red?.length ? T().resmiRed(v.red.length) : "", v.kayitli ? T().resmiKayit(new Date(v.zaman).toLocaleString(dil === "tr" ? "tr-TR" : "en-GB", { dateStyle: "medium", timeStyle: "short" })) : ""];
+    const ol = el("ol", "resmi-liste");
+    for (const o of v.oneriler) { const li = el("li"); li.append(el("b", null, o.kurum), el("span", null, dil === "tr" ? o.neden : o.nedenEn)); ol.append(li); }
+    alan.replaceChildren(ol);
+    const alt = [T().resmiNot, v.kayitli ? T().resmiKayit(new Date(v.zaman).toLocaleString(dil === "tr" ? "tr-TR" : "en-GB", { dateStyle: "medium", timeStyle: "short" })) : ""];
     alan.append(el("p", "not", alt.filter(Boolean).join(" · ")));
   });
   return dt;

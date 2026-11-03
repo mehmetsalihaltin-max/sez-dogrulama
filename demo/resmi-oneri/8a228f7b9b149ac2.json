@@ -1,0 +1,25 @@
+{
+ "iddia": "Dozens of flights were cancelled at I Gusti Ngurah Rai Airport in Denpasar on 18 June 2025 due to ash from Lewotobi Laki-Laki.",
+ "oneriler": [
+  {
+   "kurum": "PT Angkasa Pura Indonesia – I Gusti Ngurah Rai International Airport Operator",
+   "neden": "Havalimanının açık/kapalı durumu ve iptal edilen seferlere dair güncel işletmeci duyurularını teyit etmek için.",
+   "nedenEn": "To confirm the airport's operational status and the operator's current flight cancellation updates.",
+   "kaynak": "model"
+  },
+  {
+   "kurum": "Directorate General of Civil Aviation of Indonesia (Direktorat Jenderal Perhubungan Udara)",
+   "neden": "Hava sahası kısıtlamaları ve uçuş emniyetiyle ilgili resmi düzenleyici talimatları teyit etmek için.",
+   "nedenEn": "To confirm official regulatory instructions on airspace restrictions and flight safety.",
+   "kaynak": "model"
+  },
+  {
+   "kurum": "Darwin Volcanic Ash Advisory Centre (Australian Bureau of Meteorology)",
+   "neden": "Lewotobi kül bulutunun konumu, yayılımı ve havacılık için tahminlerini teyit etmek için.",
+   "nedenEn": "To confirm the location, dispersion and aviation forecast of the Lewotobi ash cloud.",
+   "kaynak": "model"
+  }
+ ],
+ "dolar": 0.012,
+ "zaman": "2026-11-03T21:52:26.181Z"
+}
