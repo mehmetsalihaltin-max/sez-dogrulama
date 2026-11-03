@@ -191,6 +191,12 @@ summary:hover{color:var(--sinyal)}
 .adim-sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s1);list-style:none;margin:0 0 var(--s2)}
 .adim-sec button{width:100%;height:auto;padding:var(--s1);background:var(--yuzey);color:var(--murekkep);border-color:var(--cizgi);font:500 14px/1.3 var(--govde);letter-spacing:0;text-transform:none;text-align:left}
 .adim-sec button:hover{border-color:var(--murekkep);box-shadow:none;transform:none}
+.maxar{margin:0 0 var(--s2)}.maxar h3{font:600 12px/16px var(--baslik);letter-spacing:.08em;text-transform:uppercase;color:var(--soluk);margin:0 0 var(--s1)}
+.maxar ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s1);list-style:none;margin:0 0 var(--s1);padding:0}
+.maxar button{display:block;width:100%;height:auto;padding:0;background:none;border:1px solid var(--cizgi);text-align:left;font:500 13px/1.3 var(--govde);letter-spacing:0;text-transform:none;color:var(--murekkep)}
+.maxar button[aria-pressed="true"]{border-color:var(--murekkep);outline:2px solid var(--murekkep)}
+.maxar img{display:block;width:100%;aspect-ratio:1;object-fit:cover}.maxar button span{display:block;padding:4px var(--s1)}
+.maxar p{font-size:12px;line-height:16px;color:var(--soluk);margin:0}
 .adim-sec button[aria-current]{background:var(--murekkep);border-color:var(--murekkep);color:#fff}
 .senaryo{font-size:14px;margin-bottom:var(--s2);padding:var(--s1) var(--s2);background:var(--yuzey2);border:1px solid var(--cizgi);border-radius:4px}
 .senaryo b{font:600 12px var(--baslik);letter-spacing:.1em;color:var(--murekkep)}
@@ -342,6 +348,8 @@ const M = {
     dusme: (n) => `${n} source${n === 1 ? "" : "s"} lost ends confirmation`, gelme: (n) => `${n} more source${n === 1 ? "" : "s"} confirms`,
     rotaya: (k) => `${k} km from route`, geneli: (u) => `${u}, country-wide`, kanit: (n, t) => t > n ? `News evidence (${n} of ${t} shown)` : `News evidence (${n})`,
     not: "Map imagery is from Google and has no date; the satellite check shows the day itself. SEZ shows the evidence; the operations team makes the flight decision. The model does not write the level: code counts separate reports. News does not replace official records. Confirming an event does not prove its effect on a flight.",
+    samNot: "Runway outline: Meta SAM 3.1 segmented it from one human-placed point on the dry 18 April 2024 image; the mask is then shrunk 14 m. Saved 2024 run, not live.",
+    maxarBas: "Close-up · Maxar 50 cm", maxarNot: "Visual witness only. The runway measurement comes from Sentinel-2.", maxarHak: "Maxar Open Data Program, CC BY-NC 4.0", maxarGun: { "2024-02-02": "2 Feb · before", "2024-05-07": "7 May", "2024-05-09": "9 May" },
     senaryoMetin: (e) => `Runway measurements come from real Sentinel-2 images. The three flights, the alternate plan and the ${e}% limit are fictional.`,
     anahtarYok: "Runway: methods disagree, no share", anahtarIki: "Both methods say water", anahtarYokSu: "Methods do not both say water", olcek: "1 km · North up",
     gorselAlt: (m, g, b) => `${m} runway, satellite image of ${g}. ${b}`,
@@ -400,6 +408,8 @@ const M = {
     dusme: (n) => `${n} kaynak düşerse teyit biter`, gelme: (n) => `${n} kaynak daha gelirse teyitli olur`,
     rotaya: (k) => `rotaya ${k} km`, geneli: (u) => `${u} geneli`, kanit: (n, t) => t > n ? `Haber kanıtı (${t} haberin ${n} tanesi)` : `Haber kanıtı (${n})`,
     not: "Harita görüntüsü Google'dandır, tarihi belli değildir; o günü uydu kontrolü gösterir. SEZ kanıtı gösterir, uçuş kararını operasyon ekibi verir. Seviyeyi model yazmaz; kod ayrı haber sayısından hesaplar. Kanıtlar haber kaynaklarından gelir, resmî kayıt yerine geçmez. Olayın doğrulanması, uçuşa etkisinin kanıtlandığı anlamına gelmez.",
+    samNot: "Pist sınırı: Meta SAM 3.1, kuru gün olan 18 Nisan 2024 görüntüsünde insanın koyduğu tek noktadan çıkardı; maske ardından 14 m içeri çekildi. Kayıtlı 2024 ölçümü, canlı değil.",
+    maxarBas: "Yakın görünüm · Maxar 50 cm", maxarNot: "Yalnız görsel tanıktır. Pist ölçümü Sentinel-2'den gelir.", maxarHak: "Maxar Open Data Program, CC BY-NC 4.0", maxarGun: { "2024-02-02": "2 Şub · önce", "2024-05-07": "7 May", "2024-05-09": "9 May" },
     senaryoMetin: (e) => `Pist ölçümleri gerçek Sentinel-2 görüntülerinden gelir. Üç uçuş, yedek meydan planı ve %${e} sınırı kurgusaldır.`,
     anahtarYok: "Pist: yöntemler uyuşmuyor, oran yok", anahtarIki: "İki yöntem de su diyor", anahtarYokSu: "İki yöntem birlikte su demiyor", olcek: "1 km · Kuzey yukarıda",
     gorselAlt: (m, g, b) => `${m} pisti, ${g} uydu görüntüsü. ${b}`,
@@ -1035,7 +1045,7 @@ function sahneAnahtar(a) {
   const { width: w, height: h } = $("sahneGorsel").getBoundingClientRect();
   // Renkler goruntuye basili bindirmeyle ayni olmali.
   const satirlar = a.sonucYok ? [["serit", T().anahtarYok]] : [["#c9391a", T().anahtarIki], ["#f3eee2", T().anahtarYokSu]];
-  const k = $("anahtar"); k.replaceChildren();
+  const k = $("anahtar"); k.replaceChildren(); k.style.display = "";
   for (const [r, m] of satirlar) {
     const s = el("span"), c = el("i", r === "serit" ? "serit" : "");
     if (r !== "serit") c.style.setProperty("--r", r);
@@ -1062,6 +1072,7 @@ function sahneCiz(i) {
   const se = el("p", "senaryo");
   se.append(el("b", null, `${T().senaryo}. `), document.createTextNode(T().senaryoMetin(sahne.senaryoEsik)));
   ray.append(se);
+  ray.append(el("p", "not", T().samNot));
   const sec = el("ol", "adim-sec");
   sahne.adimlar.forEach((x, n) => {
     const li = el("li"), b = el("button", null, x.gun); b.type = "button";
@@ -1070,6 +1081,26 @@ function sahneCiz(i) {
     li.append(b); sec.append(li);
   });
   ray.append(sec);
+  // Maxar acik arsivi: ayni meydanin 50 cm goruntusu, olcume girmez; tiklaninca ana gorsel olur.
+  const mx = el("section", "maxar");
+  mx.append(el("h3", null, T().maxarBas));
+  const mo = el("ol");
+  for (const g of Object.keys(T().maxarGun)) {
+    const li = el("li"), b = el("button"); b.type = "button"; b.setAttribute("aria-pressed", "false");
+    const im = el("img"); im.src = `/api/uydu-gorsel?ad=poa-${g}`; im.alt = T().gorselAlt(sahne.meydan, g, "Maxar"); im.loading = "lazy";
+    b.append(im, el("span", null, T().maxarGun[g]));
+    b.onclick = () => {
+      mo.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      $("sahneResim").src = im.src; $("sahneResim").alt = im.alt;
+      $("cekim").textContent = g; $("isleme").textContent = "-"; $("sahneAd").textContent = "Brazil-Flooding-May24";
+      $("anahtar").style.display = "none"; $("anahtarMetin").textContent = "";
+      document.querySelector("#sahneGorsel [data-t=copernicus]").textContent = T().maxarHak;
+    };
+    li.append(b); mo.append(li);
+  }
+  mx.append(mo, el("p", null, `${T().maxarNot} ${T().maxarHak}.`));
+  ray.append(mx);
+  document.querySelector("#sahneGorsel [data-t=copernicus]").textContent = T().copernicus;
   const kk = el("section", "kartc");
   kk.append(el("h2", "karar" + (a.sonucYok ? " yok" : ""), a.baslik));
   kk.append(el("p", "durumlar" + (a.sonucYok ? " yok" : ""), `${T().kanitDurum}: ${a.kanit}`));
