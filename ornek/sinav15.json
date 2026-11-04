@@ -1,5 +1,5 @@
 {
-  "aciklama": "Beklenen cevapli sinav seti. dogru: gercek olay, destek bulunmali. yanlis: SEZ ekibinin kasitli olarak degistirdigi iddia; dayandigi gercek olay ve degistirilen unsur yazili. belirsiz: dogrulugu kesinlesmedi, oranlarin paydasina girmez. Kaynak etiketleri 3 Kasim 2026 tarihli bagimsiz incelemeden; baglantilar yapistirilan metinde gelmedigi icin url alanlari bos.",
+  "aciklama": "Beklenen cevapli sinav seti. dogru: gercek olay, destek bulunmali. yanlis: SEZ ekibinin kasitli olarak degistirdigi iddia; dayandigi gercek olay ve degistirilen unsur yazili. belirsiz: dogrulugu kesinlesmedi, oranlarin paydasina girmez. Kaynak etiketleri 3 Kasim 2026 tarihli bagimsiz incelemeden; Haber baglantilari ornek/sinav15-kaynaklar.json dosyasinda.",
   "satirlar": [
     { "id": 1, "iddia": "25 Ekim 2026: Amsterdam Schiphol Havalimanı'nda şiddetli rüzgâr nedeniyle onlarca uçuş iptal edildi.", "beklenen": "dogru", "kaynak": "Schiphol duyurusu; NL Times", "url": "" },
     { "id": 2, "iddia": "27 Ekim 2026: Denver Havalimanı'na gelen uçuşlara sis ve düşük görüş nedeniyle yer durdurması uygulandı.", "beklenen": "dogru", "kaynak": "FAA kaydı", "url": "", "not": "Eski metin 'kalkışlar durduruldu, yüzlerce uçuş gecikti' diyordu; FAA kaydı yalnız Denver'a yönelik yer durdurmasını destekliyor, sayı doğrulanmadı." },

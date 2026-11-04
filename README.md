@@ -16,7 +16,7 @@ Everything in this repository was written during the building period. The first 
 2. **Scan.** Muse Spark with web search lists events that could affect flights at or over the airports and countries on the route.
 3. **Evidence gate.** Each event becomes a checkable claim. The claim is searched in local languages on Google News. Muse Spark judges each headline in groups of 15 and must quote the exact words that prove it. Code then checks that the quote is really in the headline, the publish date is inside the window, and the place name appears. The level (confirmed by news, partial, single source, contradicted, no evidence) is decided in code, not by the model. Publishers are counted by distinct domain; aggregators, social posts and near-identical headlines (re-posted agency stories) are not counted.
 4. **Article body channel.** If headlines are not enough, Muse Spark web search brings sentences from article bodies. Code opens each page itself and searches for the sentence. The page text is never sent to the model.
-5. **Official sources to check.** Many of the official websites we tried (airport operators, aviation authorities, volcanic ash centres) block automated reading: in our test every official page found returned 403 or did not respond, with or without a VPN. This was not tested on every official site. So SEZ does not claim official confirmation. NOTAMs are read live in code. For everything else, Muse Spark names up to three official organisations the team should check before deciding, and the screen says these are suggestions SEZ did not open.
+5. **Official sources to check.** In our test, every official page we found (airport operators, aviation authorities, volcanic ash centres) returned 403 or did not respond, with or without a VPN. We did not test every official site. So SEZ does not claim official confirmation. NOTAMs are read live in code. For everything else, Muse Spark names up to three official organisations the team should check before deciding, and the screen says these are suggestions SEZ did not open.
 6. **Evidence memory.** Sources that passed the gate are kept per event and sent through the same gate again on the next query, so a new query does not lose what an earlier one found. Google News links are resolved to the publisher URL. A source whose page returns 404 or 410 is dropped.
 7. **Satellite.** For each airport, the last clear Copernicus Sentinel-2 pass is shown and read by Muse Spark (vision) as a second channel. It never changes the evidence level.
 8. **Runway scene (Porto Alegre, May 2024).** Meta SAM 3.1 segments the runway from one human-placed point on a dry-day image. Water on the runway is measured in code with two methods from the same Sentinel-2 pass (NDWI and the ESA scene classification water class). A number is shown only when both agree within 10 points. The three flights and the 10% limit in this scene are fictional.
@@ -50,7 +50,7 @@ Tests: `npm test`.
 
 ## Evaluation
 
-`ornek/sinav15.json` holds 15 claims with expected answers: 7 real events from October 2026 and 8 deliberately altered claims, each with the real event it was based on and what was changed. Run with:
+`ornek/sinav15.json` holds 15 claims with expected answers: 7 real events from October 2026 and 8 deliberately altered claims: 4 change the cause or scope of a real event (8, 11, 14, 15), 3 are fully invented (9, 10, 13) and 1 inflates the scope of an unverified report (12). Each row says what was changed. Run with:
 
 ```
 node --env-file=.env src/hat.ts ornek/sinav15.json cikti/sinav.json
@@ -58,25 +58,26 @@ node --env-file=.env src/hat.ts ornek/sinav15.json cikti/sinav.json
 
 Evidence memory is off during evaluation so every run is independent.
 
-Run of 4 November 2026 (claim 4 failed once on a network error and was re-run alone):
+Run of 3 November 2026, evening Turkish time (claim 4 failed once on a network error and was re-run alone):
 
 | | Claims | Result |
 |---|---|---|
 | Real events | 7 | Supported (confirmed by news or partial): 4. Not supported: 3 (two "contradicted", one single source) |
 | Altered claims | 8 | Rejected: 8. False confirmations: 0 |
 
-Full run output, claim by claim (every query, headline, model quote, rejected source and the code's reason for the level): `sonuc/sinav15-sonuc.json` and, for the re-run of claim 4, `sonuc/sinav15-satir4-yeniden.json`. The `ozet` field holds the counts above. In these published copies the names of two airlines inside third-party headlines are masked as `[havayolu]` (13 places); nothing else was changed.
+Full run output, claim by claim (every query, headline, model quote, rejected source and the code's reason for the level): `sonuc/sinav15-sonuc.json` and, for the re-run of claim 4, `sonuc/sinav15-satir4-yeniden.json`. The `ozet` field holds the counts above. In these published copies the names of two airlines inside third-party headlines are masked as `[havayolu]` (13 places), and the local input path in the re-run's `dosya` field was replaced with the repo path; nothing else was changed.
 
-News links behind the expected answers are in `ornek/sinav15-kaynaklar.json`. They were collected after the run, so they do not affect it; altered claims point to the real event they were built from.
+News links behind the expected answers are in `ornek/sinav15-kaynaklar.json`. They were collected after the run, so they do not affect it; the four altered real events point to the row of the real event; invented claims have no source by design.
 
-Total cost about $5.16 for the 15 claims. SEZ errs on the cautious side: it confirmed none of the altered claims, and it failed to support three real ones. In the Schiphol case nine publishers supported the claim and three headlines were read as contradicting it; any contradiction currently turns the level into "contradicted".
+Total cost about $5.16 for the 15 claims. SEZ errs on the cautious side: it confirmed none of the altered claims, and it failed to support three real ones. In the Schiphol case nine publishers supported the claim and three Turkish headlines that report the same storm cancellations were misread by the model as contradicting it; any contradiction currently turns the level into "contradicted".
 
 ## Known limits
 
 - Independence is judged from publisher domain and headline similarity. It does not prove that two publishers did not copy the same source.
-- The claim window runs from two days before to five days after the event date (`src/dogrula.ts`). Results for dated questions are a retrospective review of a past event; they are not what was known on the day of the event and are not an early-warning claim.
+- The claim window runs from two days before to five days after the event date (`src/dogrula.ts`); undated questions use the last seven days up to tomorrow. Results for dated questions are a retrospective review of a past event; they are not what was known on the day of the event and are not an early-warning claim.
 - The article body channel (`src/govde.ts`) only produces "supports" decisions. A contradicting sentence in an article body is not processed; contradictions come from headlines only.
-- Saved results (the example questions) show their evaluation date and a "saved" label, but there is no re-scan button yet. For a current-status question, type it in your own words: only the exact example text opens the saved run.
+- Every answered question is saved (`cikti/sorgu/`) and the same question text opens the saved run, with its evaluation date and a "saved" label; a spoken question opens a saved example when its places and year match. There is no re-scan button yet, so asking the same "this week" question a week later shows the earlier run until its file is deleted.
+- Contradicting headlines are counted as they come; they are not de-duplicated or filtered for aggregators the way supporting ones are.
 - A single contradicting source outweighs any number of supporting ones. This is deliberate caution, and it also hides real events (see Evaluation).
 - Some publishers block automated requests (401/403); those sources are kept, not counted as deleted.
 - The Google News link resolution uses an undocumented Google endpoint. If it stops working, the check falls back to the Google link.
