@@ -14,14 +14,14 @@ Everything in this repository was written during the building period. The first 
 
 1. **Question → route.** The question can be typed or spoken: "Ask by voice" records the microphone in the browser, Meta Muse Voice Transcribe turns it into text, and the audio is not stored. If the spoken question names the places and year of a saved example, the saved run opens at no cost. Muse Spark reads the question (route, country, date). The route is drawn in code from real airport coordinates and, when available, a real flight track.
 2. **Scan.** Muse Spark with web search lists events that could affect flights at or over the airports and countries on the route.
-3. **Evidence gate.** Each event becomes a checkable claim. The claim is searched in local languages on Google News. Muse Spark judges each headline in groups of 15 and must quote the exact words that prove it. Code then checks that the quote is really in the headline, the publish date is inside the window, and the place name appears. The level (confirmed by news, partial, single source, contradicted, no evidence) is decided in code, not by the model. Re-posted agency stories and aggregators are not counted as independent publishers.
+3. **Evidence gate.** Each event becomes a checkable claim. The claim is searched in local languages on Google News. Muse Spark judges each headline in groups of 15 and must quote the exact words that prove it. Code then checks that the quote is really in the headline, the publish date is inside the window, and the place name appears. The level (confirmed by news, partial, single source, contradicted, no evidence) is decided in code, not by the model. Publishers are counted by distinct domain; aggregators, social posts and near-identical headlines (re-posted agency stories) are not counted.
 4. **Article body channel.** If headlines are not enough, Muse Spark web search brings sentences from article bodies. Code opens each page itself and searches for the sentence. The page text is never sent to the model.
-5. **Official sources to check.** Official websites (airport operators, aviation authorities, volcanic ash centres) mostly block automated reading: in our test every official page found returned 403 or did not respond, with or without a VPN. So SEZ does not claim official confirmation. NOTAMs are read live in code. For everything else, Muse Spark names up to three official organisations the team should check before deciding, and the screen says these are suggestions SEZ did not open.
+5. **Official sources to check.** Many of the official websites we tried (airport operators, aviation authorities, volcanic ash centres) block automated reading: in our test every official page found returned 403 or did not respond, with or without a VPN. This was not tested on every official site. So SEZ does not claim official confirmation. NOTAMs are read live in code. For everything else, Muse Spark names up to three official organisations the team should check before deciding, and the screen says these are suggestions SEZ did not open.
 6. **Evidence memory.** Sources that passed the gate are kept per event and sent through the same gate again on the next query, so a new query does not lose what an earlier one found. Google News links are resolved to the publisher URL. A source whose page returns 404 or 410 is dropped.
 7. **Satellite.** For each airport, the last clear Copernicus Sentinel-2 pass is shown and read by Muse Spark (vision) as a second channel. It never changes the evidence level.
 8. **Runway scene (Porto Alegre, May 2024).** Meta SAM 3.1 segments the runway from one human-placed point on a dry-day image. Water on the runway is measured in code with two methods from the same Sentinel-2 pass (NDWI and the ESA scene classification water class). A number is shown only when both agree within 10 points. The three flights and the 10% limit in this scene are fictional.
 
-"Confirmed" in SEZ means *confirmed by at least three independent news publishers*. It is not official confirmation; the screen says so.
+"Confirmed" in SEZ means *supported by at least three different news publishers*, counted by distinct domain after removing aggregators and re-posted copies. When the screen or the demo says "independent publishers", this is what it means: code does not and cannot prove editorial independence. It is not official confirmation; the screen says so.
 
 ## Meta models used
 
@@ -65,12 +65,18 @@ Run of 4 November 2026 (claim 4 failed once on a network error and was re-run al
 | Real events | 7 | Supported (confirmed by news or partial): 4. Not supported: 3 (two "contradicted", one single source) |
 | Altered claims | 8 | Rejected: 8. False confirmations: 0 |
 
+Full run output, claim by claim (every query, headline, model quote, rejected source and the code's reason for the level): `sonuc/sinav15-sonuc.json` and, for the re-run of claim 4, `sonuc/sinav15-satir4-yeniden.json`. The `ozet` field holds the counts above. In these published copies the names of two airlines inside third-party headlines are masked as `[havayolu]` (13 places); nothing else was changed.
+
+News links behind the expected answers are in `ornek/sinav15-kaynaklar.json`. They were collected after the run, so they do not affect it; altered claims point to the real event they were built from.
+
 Total cost about $5.16 for the 15 claims. SEZ errs on the cautious side: it confirmed none of the altered claims, and it failed to support three real ones. In the Schiphol case nine publishers supported the claim and three headlines were read as contradicting it; any contradiction currently turns the level into "contradicted".
 
 ## Known limits
 
 - Independence is judged from publisher domain and headline similarity. It does not prove that two publishers did not copy the same source.
-- The claim window extends a few days after the event date. Results are a retrospective review, not an early-warning claim.
+- The claim window runs from two days before to five days after the event date (`src/dogrula.ts`). Results for dated questions are a retrospective review of a past event; they are not what was known on the day of the event and are not an early-warning claim.
+- The article body channel (`src/govde.ts`) only produces "supports" decisions. A contradicting sentence in an article body is not processed; contradictions come from headlines only.
+- Saved results (the example questions) show their evaluation date and a "saved" label, but there is no re-scan button yet. For a current-status question, type it in your own words: only the exact example text opens the saved run.
 - A single contradicting source outweighs any number of supporting ones. This is deliberate caution, and it also hides real events (see Evaluation).
 - Some publishers block automated requests (401/403); those sources are kept, not counted as deleted.
 - The Google News link resolution uses an undocumented Google endpoint. If it stops working, the check falls back to the Google link.

@@ -1,0 +1,225 @@
+{
+  "aciklama": "Sınav setinin (ornek/sinav15.json) beklenen cevaplarının dayanakları. 4 Kasım 2026'da, koşudan SONRA toplandı; koşunun sonucunu değiştirmez. Gerçek olaylar için haber bağlantıları; değiştirilmiş iddialar için dayandıkları gerçek olay. Tamamen uydurma iddiaların doğası gereği kaynağı yoktur.",
+  "satirlar": [
+    {
+      "id": 1,
+      "iddia": "25 Ekim 2026: Amsterdam Schiphol Havalimanı'nda şiddetli rüzgâr nedeniyle onlarca uçuş iptal edildi.",
+      "beklenen": "dogru",
+      "kaynaklar": [
+        {
+          "yayinci": "Free Malaysia Today (AFP)",
+          "baslik": "Dozens of flights cancelled at Amsterdam airport due to strong winds",
+          "tarih": "2026-10-25",
+          "url": "https://www.freemalaysiatoday.com/category/world/2026/10/25/dozens-of-flights-cancelled-at-amsterdam-airport-due-to-strong-winds",
+          "dogrulama": "sayfa 4 Kasım 2026'da açıldı, başlık ve tarih okundu"
+        },
+        {
+          "yayinci": "AeroCorner",
+          "baslik": "Storm Boelo: KLM Cancels 149 Schiphol Flights",
+          "tarih": "2026-10-25",
+          "url": "https://aerocorner.com/news/storm-boelo-schiphol-klm-149-cancellations-ezy7255-gatwick/",
+          "dogrulama": "sayfa 4 Kasım 2026'da açıldı, başlık ve tarih okundu"
+        },
+        {
+          "yayinci": "DutchNews.nl",
+          "baslik": "One dead and one missing after Storm Boelo hits NL",
+          "tarih": "2026-10-26",
+          "url": "https://www.dutchnews.nl/2026/10/one-dead-and-one-missing-after-storm-boelo-hits-nl/",
+          "dogrulama": "sayfa 4 Kasım 2026'da açıldı, başlık ve tarih okundu"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "iddia": "27 Ekim 2026: Denver Havalimanı'na gelen uçuşlara sis ve düşük görüş nedeniyle yer durdurması uygulandı.",
+      "beklenen": "dogru",
+      "kaynaklar": [
+        {
+          "yayinci": "CBS News",
+          "baslik": "Heavy fog caused ground delays, stops at Denver International Airport for at least 8 hours",
+          "tarih": "2026-10-27",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNbmMxS2FNYzNsRVAwaXVmcW1XYlU1VW8tUFdiQ2JRb2g4UEJWWktvZ2E4b1BfUGdZanNjOGZ2VnlFNHlGUXZGYnI3dkN1S0lCakp1c0JxMG1qeXNaNllzbE1IWDRENWphYW12emRmRW9lNVloTjZ2OHRveFpfb2x6M3BqSl9xUHM4aE1oSi15WVY3UEdyMWxYU05feDI3QQ?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        },
+        {
+          "yayinci": "9News",
+          "baslik": "Fog-related ground stop at DIA leads to hundreds of flight delays",
+          "tarih": "2026-10-27",
+          "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNbXhiS2htZ0hrMVJ3SWlYM0VzeWF5bmxha25qa0U2UjU1NlR4a2loY3dfTkFWeEh5M0F0dS1YMFdYZDZ4Sjh1dUVxYWd1YkFBdlNaOTczUWRjWFYtZUx3S1hTMEc3YkcyTG03TEo0M05tS205Nmx0c2RjeEFubktSMG14dFNmaTJqTkl3T3oxQm10cWNGVlNBLUYxbnVGbzJpclR1OF9JMEhoQXVlSUZsTXFXT3RuY3c3bHc1LVBQZkFTQTdqWHJwMG8xcEdLN25UUkVxY013?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        },
+        {
+          "yayinci": "Spot On Colorado",
+          "baslik": "Heavy fog caused ground delays, stops at Denver International Airport for at least 8 hours",
+          "tarih": "2026-10-27",
+          "url": "https://spotoncolorado.com/denver-area/2244977/heavy-fog-caused-ground-delays.html",
+          "dogrulama": "sayfa 4 Kasım 2026'da açıldı, başlık ve tarih okundu"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "iddia": "17 Ekim 2026: Birleşik Arap Emirlikleri sivil havacılık otoritesi sis ve düşük görüş nedeniyle uçuşlarda gecikme uyarısı yaptı.",
+      "beklenen": "dogru",
+      "kaynaklar": [
+        {
+          "yayinci": "Arabian Post",
+          "baslik": "UAE aviation regulator cautions airlines over reduced visibility",
+          "tarih": "2026-10-19",
+          "url": "https://thearabianpost.com/uae-aviation-regulator-cautions-airlines-over-reduced-visibility/",
+          "dogrulama": "sayfa 4 Kasım 2026'da açıldı, başlık ve tarih okundu"
+        },
+        {
+          "yayinci": "Gulf Business",
+          "baslik": "Will your UAE flight be delayed? GCAA flags weather conditions that could disrupt operations",
+          "tarih": "2026-10-17",
+          "url": "https://gulfbusiness.com/will-your-uae-flight-be-delayed-gcaa-flags-weather-conditions-that-could-disrupt-operations/",
+          "dogrulama": "otomatik okumada 403 (Cloudflare); adres SEZ koşusunun bulduğu başlıktan"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "iddia": "22 Ekim 2026: Champi tayfunu nedeniyle Okinawa Naha Havalimanı uçuşlarında iptaller yaşandı.",
+      "beklenen": "dogru",
+      "kaynaklar": [
+        {
+          "yayinci": "琉球新報デジタル",
+          "baslik": "【台風30号】海・空の欠航 22～24日に相次ぐ＜22日朝＞",
+          "tarih": "2026-10-22",
+          "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB3QWVHM2w2c2RZUUZQYzVwQTZZOGhZUmtOaE5DWmJWYmREQ3BYc1BXMmxIZWdoNTc0clMzQU90clFtWTAyMVZWanJZTDJoYTJfNzNael9CZjdBS1dPdHhNSg?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        },
+        {
+          "yayinci": "TBS NEWS DIG",
+          "baslik": "台風30号空の便影響 全日空はあわせて57便欠航決める",
+          "tarih": "2026-10-21",
+          "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9MUmxPWk5mNFhqdXFiU2d4UVJ4YnJSQmg0N1o0ak5xYlpzU3lVbnFGZzAzdGM2SzZ4R0E3Y2huel94MktSblB3Wl9nYjFvZmhwVFowZFhCbw?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        },
+        {
+          "yayinci": "Aviation Wire",
+          "baslik": "台風30号、24日は欠航69便 JAL・ANAなど6社8800人影響",
+          "tarih": "2026-10-24",
+          "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5YUEtOT2tmenNxZkNCVFdzV1Z5eENZU3p5MmRzSUk1ekUxQmdjRHd5blkzZjJiWVdvdXNyTV9uVTllVFVINHR5aEpsUDJBUlVxcUNrNjV3?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        }
+      ],
+      "not": "Haberler 22-24 Ekim iptallerini bildiriyor; iddianın günü (22 Ekim) bu aralıkta."
+    },
+    {
+      "id": 5,
+      "iddia": "25 Ekim 2026: Birleşik Krallık'ta fırtına nedeniyle Heathrow Havalimanı'nda uçuşlar iptal edildi.",
+      "beklenen": "dogru",
+      "kaynaklar": [
+        {
+          "yayinci": "London Evening Standard",
+          "baslik": "All the Heathrow and Gatwick flights cancelled amid Storm Boelo havoc",
+          "tarih": "2026-10-26",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOVFI2NkY4MkYtNEpfcFRseC16V29wRXlWZlhTcm90anhFakozaTZQNWlVN2VqRHpkOERjcHpsX2hUZXo4NUlSSUNKUGo1cEV4dWVZRlk5UVpxYjBnaE5tTFVSMnpZcW8tTU5pZmt6aUZxMjUtdHpmdkNrOS1lN3JKWGo5UkFUNFZoQVQzTWc0MDlMVzUyeGNsYWlJUVRwcTlZOUJlUzJB?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        }
+      ],
+      "not": "Bulunan başlık 26 Ekim tarihli ve 25-26 Ekim iptallerini topluyor; SEZ de bu iddiaya 'tek kaynak' dedi."
+    },
+    {
+      "id": 6,
+      "iddia": "27 Ekim 2026: Omsk Havalimanı'nda sis nedeniyle uçaklar inemedi, seferler Tümen ve Novosibirsk'e yönlendirildi.",
+      "beklenen": "dogru",
+      "kaynaklar": [
+        {
+          "yayinci": "СуперОмск",
+          "baslik": "Рейсы до Омска направляют в другие города из-за тумана",
+          "tarih": "2026-10-27",
+          "url": "https://superomsk.ru/news/167542-reisy_do_omska_napravliaiut_v_drugie_goroda_iz_za_tumana/",
+          "dogrulama": "sayfa 4 Kasım 2026'da açıldı, başlık ve tarih okundu"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "iddia": "9 Ekim 2026: Ercan Havalimanı'nda pist kenarı ışıkları arızası nedeniyle bazı gece uçuşları yapılamadı.",
+      "beklenen": "dogru",
+      "kaynaklar": [
+        {
+          "yayinci": "YENİDÜZEN Gazetesi",
+          "baslik": "Ercan’da pist ışıkları kapatıldı, uçuşlar durdu!",
+          "tarih": "2026-10-09",
+          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNNVV4TzUzajZTV2dWcm8yMVRDRThVSG9MM05LOUlvNGZ3cy13NVZPai1BT1M5TlhaMUU4MUpERDVVYWhySGJpR1c5YktfYjlOTmU4ZkZzZG9QT1ZBRDVrXzZKcjZLdHdWSUdCVHliVVBnTzhoT19VTGJXODN2cW1fQWdWaFFBZ2VpZzBhdkZfSXBwNG8zOEpBd2F0RdIBqwFBVV95cUxNaTA0Nm41RnYyQ3VuVFp0aGlyT2ZDWXZWal96ZFhjU3FXRmtHZVNRbmE5TkFRN05qTG5SOEJlNWtmd2xwbmN5YUJfd2pZa0dvSjdpOVg3c0lpRl9pYVRNSjQ5eHRyeFhDcDBjWnVkcnZKaXktbjUwQ1UxcGhRaGtiSk9zQ3ctbWQybkNlczJ2d25sSUhLTTAtWS1fRzhXalJwSHhKcFdNcjE5Y0U?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        },
+        {
+          "yayinci": "Bağımsız Gazete",
+          "baslik": "Ercan Havalimanı'nda uçuşlar durduruldu!",
+          "tarih": "2026-10-09",
+          "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5tbjhOdTZzS0t6X0JmQWQ3YllYeDFFNTdCS3JfcGFzbWxjOTVlbjRDeVFQVXpJbEFqUmZUTkpvN1VBUFZDRjJERmo1eGxRTkJrX1FEUEFmUzktWVQtbDFnd2tid3ZFalJkSHIzYmFZTUU?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        },
+        {
+          "yayinci": "Kıbrıs Postası",
+          "baslik": "Ercan’da pist ışıklandırmasındaki sorun giderildi: Uçuşlar planlandığı gibi devam edecek",
+          "tarih": "2026-10-09",
+          "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQQ3ZxMUUtMnBxMXF5TGR3SHJKM1NPRVNjU19uV2ItS3VuVFQwejdjMl9FNGdsWWhEMnFUR0N4QWNQd2MxUFFadmlvTXNFdjUtUzYzeW4zUWNwTXJwV09GYVB2QzJJMmpfTjI3Rm1LTlA2d3cyaExsdE9naXhLczlRTTNsUmp3S0syRnBfM2VYbEU2YUdNdUhVbHoxTWtfSmJJLTl2cndnZGFFNC1hdEpSNEw5ZzQ2c0JFQVVYdEtFX2JqU1JodEs2emdOTnBlZnlJeHNfUUpNRERkMmRyRXc?oc=5",
+          "dogrulama": "Google Haberler kaydı; bağlantı yayıncının sayfasına yönlendirir"
+        }
+      ],
+      "not": "Aynı gün 'sorun giderildi' haberleri de var; SEZ'in 'çelişkili' kararı buradan geliyor."
+    },
+    {
+      "id": 8,
+      "iddia": "25 Ekim 2026: Amsterdam Schiphol Havalimanı'nda terminal yangını nedeniyle tahliye yapıldı.",
+      "beklenen": "yanlis",
+      "degistirilen": "olay ve neden: rüzgâr yerine terminal yangını",
+      "dayanak": "Gerçek olay: satır 1 (kaynakları orada)"
+    },
+    {
+      "id": 9,
+      "iddia": "27 Ekim 2026: Tokyo Haneda Havalimanı'nda pist çöktüğü için bütün uçuşlar durduruldu.",
+      "beklenen": "yanlis",
+      "degistirilen": "olay tamamen uydurma",
+      "dayanak": "yok; aynı gün olağan hareket kayıtları"
+    },
+    {
+      "id": 10,
+      "iddia": "25 Ekim 2026: Antalya Havalimanı'nda pist çöktüğü için tüm uçuşlar iptal edildi.",
+      "beklenen": "yanlis",
+      "degistirilen": "olay tamamen uydurma",
+      "dayanak": "yok"
+    },
+    {
+      "id": 11,
+      "iddia": "27 Ekim 2026: Omsk Havalimanı terminal yangını nedeniyle kapatıldı.",
+      "beklenen": "yanlis",
+      "degistirilen": "neden ve kapsam: sis yerine yangın, yönlendirme yerine kapanış",
+      "dayanak": "Gerçek olay: satır 6 (kaynakları orada)"
+    },
+    {
+      "id": 12,
+      "iddia": "26 Ekim 2026: Madrid Barajas Havalimanı'nda yer hizmetleri grevi nedeniyle bütün kalkışlar iptal edildi.",
+      "beklenen": "yanlis",
+      "degistirilen": "kapsam: 'bütün kalkışlar iptal'",
+      "dayanak": "doğrulanmadı"
+    },
+    {
+      "id": 13,
+      "iddia": "28 Ekim 2026: Dubai Uluslararası Havalimanı'nda yakıt tükendiği için uçuşlar durduruldu.",
+      "beklenen": "yanlis",
+      "degistirilen": "olay tamamen uydurma",
+      "dayanak": "yok; yalnız yakıt fiyatı haberleri"
+    },
+    {
+      "id": 14,
+      "iddia": "25 Ekim 2026: Birleşik Krallık'ta kar yağışı nedeniyle Heathrow Havalimanı kapatıldı.",
+      "beklenen": "yanlis",
+      "degistirilen": "neden ve kapsam: fırtına yerine kar, iptal yerine kapanış",
+      "dayanak": "Gerçek olay: satır 5 (kaynakları orada)"
+    },
+    {
+      "id": 15,
+      "iddia": "27 Ekim 2026: Denver Havalimanı'nda grev nedeniyle kalkışlar durduruldu.",
+      "beklenen": "yanlis",
+      "degistirilen": "neden: düşük görüş yerine grev",
+      "dayanak": "Gerçek olay: satır 2 (kaynakları orada)"
+    }
+  ]
+}

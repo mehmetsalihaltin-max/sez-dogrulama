@@ -1,0 +1,1124 @@
+{
+  "tarih": "2026-11-03T20:56:23.074Z",
+  "dosya": "C:/Users/Lenovo/AppData/Local/Temp/claude/148bb7d2eab45942/b7f51705-611e-4610-9304-857f9ad7e786/scratchpad/sinav4.json",
+  "kayitlar": [
+    {
+      "id": 4,
+      "iddia": "22 Ekim 2026: Champi tayfunu nedeniyle Okinawa Naha Havalimanı uçuşlarında iptaller yaşandı.",
+      "beklenen": "dogru",
+      "kaynak": "ANA 22-24 Ekim duyuruları; 22 Ekim tarihli Japonca haber",
+      "url": "",
+      "not": "Gün ve sefer eşleşmesi son kez kontrol edilecek.",
+      "seviye": "teyitli",
+      "gerekce": "2 dilde 3 bağımsız yayıncı",
+      "sonuc": {
+        "iddia": "Champi tayfunu nedeniyle Okinawa Naha Havalimanı uçuşlarında iptaller yaşandı.",
+        "olay_tarihi": "2026-10-22",
+        "sorgular": [
+          {
+            "dil": "en",
+            "sorgu": "Naha Airport"
+          },
+          {
+            "dil": "en",
+            "sorgu": "Naha flights cancelled"
+          },
+          {
+            "dil": "ja",
+            "sorgu": "沖縄 那覇空港"
+          },
+          {
+            "dil": "ja",
+            "sorgu": "那覇空港 欠航"
+          },
+          {
+            "dil": "tr",
+            "sorgu": "Naha Havalimanı"
+          },
+          {
+            "dil": "tr",
+            "sorgu": "Naha uçuş iptali"
+          },
+          {
+            "dil": "zh",
+            "sorgu": "冲绳 那霸机场"
+          },
+          {
+            "dil": "zh",
+            "sorgu": "那霸机场 航班取消"
+          },
+          {
+            "dil": "ko",
+            "sorgu": "나하 공항"
+          },
+          {
+            "dil": "ko",
+            "sorgu": "나하공항 결항"
+          }
+        ],
+        "yer": "Naha Havalimanı",
+        "yer_adlari": [
+          "Naha Havalimanı",
+          "Naha Airport",
+          "Naha",
+          "Okinawa",
+          "OKA",
+          "ROAH",
+          "那覇空港",
+          "那覇",
+          "沖縄",
+          "チャンピー",
+          "台風",
+          "Champi",
+          "Typhoon Champi",
+          "冲绳",
+          "那霸机场",
+          "오키나와",
+          "나하공항"
+        ],
+        "adaySayisi": 60,
+        "sonuc": {
+          "seviye": "teyitli",
+          "gerekce": "2 dilde 3 bağımsız yayıncı",
+          "destek": [
+            {
+              "baslik": "台風30号 沖縄で猛烈な風 けが人や倒木被害 停電も JALとANAで欠航相次ぐ｜Quebee キュエビー",
+              "yayinci": "QAB 琉球朝日放送",
+              "alanAdi": "qab.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlMGtrYXd4M21rSTVlRkFYNmh5eW9NVFpPYXQyTU9iSmJCUE9DMXNJbmxub205eDlNWEFZZkQ2VnFiaHk0M1VoREtqSEV1VXM5cmNYMEpTamo?oc=5",
+              "tarih": "2026-10-24T19:45:56.000Z",
+              "dil": "ja",
+              "karar": "destekliyor",
+              "alinti": "台風30号 沖縄で猛烈な風 けが人や倒木被害 停電も JALとANAで欠航相次ぐ｜Quebee キュエビー",
+              "ceviri": "30 numaralı tayfun Okinawa'da şiddetli rüzgar, yaralanmalar, devrilen ağaç hasarı ve elektrik kesintisi; JAL ve ANA'da art arda uçuş iptalleri | Quebee",
+              "ceviriEn": "Typhoon No. 30 brings violent winds in Okinawa, injuries, fallen-tree damage and power outages, with successive flight cancellations at JAL and ANA | Quebee"
+            },
+            {
+              "baslik": "Japan braces for super typhoon Champi as Okinawa flights and festival cancelled",
+              "yayinci": "Gutzy Asia",
+              "alanAdi": "gutzy.asia",
+              "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZEd1LUtOUUFLYTVXMmhHei12QlFpR1RkRi1mNnFLejlBWS1OZDdnWjFYNlZhbFd3bDhsbFU0X3d2NkpIVTI3a2FwY1l0cE9uT1BYX2NuUmZsaE9yZFJGYmVMeGQ5bVUtZS1hYzMyaFg2SnpiblpQdDdTRE9ETXk5d05iQkQ5Z3Y5WjA3TEZEZXQwOEFYRVo4TTliSmtGU1VQczZNcngzUC0wb1A4Tnc?oc=5",
+              "tarih": "2026-10-22T08:22:05.000Z",
+              "dil": "en",
+              "karar": "destekliyor",
+              "alinti": "typhoon Champi as Okinawa flights and festival cancelled",
+              "ceviri": "Champi tayfunu nedeniyle Okinawa uçuşları ve festival iptal edildi",
+              "ceviriEn": "typhoon Champi as Okinawa flights and festival cancelled"
+            },
+            {
+              "baslik": "Typhoon Champi prompts Japan Airlines to cancel Okinawa flights",
+              "yayinci": "NewsBytes",
+              "alanAdi": "newsbytesapp.com",
+              "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPSVVnakh0SFdoTHBQMmtyc014T2dseWtEeXktalllMTlaMWRtSWwxcjVwRlZUcUVDODg3TENsOGdxaWQwNV9xaGZtZmUyeGFybk4xbVZBbWp4MlZLQUNVdE1lbkxQUzJwMVhBczZsYk92bkhmNkZybXoxQ1Yya0V1NGZ4c0RmMkQtUExFTjcwNHZfdTN3aGo3emxBRThyLURVOFFjanBBRGE2MURR?oc=5",
+              "tarih": "2026-10-21T14:38:23.000Z",
+              "dil": "en",
+              "karar": "destekliyor",
+              "alinti": "Typhoon Champi prompts Japan Airlines to cancel Okinawa flights",
+              "ceviri": "Champi Tayfunu Japan Airlines'ı Okinawa uçuşlarını iptal etmeye yöneltti",
+              "ceviriEn": "Typhoon Champi prompts Japan Airlines to cancel Okinawa flights"
+            }
+          ],
+          "celiski": [],
+          "reddedilen": [
+            {
+              "baslik": "台风蔷琵来势汹汹 台日菲逾千航班取消",
+              "yayinci": "亲友传真",
+              "sebep": "yer adı başlıkta geçmiyor"
+            }
+          ],
+          "bagimsizYayinci": 3,
+          "diller": [
+            "ja",
+            "en"
+          ],
+          "eksikKarar": 0
+        },
+        "hafiza": {
+          "hatirlanan": 0,
+          "silinen": 0,
+          "hepsiSilindi": false,
+          "destekleyen": 0
+        },
+        "denetim": {
+          "sorgular": [
+            {
+              "dil": "ja",
+              "sorgu": "那覇空港 欠航",
+              "aday": 7
+            },
+            {
+              "dil": "en",
+              "sorgu": "Naha Airport",
+              "aday": 9
+            },
+            {
+              "dil": "en",
+              "sorgu": "Naha flights cancelled",
+              "aday": 9
+            },
+            {
+              "dil": "ja",
+              "sorgu": "沖縄 那覇空港",
+              "aday": 30
+            },
+            {
+              "dil": "tr",
+              "sorgu": "Naha Havalimanı",
+              "aday": 0
+            },
+            {
+              "dil": "tr",
+              "sorgu": "Naha uçuş iptali",
+              "aday": 0
+            },
+            {
+              "dil": "zh",
+              "sorgu": "冲绳 那霸机场",
+              "aday": 6
+            },
+            {
+              "dil": "zh",
+              "sorgu": "那霸机场 航班取消",
+              "aday": 3
+            },
+            {
+              "dil": "ko",
+              "sorgu": "나하 공항",
+              "aday": 2
+            },
+            {
+              "dil": "ko",
+              "sorgu": "나하공항 결항",
+              "aday": 0
+            }
+          ],
+          "adaylar": [
+            {
+              "baslik": "【台風30号】海・空の欠航 22～24日に相次ぐ＜22日朝＞",
+              "yayinci": "琉球新報デジタル",
+              "alanAdi": "ryukyushimpo.jp",
+              "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB3QWVHM2w2c2RZUUZQYzVwQTZZOGhZUmtOaE5DWmJWYmREQ3BYc1BXMmxIZWdoNTc0clMzQU90clFtWTAyMVZWanJZTDJoYTJfNzNael9CZjdBS1dPdHhNSg?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "台風30号空の便影響 全日空はあわせて57便欠航決める",
+              "yayinci": "TBS NEWS DIG",
+              "alanAdi": "newsdig.tbs.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9MUmxPWk5mNFhqdXFiU2d4UVJ4YnJSQmg0N1o0ak5xYlpzU3lVbnFGZzAzdGM2SzZ4R0E3Y2huel94MktSblB3Wl9nYjFvZmhwVFowZFhCbw?oc=5",
+              "tarih": "2026-10-21T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "ANA、台風30号で特別対応 10月21日〜23日の沖縄発着便",
+              "yayinci": "TRAICY（トライシー）",
+              "alanAdi": "traicy.com",
+              "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE10OGd2SmNqblZyQ2ZHSmNuOXFpRVRqOWhRVWZpQjJTT1FIdlByUFI4ejFkSmlaR09ISHZUZVBXZElQQTFmM2FqZ01hbVNYTWhtQlBjUllGOA?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "ANA那覇発羽田行き、エンジン不具合で481人に影響 出発まで9時間近く待つ乗客も",
+              "yayinci": "沖縄タイムス社",
+              "alanAdi": "okinawatimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1uSHgzRU4zMWxxS3RueV95S0FvVHBkYTlnZ29xV1EtWG1kX0tXUFQycU9UWi1qb0RuVzdyZmN6SXJudVVBdTQ5aFZ5NU9FVk1CZ3d3ODdDVlJ0eWpabGc?oc=5",
+              "tarih": "2026-10-26T22:51:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "台風30号 沖縄で猛烈な風 けが人や倒木被害 停電も JALとANAで欠航相次ぐ｜Quebee キュエビー",
+              "yayinci": "QAB 琉球朝日放送",
+              "alanAdi": "qab.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlMGtrYXd4M21rSTVlRkFYNmh5eW9NVFpPYXQyTU9iSmJCUE9DMXNJbmxub205eDlNWEFZZkQ2VnFiaHk0M1VoREtqSEV1VXM5cmNYMEpTamo?oc=5",
+              "tarih": "2026-10-24T19:45:56.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "台風30号、24日は欠航69便 JAL・ANAなど6社8800人影響",
+              "yayinci": "Aviation Wire",
+              "alanAdi": "aviationwire.jp",
+              "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5YUEtOT2tmenNxZkNCVFdzV1Z5eENZU3p5MmRzSUk1ekUxQmdjRHd5blkzZjJiWVdvdXNyTV9uVTllVFVINHR5aEpsUDJBUlVxcUNrNjV3?oc=5",
+              "tarih": "2026-10-24T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "【欠航の瞬間】その時乗客たちは… Mark Stone (bOaYwNiOeB)",
+              "yayinci": "Unisba Media",
+              "alanAdi": "media.unisba.ac.id",
+              "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBkWjVOblFYdXY1NnF2YzByVjlOdm9PeUFXdi1DcXZnQ1ZXTHdnOUQwdUVIR2xSRXZCSFdwaGJfeHRXLTg5MnNhN1EtVDNwamtGaFhpSnZEYllWLTJNR3Nib2hpMzZ0Zw?oc=5",
+              "tarih": "2026-10-27T04:54:02.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "Typhoon CHAMPI: Strong Wind and Crosswind Risks at Naha Airport as Storm Approaches",
+              "yayinci": "株式会社ウェザーニューズ",
+              "alanAdi": "wxtech.weathernews.com",
+              "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Td21scnAwcl91TEwxSUJKclRtZXVvQm1FR1BJMi1vOFktRzBlZmR1c2Q3a0RMSHhqWjFSNkNWNkkwWUJoNU9kczRndEdaX2gtZ2xsYWlvU2JCbFV2OUV0a1duc20?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Typhoon Champi disrupts Japan travel: How to check flight cancellations, ferry alerts and airport updates",
+              "yayinci": "The Economic Times",
+              "alanAdi": "m.economictimes.com",
+              "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxQM083cGYwb2FIMGhaZXpmZ1Z0WWphUU1oS21ONl81SW8zaXR6eEExcFdHVU5qak5XNFEzaUxjYVVPZ25helo5ODgtS2ZlTXpWc210M29TVGJtalpsYUF5dWtGMGJnRDdYa0hzMy0ta2JGSzdYQjd1SFFITHRmM0ZoTlJ2blFQN2tVSnZKcDlEV3k3XzR1OVpzMjk1VjAyenZfVGFPTjFmeVNVelpWUGpVOHNsU29WU3ZYZlFpVkJscmpTU3RnRFZRNUJJdWE1dTJJck5XTkhzY3QzVlM0TnBsSUNFSzI5VEY2TTFYVzBMWXM0WXR6YmpWY2JR0gH_AUFVX3lxTE11UDB6MU5uR1VndHNLUnZhRXlCVFpHSEt3aGpQS2lIUnFBZ1JHWVFsa1EzNmJDNUsyemFRWS1BOV9GS1loblNsNVJxRWVIVTd5SDlCTEFkY1ZLTDJ2UTlNSENIY2ZYUldHNDVGZGhkbzFpeWJIOGRiakdIeTR2UGJLVHduX2lRNmRqYktWZkkzNTBjd1Y4WTNjSTdyUkYzMGZYS1k5WGItOGZ5T1lvQ0hHUjRkWEo0WExET295RHBTbnF6a1YtZ0FHUHlVc3Axc3UybWhWaHNwalBJb3hYS0R2dWxRdi1weE5SRk5sZDJVcDNkZ1FrMW1SUE1KaVpFcw?oc=5",
+              "tarih": "2026-10-24T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Kansai’s new tourism strategy council meets",
+              "yayinci": "The Japan Times",
+              "alanAdi": "japantimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQa3hNYnpiRlhtWTZJUWhGVkFOSzh0dWxjbzRfZVNBQ1NsY1Q1cUhtTjUzNXI3dDk0MHJlRS15MlhNbkZQTVRFQmxkLU5QQjQxR1lQMmJaelRtWXlERUVOcmQ1WHdjRVJjaHBOclFFQVhiRk1YcWhBbVBTT3ppcXh4Y3hTOTZ1eHlmdXFEVFZIbi1VZTZVUzNvOTNISGc1dHhEQmVGZw?oc=5",
+              "tarih": "2026-10-22T22:00:29.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Nagoya Chubu Airport Guide: Japan's Island Airport Explained",
+              "yayinci": "The Aviation Hub",
+              "alanAdi": "theaviationhub.co.uk",
+              "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB1N2d6SU4zQ3dXMWIwa2Y0dFFpN3NsbkFLWVlYVUNlRGtQV2N6N0VMX1RjSTZMeGxoYi1nVjBManRiUmxpSjV6akRMNTNUR1huc2FyeDhIYTU3TE1Jc2YzZnoyUENaZU0?oc=5",
+              "tarih": "2026-10-20T14:03:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Typhoon Champi disrupts flights, ferry services across Taiwan",
+              "yayinci": "Focus Taiwan",
+              "alanAdi": "focustaiwan.tw",
+              "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5hOU5YX3FIVDBVYVVsa0lZOTBqQ3BzNFRJTmhBTFRLY1Z4WDZ6a3U3dXUxVXFheDllRzJtRHh2MkE3Vkd2NGlNX3FXbHNaT0g1TlA0Y2tB?oc=5",
+              "tarih": "2026-10-23T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Impact on air traffic: Typhoon Champi approaches Taiwan",
+              "yayinci": "Aviation.Direct",
+              "alanAdi": "aviation.direct",
+              "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQMjhYSnZDVGNseEVvcHdVMHczMTVDZHE1cDIyWmJ6RjZJOS1zT1JPSTZRMnpGZkJuVnhjc3VBczdBX3JsR0REUjZINTRuRHhHZU9oSFp3Um1aMldsUnFSWnNRcUc5bFlhaVB2b3l0dHo4NjRtWVNXTHdCNTJGWVRudW5zVkNkVjRENEhucVdaaU91ZFZ5REY4Ng?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Visitors to Japan will soon have to wait for consumption tax refunds",
+              "yayinci": "The Japan Times",
+              "alanAdi": "japantimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPN1lud2h6YVBpYzV1SGpYWDI0NTRsd2N2czJPQ28yNUQyenRlTHpfNGVCNTEyR18wYmprY1o3V0UzTUdMVHBQM0dLaGNIdGRRUHFDeng1RzVGM1o5UURyTmZmVkdPT1I0dXlnTWlfMDBPTFNPeWNQMG5wRXA0VkRaWDhvUDdVNDA?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Airlines cancel, reschedule flights as Typhoon Champi approaches",
+              "yayinci": "Focus Taiwan",
+              "alanAdi": "focustaiwan.tw",
+              "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9vRVJGcGw5ZmY3NlI5ZmtPOURYM2RWLTE4MlozZ19zTHM0Mkh2dTVyaDFOaDlxOEtTb21NeEJOcl9UZnpNZ0pwcEpjbjNlc3dxaW5nY3hR?oc=5",
+              "tarih": "2026-10-21T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Asia-Pacific Circular Cities Forum debuts in Yokohama",
+              "yayinci": "The Japan Times",
+              "alanAdi": "japantimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOY0xKZHhqc2Z6TVFGTGFYME15YVZJclZIb2xKZ0RiV2ViN21jdzdKbFVYR2dwM1BOSXBvblB5SEJOVTFjQTV4LTB3anlLMEVBTm55b05nWkVqTUFzZnY2ejFkTzV0LTZwRzc5dWg4V1dWU0o2T2dLS2VYejk0VzVWdmJQZWVCZGNBZ2Z4ZFRsTkZPNFd6ZGhPck56d3JmU1Vlc2tpdjl5ekRMcU9zbkpydQ?oc=5",
+              "tarih": "2026-10-22T02:55:51.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Typhoon Threatens Island Flights and Ferry Services",
+              "yayinci": "News On Japan",
+              "alanAdi": "newsonjapan.com",
+              "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5xY2dac215WDdCT2RzTVBQVUZQck42ODdScnJrRG9fbU11TGZNQkpuRkJXVlM3dDI0azd4bU50c2dBZUV0Znl6Qm82RjRQY0hUVWdTMA?oc=5",
+              "tarih": "2026-10-27T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "JAL Offers Ticket Waivers Ahead of Typhoon No. 30",
+              "yayinci": "TRAICY Global",
+              "alanAdi": "en.traicy.com",
+              "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE0zenpqTDhMN1g4LUstUG80WGVtM2ZWem1OLUp1aUpnTUlvNllWNU1FODN1b2N4Mk5tQWRHSkpqWXFQdXVEUHVxMGhNbGZxMmgzNU03Sw?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Japanese Airlines Cancel 100-Plus Flights as Typhoon Champi Nears",
+              "yayinci": "Open Jaw",
+              "alanAdi": "openjaw.com",
+              "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPNEhoOGxHQjV0NHRZVV9pUlNtZXlySkZJeHgxUDlvMDVZWjIwajBNUlhBV3hpWTRVTmQxSVZPWVVBUVdwVmtiYmZNNzlrSjcwSDc5amFOOGRLWFdSbDJKcS1VMVZrMkN0eTJteGh2aGlFaWlBN2Q4cEIweDAzTGVCYVVVZGt3LTJRUF9pcEx4ZldnLTBIbkMxUjhOTDBtVEpjdXV5ajRxbENLMjlDUzBiQ3lhVDA?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Super Typhoon Champi Disrupts Japan Travel: Flights, Ferries, Festivals Cancelled",
+              "yayinci": "Travel and Leisure Asia",
+              "alanAdi": "travelandleisureasia.com",
+              "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPdnJmaGpTTDBzeFJ5VlljWnhWM1FMaWltbzZsbmRCRW9hYmV1ZmxfOGZTMlVoTUVja1RBX1A3TG5NY3ZKclpZSTFzV0pWUGFZdjZ4N2h2S1FhRjNzbmx2OGRHaVNhX1hmXzVxTVZEVy05ZV9wNGxlR01Fc3hfWHhVNzg0SVdFVEl2V0VEU1pSRkVscXB1QjV1NFpsazRPczM4aTQ2Z3E3bThPX0FhU3laSk0wMjFqeGZ3MlpJSXNINDhvNk3SAcgBQVVfeXFMTlVBNTZXRGYtN2RKbGl5UmZkYlIyWjM0VnpYbnF0eFlMdmJtSGo0Nm5KbTZRQ0FPQjdDQy1GVFNYeXdpNFRqWDFOdFF6d0RlZWlWT0lNWVhCUktPZklnZVdhNVFGOGczMzU1RXI2VjlNdEF6OXJnZzhTMzNWNHIxTzZPMFlkdVlLRHdmTkdXWHhJeE1xNWdIcTVGa0VGOVc4X29FWi1iVmhLeG9qb3RQaHdXVFBTSUJReFptNUxTUmdEQkluUXR1Ync?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Typhoon Champi forces shutdowns in Taiwan, disrupts flights in Japan",
+              "yayinci": "Firstpost",
+              "alanAdi": "firstpost.com",
+              "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOXzAxOWJGMkxtclZXXzE5Z21qMjh2Y2tqTUMwVFRGT2c0MUZRU0NZZkZzbTlWS0pLTzJSMEpzbXFqdXJpazVUUDVoR05tT0NVWlFkOGpRc3oxeldCaGNyMTd0VFlBczlNaHh3Y3VtUzFHbGNBdG0yYmhaZG40eUFlcmFyb2hDTUh0MUNqcmlVX2FNYXc1V1hidTZENVczOHQ2b1kyb0M4TmxCWWx3SUhNcWRjSdIBuAFBVV95cUxNaGJBTXY3WWRwRS1UWUxRS211M2NJRFVfODlSZUZScDZQNUZXQzZjVFgwYnhyT3NJYkFoTk1yb3ltdTZDT3FiWTRuNFFwaTdIM2lHb2Y1aXBGbnR6YUtUWWtTLU9CODlRamJ0OHhoXzIwekhKVS03UzlwQzdaUjVGU1VNRXMySUpMcmxCV2JtQVVwdy1pU3dKMjlWNklONFI3Y085TnZHM0hPLW0yRmRCMjh3ZU50YXFz?oc=5",
+              "tarih": "2026-10-23T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Japan braces for 30th named storm this year as Typhoon Champi heads for Okinawa",
+              "yayinci": "The Japan Times",
+              "alanAdi": "japantimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9fZmFwYzNfSzJ2OGZ5aDZoQnV0QVNvMHZZN2NmV2NpVFRBR0pKZVNxcFJfM0E0QzUxNzBNQUd2QjB3bS1CZzBFSWhscFVKOHlhc1ZpcVR1MHhSRHZjU3pZbTNYSy1VWVRJYzYyeW1jMHlOajNJRUxybnd2a2dPUXc?oc=5",
+              "tarih": "2026-10-21T07:00:00.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Japan braces for super typhoon Champi as Okinawa flights and festival cancelled",
+              "yayinci": "Gutzy Asia",
+              "alanAdi": "gutzy.asia",
+              "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZEd1LUtOUUFLYTVXMmhHei12QlFpR1RkRi1mNnFLejlBWS1OZDdnWjFYNlZhbFd3bDhsbFU0X3d2NkpIVTI3a2FwY1l0cE9uT1BYX2NuUmZsaE9yZFJGYmVMeGQ5bVUtZS1hYzMyaFg2SnpiblpQdDdTRE9ETXk5d05iQkQ5Z3Y5WjA3TEZEZXQwOEFYRVo4TTliSmtGU1VQczZNcngzUC0wb1A4Tnc?oc=5",
+              "tarih": "2026-10-22T08:22:05.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "Typhoon Champi prompts Japan Airlines to cancel Okinawa flights",
+              "yayinci": "NewsBytes",
+              "alanAdi": "newsbytesapp.com",
+              "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPSVVnakh0SFdoTHBQMmtyc014T2dseWtEeXktalllMTlaMWRtSWwxcjVwRlZUcUVDODg3TENsOGdxaWQwNV9xaGZtZmUyeGFybk4xbVZBbWp4MlZLQUNVdE1lbkxQUzJwMVhBczZsYk92bkhmNkZybXoxQ1Yya0V1NGZ4c0RmMkQtUExFTjcwNHZfdTN3aGo3emxBRThyLURVOFFjanBBRGE2MURR?oc=5",
+              "tarih": "2026-10-21T14:38:23.000Z",
+              "dil": "en"
+            },
+            {
+              "baslik": "那覇-ハワイ直行定期便開設を目指す 那覇空港ビルディングとハワイ州が連携協定締結へ（RBC琉球放送）",
+              "yayinci": "Yahoo!ニュース",
+              "alanAdi": "news.yahoo.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1vbnIxUUlVS0czZ1c5ZGVHVzMzTG5nVmtrTGlJOW1jMjNyWU9qOWVQc1Q1Q3k3YzZUNk93dGtMd3BIRkViQjZMeUh6Wl9NbWhDbHpvVTFTUnRVT053X1BBYWRuV1R1al9malFHMTdaXzk3SnlDc0RZYlQzUTRMUjg?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "侵入者役「殺すぞ」と叫び 那覇空港で想定訓練 警察官ら総勢60人 沖縄",
+              "yayinci": "琉球新報デジタル",
+              "alanAdi": "ryukyushimpo.jp",
+              "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9zeWl0QUM2b1NEMXQzclRXQXh6NUM1bkNUMGNvdmlDRXVvUlZjTURKSFJFa1FPQTlibk1PZ1d6cjd1eDV3T1dnbVNnUURmTGF5SndrU0I2YUJNT2ZsSXAyRQ?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇空港にインバウンド向けの免税手続き端末 出国時返金方式移行で",
+              "yayinci": "日本経済新聞",
+              "alanAdi": "nikkei.com",
+              "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5hRzFiRHBCYVMzeHc1TTZhb1Fab3pVaWozVFhIQ3ozZ0xzai12ck9veXB4TFBVSXEzZjNIVC02SVBIV1FoX0w3SzkzVktQRlBZMy1rQWZVWEtfckFYa1dQTEh6aTNPZVM5X1BHdQ?oc=5",
+              "tarih": "2026-10-26T07:08:02.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "2026/10/20王瑞豊処長は那覇空港にて台中市の盧秀燕市長および合同結婚式に参加する一行をお出迎え",
+              "yayinci": "www.roc-taiwan.org",
+              "alanAdi": "roc-taiwan.org",
+              "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE05ZFIwUVZEN1phZmQtMG5sU1EwZnE4QVJxM2E2SllQNzFVcTNqOWJuTWVRa0xscll5WkhKZmxmeTdyM0JpS1ZDSXUyTzdhb0dqZ2trbWlKWHlaUFlRR3RZ?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "【沖縄限定】「紅いもタルト スクイーズ」が那覇空港で買える！ お土産にもおすすめなここでしかゲットできない癒し系トイとは？",
+              "yayinci": "MEN'S NON-NO WEB",
+              "alanAdi": "mensnonno.jp",
+              "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5sTDhJM1JEZ3pYWDhlZUJfcEpLeV9EUFE4YUZ5SFlHWG5Bd1lSYmNQVmhsX2NzenU1S0VMRU5jVS1LQjN1cEFBRjZubF9NOVZFeTZmV2ZkWVF1azZ3RFhhVDVB?oc=5",
+              "tarih": "2026-10-24T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "【台風30号 CHAMPI】台風の接近に伴う那覇空港の強風・横風リスク",
+              "yayinci": "株式会社ウェザーニューズ",
+              "alanAdi": "wxtech.weathernews.com",
+              "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0wSFNBWW15clV1eGNjNzZ6RmFQZXgzZHF6NjlwU214WVNYZHVNS29YckZHMGVKQW00RWRQV3NvYzdOd3FHWnZWOHFwMDNpOEwtNk9VUjZqbjFTTWduSXlDOQ?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "「航空機目指す不審者が到着口を突破」 那覇空港で侵入対策訓練 15機関50人が参加",
+              "yayinci": "沖縄タイムス社",
+              "alanAdi": "okinawatimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBYQk5tYVVxM0ZHME83VVFhSVN4VXJHM3hUeG9CeWlETDh5aEN2eFYyTHNZZDFHcmRkUWJhSWo4VHBlR3Q0VS1vZ2JneEZmVjYyOXBmY3JEaFgxaFVqaXc?oc=5",
+              "tarih": "2026-10-23T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "「航空機目指す不審者が到着口を突破」 那覇空港で侵入対策訓練 15機関50人が参加",
+              "yayinci": "47NEWS",
+              "alanAdi": "47news.jp",
+              "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1OaHZZbnBSeUljZmI0eHVNQU1vaUVWWGRaYVB5NFk1Yy1rWUVhV1dxTXJ4bWlQb0VEaTV5MkktcVdLb1drelJNLTBDSQ?oc=5",
+              "tarih": "2026-10-23T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇空港で不審者対応訓練 沖縄（沖縄ニュースQAB）",
+              "yayinci": "Yahoo!ニュース",
+              "alanAdi": "news.yahoo.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9QYlZnTFM5SHY2WW5QVmtqZ3N1dnBsWEtXcUtQQ2kwOFNmQklnVXdyN0s3SnotcUpWNzJnQ3o3YkZWMjZMTFgwYWNvLUNMYzlxOFFpd1BXOHRxRW5RVUdsemhmaEdPQU1uMEZ2WXVDanR5OThKVzBiY05KMVA2ZUU?oc=5",
+              "tarih": "2026-10-21T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "沖縄・ハワイの空港連携へ サービス・直行便・渋滞対策・防災で協力 那覇空港ビルディングが年内にも協定",
+              "yayinci": "琉球新報デジタル",
+              "alanAdi": "ryukyushimpo.jp",
+              "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5vUVFPX25LdzBqeFk5VHdMYkZQX0NPb2pvMDNmSEJ3T1owTHJxbDJ2eU9COC1oR1YtUGdsYlhJNVVVUGpQaUdxZTVSajNOdk1uWkNIVmNtUXZhR1pWWUlib1hn?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "ホノルル―那覇に直行便構想 ハワイ州運輸局長が来年の開設目指す 年内に業務協力の覚書締結へ",
+              "yayinci": "沖縄タイムス社",
+              "alanAdi": "okinawatimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9sdFcxcXY3RHJTYXVPUHh4a3dsSE8tS0RHZFBLLVFUQUVQTzZvNExONUdvXy1CWkFud3NqNjVHaXZFdjI0RVhwTnByRmktMGtDaWJvMzFwQUdTMHNfN2c?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇-ハワイ直行定期便開設を目指す 那覇空港ビルディングとハワイ州が連携協定締結へ",
+              "yayinci": "TBS NEWS DIG",
+              "alanAdi": "newsdig.tbs.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9kRnl2UlJPR2NaelhTMUo4dndpM2dnczZ0YUhrRkF4SURyNWgxcTdaajNlZWV5ZFluVG1qZm5hNDhadlVrQW9STEVLMml5c1J0dnNpbDY4bnVGNENvYTFaeVNIdV9XVlU?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "ホノルル空港で沖縄特産品の販売も ハワイ州運輸局と那覇空港ビルディングが業務協力協議 年内の覚書締結目指す",
+              "yayinci": "沖縄タイムス社",
+              "alanAdi": "okinawatimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBsZ3VTNGNEeUV2MGZ2NjRlYUJsckpTWXhjYVI0YS10dkVHd0kwX2hmcWdlQy1jUEVTQUV3TTNmbjlQRUVfYWtabnFlUkwzS01sSmw0dnRFZHF1aDQ5VFE?oc=5",
+              "tarih": "2026-10-20T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇空港に大麻輸入の疑い イタリア国籍の男逮捕 豊見城署（琉球新報）",
+              "yayinci": "Yahoo!ニュース",
+              "alanAdi": "news.yahoo.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFA2SXBVYV9HRjA1Q2k4Z1BOOHM0dGtxWFkxcDg5Uy0zTHhUUUM4UWNqcWFZX09WYzZ3SnJFYnRDRXgxcDd3SS1Ib1g2UnFhamtDOU9nUnpYVE1EMVpOcnVBeEw3aWhsUnhnd1pCcERYTFRHZWNTakNpWFZ3TTdrX2M?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇空港でも新免税手続き 専用端末で消費税額を返金 11月から外国人向け 沖縄",
+              "yayinci": "琉球新報デジタル",
+              "alanAdi": "ryukyushimpo.jp",
+              "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9ZbGh3bWFCVUtZV3VzMGFkcGNET2thQk5oX1U4MVVvckxVSTNWckJsVFhXQ2FmcjYyRjRCcXg0VFJoN1RHOXE4V2lMT3ZQckhnSlZUbmM1OXNhSFl3MHRQNE5n?oc=5",
+              "tarih": "2026-10-26T20:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "相撲で世界一＆準V 玉城と山下が那覇空港に帰沖 友人ら笑顔で出迎え 沖縄【動画】",
+              "yayinci": "琉球新報デジタル",
+              "alanAdi": "ryukyushimpo.jp",
+              "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE94TUIwN0hoTnBwMnZEakZzZnExWUFib3FwRzNEUUYxeUdlMS1oQU5aZ2ZfNnVuMmFSaEtmbi1hSnJ1YlFHRGRNZmgxWE83LVBtQ1ZvODBUa0J0VTRyZVJ2b0pn?oc=5",
+              "tarih": "2026-10-21T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "「那覇―伊丹線は念願だった」 JTAが定期便の運航開始、関西とのさらなる交流促進へ 那覇空港でセレモニー",
+              "yayinci": "沖縄タイムス社",
+              "alanAdi": "okinawatimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE5BdUVPYjdxVFFIYUVTZnVmU1haN0Z5OUJhS1pBV2hKdEl2VWlCMjdQTkZkS0d5S045THJQclAyUzU1T1JNeUVQMi1FMTFmM05SWjlVR0tGWE0wOXBja0E?oc=5",
+              "tarih": "2026-10-26T09:19:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "侵入者役「殺すぞ」と叫び 那覇空港で想定訓練 警察官ら総勢60人 沖縄",
+              "yayinci": "47NEWS",
+              "alanAdi": "47news.jp",
+              "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5HVkp1RWlheXQxcjhwU0g2NDI3aVBHUXNOd3BJX256a2g4bXR4YTBwdWQxbG91aU1Qbm43dHFBSEp4Q2dMWUxaZlp1UQ?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "侵入者役「殺すぞ」と叫び 那覇空港で想定訓練 警察官ら総勢60人 沖縄 (琉球新報)",
+              "yayinci": "Yahoo!ニュース",
+              "alanAdi": "news.yahoo.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNQTk0V1pSU2dXemZKbUFCNDB2cHRnX2JXLWl4YzRuclBwWFFsVmJpQ1lDei1hQ2hjZF9jcnhwQkpZdUVGM1ZPWnhpWGFiUFlaOFMzTEdobWFQeGhLRmlqLWhmeHloeTdpWkVuSEx4eWtjcTJMU0VneVRZRjJfR3IzVlc2NjZLcFhpcjlQMmJn?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "「航空機目指す不審者が到着口を突破」 那覇空港で侵入対策訓練 15機関50人が参加 (沖縄タイムス)",
+              "yayinci": "Yahoo!ニュース",
+              "alanAdi": "news.yahoo.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNVDQtaDVwZExuSWktN0FmeHBmSEE1blJvb1JQRjZiSjFwdlpkcUEyWkxlMkRWVEd1cTBkaGIzdU11WmhOZTIzS05RSlFKTzM2ZmRlNXhYeVJWdTFsN28zV203dnVFWWNHNXZUcjdOeDUteUFGWVVOeFkxYnRaNHdjclAtdFhaM2ZxOV9wc1Z3?oc=5",
+              "tarih": "2026-10-23T03:31:33.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇空港で米訓練 否定 那覇市長再選 知念氏に聞く 小1英語教育に注力",
+              "yayinci": "沖縄タイムス社",
+              "alanAdi": "okinawatimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1VWmZGV2oxOUdNY3RqbS1FVHV1Q2FvZmx3Z0ZRalF2Y1VHWnRfd2w5VUNKc2NuYkJsdlA1S2xGUTZJVHp4aF9FYk5aZjUtNy1kWHBmZzZqOGZFUGlZYXc?oc=5",
+              "tarih": "2026-10-26T19:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇空港に大麻輸入の疑い イタリア国籍の男逮捕 豊見城署",
+              "yayinci": "47NEWS",
+              "alanAdi": "47news.jp",
+              "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFA0ZUpOM29jZ3RfZnRma1NuVmpqT2Z5NC1KTjZDbmxkMzE1YjNHVXd3Yk1JZmxTWWlGVnlqeDZBdTZmM1ZCXzZ0MGVCSQ?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "沖縄地区税関の動き",
+              "yayinci": "税関 Japan Customs",
+              "alanAdi": "customs.go.jp",
+              "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBmc0tZdDFHaktyUTdDYUZwcEg4SndLclhKR3RNYWEyblVYZDJPMVRNZlEtdUVYN2gxX1NjTG1hOF9XVm1hRU16b2hYWm9DN3pqVlZnZklFYzBmZnVxbG9INzVPM3M?oc=5",
+              "tarih": "2026-10-27T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "那覇空港に大麻輸入の疑い イタリア国籍の男逮捕 豊見城署 (琉球新報)",
+              "yayinci": "Yahoo!ニュース",
+              "alanAdi": "news.yahoo.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQQ3JjekVkV2FCVThYQmFrSk1jbGFJVHliLWU2eWxpOWxOeVBpTGI0VloteVpOZklaLWpUNDZMS2R2dU9BUUV5RF9GWTJBa1Q0WFA0TVp0V2lwLWxCZ25rUTlCQWRJVUtjdFhHcmhZTTREZ0hGa25lRjBrVjBjWXA3S2JfZjZNT196aFp1ejFB?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "写真：「航空機目指す不審者が到着口を突破」 那覇空港で侵入対策訓練 15機関50人が参加",
+              "yayinci": "沖縄タイムス社",
+              "alanAdi": "okinawatimes.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFB3UVZMR3VEU0lER1YycE53emhSTWxaQXpMa2kxX0daYzJoUElTcUswazdIaTlmSzlNZEtid3A4ZnhPZThnMllmQzdLcE5NU2c3RndHck1odnNCVUlFbDhjVEg1d2tTdw?oc=5",
+              "tarih": "2026-10-23T03:00:00.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "ANA那覇発羽田行き、エンジン不具合で481人に影響 出発まで9時間近く待つ乗客も (沖縄タイムス)",
+              "yayinci": "Yahoo!ニュース",
+              "alanAdi": "news.yahoo.co.jp",
+              "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOSVBJMUVXZkxtNDRkYzVIUEZ0dUI5RlNUVVJ1SFNTb0Rkd1FFV0FHcVFJcHpWS0VaMmh1S0kxSTdkSEExREZDdWE5Z1p4YVdUUmQ1MGpBcXpFb1NMdFJOSUlDUlhwbmRJbTBwOWxKaDhQTVFzT01XcE45YTBRdFZoSzNrdTBtU2w2c1hfUWNn?oc=5",
+              "tarih": "2026-10-26T23:31:27.000Z",
+              "dil": "ja"
+            },
+            {
+              "baslik": "卢秀燕：日本台湾处第一岛链角色重要",
+              "yayinci": "中国评论",
+              "alanAdi": "bj.crntt.com",
+              "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5nYmJQbWQyLUhTM3AzeVU5bi15OFB0YWxzQWtOazdhTmpiMTdwUUpHYlpiMDBXQmJkOWo2ZDhSS0ktQUJFT2Izb0Z6VnNlbUdXVnJ0cGRsX3ZvSG0zNU1tSk5yZkZzNzgtNEtpZnRsUQ?oc=5",
+              "tarih": "2026-10-20T10:04:09.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "30号台风致冲绳先岛群岛航班、渡轮停航,多座桥梁封闭",
+              "yayinci": "Avi-Go",
+              "alanAdi": "avi-go.com",
+              "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE8tNWI4b3JOZmtLd0FmTU00WnJyMHZXb29LVWFVSTdUd2J6aU5BSjhaTDNsSlo1MFdPVEYxR2VNd29tUUlTSzlOR0VrTFFlZkI5UUhhdThBNXEwUGNnd2QxemVmSlZPNGhMUllJbHdBMElmR1NDUGNtVC1LV0NUQQ?oc=5",
+              "tarih": "2026-10-25T04:55:01.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "卢秀燕空中见证66对新人许终身",
+              "yayinci": "中国评论",
+              "alanAdi": "bj.crntt.com",
+              "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE40amdWX2lkWno2cklwZnI0TkNMR2xoYm1VZ1RjNFJVX0h0U3lNV3VXalUtZ3VlWjNrYi1XRDlGQUlPWkNJZTZoZ2hpN3BtMUIteW1jYmFZSGtTNVBlYlVFOHMwVDdDbUhCb3c?oc=5",
+              "tarih": "2026-10-20T09:41:57.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "虹夕诺雅 冲绳将于2026年12月推出关于陶瓮与木桶陈酿的“泡盛发现”体验项目",
+              "yayinci": "www.haveagood-holiday.com",
+              "alanAdi": "haveagood-holiday.com",
+              "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQdmlONEVyb2VNeFVKNjBCdDRxYWFLek5haEQwWURvQ1daXzhYMjlJOUhPWmR6SDVXbjV2d2VKeUR6dTA1SzFGWjVKNVplenRRRnctWGQ2ZDFuc0s2a2lYYk9sWUQzSmp5M19KQ0JFRExRSWRHRndxOHU3Z3FnOHNFa25XVzYwR3Z4c3QzTEtLMjRkc2M?oc=5",
+              "tarih": "2026-10-27T05:41:17.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "那霸地检以抢劫杀人罪起诉驻日美军士兵",
+              "yayinci": "阿波罗新闻网",
+              "alanAdi": "aboluowang.com",
+              "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9XLUljQS1KXzd3WWlPaWNlOGR4ZXJ1b2dVVGd0QjVKLUFhcjlQenEzaXBOZlVvR3l4QlMySTdla2VERi1NUnRwbmd3aE1pSFJhajF4dGp6Zmk5MGg2Mnc?oc=5",
+              "tarih": "2026-10-26T11:32:29.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "涉杀害冲绳女子 驻日美军士兵被正式起诉",
+              "yayinci": "Newswav",
+              "alanAdi": "newswav.com",
+              "url": "https://news.google.com/rss/articles/CBMirAJBVV95cUxNLVVueFFqNFRsQmVfMnFOLXltcnZ0VWVHay1PbUlhZEN3UmEzcXh0akVYRWJNZ21WcW5oQjdTRUxDTjIwWlBlT2FINzdoeHdzYlp1SjRoczlYUG1ua0xHSWFUZ1NJVlM1VTZYR0xrbmFyZWhMRWoycWRRaDJnV1E2Ty1Xb21pWTFveTJ0UUdURG1qTXZnMFdVM05hcTJEcExZYkV4em5ud2VoNklQeTRmaVZxUDhMUUFWN01BQ25XRU1TM1lYT1lucml1a3A1VHgtMzNyUWhlTlFPSE1TdVlrODVodWMtRGowOTRkS3JIejd0U0ZXX1pZZEF6OGIyVm1ad2M4Tm5PbFVPS1c2RVVMMGo0WUYzcmRQZjRUSlhmMHd4bHlhZkJmaUE2UTU?oc=5",
+              "tarih": "2026-10-26T05:00:00.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "台风蔷琵来势汹汹 台日菲逾千航班取消",
+              "yayinci": "亲友传真",
+              "alanAdi": "test.qycz.org",
+              "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9RT1kwcFVHUG9ST3VTT0ZOenN6YmNSdndqNG5mc2lSTkt4U3BuUGhXY25qRGRxZ2tpV3N6MlE4ZUlTcjZ6YWMtSGk2b1B6Q1UxZnotVlhkTnc?oc=5",
+              "tarih": "2026-10-23T19:19:57.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "台风“蔷琵”袭台导致航班取消 干扰美日联合军演(图)",
+              "yayinci": "看中国网",
+              "alanAdi": "secretchina.com",
+              "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFB1ekxlck45Z3h2Mlh0LW9jNV82U1cwSWxQNHZUSFpJYV9TM0QwX1dNNlpOOVc2MHRPejUzTzdEQWxVMXQ3Z04xTnlfRHI0cElSUmlYSEFuUFBkcVNRWE8tZmFtQkpocnFtYmlN?oc=5",
+              "tarih": "2026-10-22T07:00:00.000Z",
+              "dil": "zh"
+            },
+            {
+              "baslik": "낯선 약어 때문에 멈췄다면, 경마전문가예상",
+              "yayinci": "Calgary Roughnecks",
+              "alanAdi": "calgaryroughnecks.com",
+              "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNUk5qa0dmVUhnUFptQ24td1A5OE5obHNSNjMybkZVdUZ1WlFmZmNjNlVrczY1Q20ta3VMU1gxcHU1TW1qSzhHMjZnOGVGZ2dVM2FjSEZPb3kyMmFpN21OaE9lUzd1eENuaTEwZE41SW1YNmFUdkI3X1dMeENYX25sQkIwRE9RYzNaQkpsbE5EYUNkVm50d2gxRTNaR1NFQzNReHVzNkwydWRoR3BORUJCSGNR?oc=5",
+              "tarih": "2026-10-20T17:07:47.000Z",
+              "dil": "ko"
+            },
+            {
+              "baslik": "일본 면세 쇼핑, 11월 1일부터 세금 먼저 낸 뒤 출국 때 환급",
+              "yayinci": "https://www.diarypoint.com/",
+              "alanAdi": "diarypoint.com",
+              "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBET1ZFVGJtdTBjLWNyWlA4RG91WVRGWXhiQWlPb1ZsLUZlWWQwN3R6X2VkbnZCWWNaQnJYRmZPN3Y5UXNwNkUtLXlZOThQRVYzSXhvTDJGVUxKR1hGTlh5ZXVaZGZZdkYxMVJr?oc=5",
+              "tarih": "2026-10-24T07:00:00.000Z",
+              "dil": "ko"
+            }
+          ],
+          "kararlar": [
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 0,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 1,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 2,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 3,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "台風30号 沖縄で猛烈な風 けが人や倒木被害 停電も JALとANAで欠航相次ぐ｜Quebee キュエビー",
+              "ceviri": "30 numaralı tayfun Okinawa'da şiddetli rüzgar, yaralanmalar, devrilen ağaç hasarı ve elektrik kesintisi; JAL ve ANA'da art arda uçuş iptalleri | Quebee",
+              "ceviriEn": "Typhoon No. 30 brings violent winds in Okinawa, injuries, fallen-tree damage and power outages, with successive flight cancellations at JAL and ANA | Quebee",
+              "id": 4,
+              "karar": "destekliyor"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 5,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 6,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 7,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 8,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 9,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 10,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 11,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 12,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 13,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 14,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 15,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 16,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 17,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 18,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 19,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 20,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 21,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "typhoon Champi as Okinawa flights and festival cancelled",
+              "ceviri": "Champi tayfunu nedeniyle Okinawa uçuşları ve festival iptal edildi",
+              "ceviriEn": "typhoon Champi as Okinawa flights and festival cancelled",
+              "id": 22,
+              "karar": "destekliyor"
+            },
+            {
+              "alinti": "Typhoon Champi prompts Japan Airlines to cancel Okinawa flights",
+              "ceviri": "Champi Tayfunu Japan Airlines'ı Okinawa uçuşlarını iptal etmeye yöneltti",
+              "ceviriEn": "Typhoon Champi prompts Japan Airlines to cancel Okinawa flights",
+              "id": 23,
+              "karar": "destekliyor"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 24,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 25,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 26,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 27,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 28,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 29,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 30,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 31,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 32,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 33,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 34,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 35,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 36,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 37,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 38,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 39,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 40,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 41,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 42,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 43,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 44,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 45,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 46,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 47,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 48,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 49,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 50,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 51,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 52,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 53,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 54,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 55,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "台风蔷琵来势汹汹 台日菲逾千航班取消",
+              "ceviri": "Champi tayfunu şiddetle yaklaşıyor, Tayvan, Japonya ve Filipinler'de binden fazla uçuş iptal edildi",
+              "ceviriEn": "Typhoon Champi approaching fiercely, over a thousand flights canceled in Taiwan, Japan and the Philippines",
+              "id": 56,
+              "karar": "destekliyor"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 57,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 58,
+              "karar": "ilgisiz"
+            },
+            {
+              "alinti": "",
+              "ceviri": "",
+              "ceviriEn": "",
+              "id": 59,
+              "karar": "ilgisiz"
+            }
+          ],
+          "govdeRed": []
+        }
+      },
+      "sn": 70,
+      "puan": "destek-bulundu"
+    }
+  ],
+  "ozet": {
+    "toplam": 1,
+    "sonuclanmadi": 0,
+    "disarida": 0,
+    "dogruIddia": 1,
+    "destekBulundu": 1,
+    "yanlisIddia": 0,
+    "yanlisTeyit": 0,
+    "dogruRed": 0
+  },
+  "maliyet": {
+    "istek": 5,
+    "girdi": 4511,
+    "cikti": 24613,
+    "arama": 0,
+    "modelDolar": 0.11024400000000001,
+    "dolar": 0.11024400000000001
+  }
+}
