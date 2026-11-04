@@ -73,6 +73,8 @@ Total cost about $5.16 for the 15 claims. SEZ errs on the cautious side: it conf
 
 This strictness is a design choice for aviation safety. SEZ exists to cut the noise an operations team works through, so a doubtful event is shown as "contradicted" and sent to the official sources and NOTAMs for a decision, rather than raised to "confirmed". A false confirmation costs more than a missed one. As the code and the models mature, the contradiction rule will be refined (de-duplicating contradicting sources the same way supporting ones are) and the evaluation re-run and published.
 
+Measured next step: we re-scored the same run offline from the saved model decisions in `sonuc/`, with no new model calls, using a majority rule. When at least three independent publishers support a claim and they outnumber the independent contradicting ones at least three to one, the level becomes "partial" instead of "contradicted"; it never becomes "confirmed". Real events supported rises from 4/7 to 5/7 (Schiphol: 9 supporting, 2 contradicting after de-duplication), and false confirmations stay at 0. None of the eight altered claims had any supporting source, so this set does not yet test whether the rule could lift a false claim. The rule goes into code after it is tested on altered claims that do have supporting headlines.
+
 ## Known limits
 
 - Independence is judged from publisher domain and headline similarity. It does not prove that two publishers did not copy the same source.
