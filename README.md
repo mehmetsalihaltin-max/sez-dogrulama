@@ -83,6 +83,10 @@ Total cost about $5.16 for the 15 claims. SEZ errs on the cautious side: it conf
 - The Google News link resolution uses an undocumented Google endpoint. If it stops working, the check falls back to the Google link.
 - Runway water is measured from 10 m Sentinel-2 pixels; the two methods come from the same image, so they are not statistically independent.
 
+## Production notes
+
+This repository is the hackathon build: one server process that runs on the operator's own machine (bound to 127.0.0.1) and stores runs as files. Moving it into an operations centre adds three things: user sign-in, a spend limit per team and per question, and a database with a scheduled re-scan for saved routes. The evidence gate, the evaluation set and the saved-run format stay as they are.
+
 ## Data sources
 
 - Copernicus Sentinel-2 data, processed (Earth Search, Element 84).
