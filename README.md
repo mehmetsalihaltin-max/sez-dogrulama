@@ -71,6 +71,8 @@ News links behind the expected answers are in `ornek/sinav15-kaynaklar.json`. Th
 
 Total cost about $5.16 for the 15 claims. SEZ errs on the cautious side: it confirmed none of the altered claims, and it failed to support three real ones. In the Schiphol case nine publishers supported the claim and three Turkish headlines that report the same storm cancellations were misread by the model as contradicting it; any contradiction currently turns the level into "contradicted".
 
+This strictness is a design choice for aviation safety. SEZ exists to cut the noise an operations team works through, so a doubtful event is shown as "contradicted" and sent to the official sources and NOTAMs for a decision, rather than raised to "confirmed". A false confirmation costs more than a missed one. As the code and the models mature, the contradiction rule will be refined (de-duplicating contradicting sources the same way supporting ones are) and the evaluation re-run and published.
+
 ## Known limits
 
 - Independence is judged from publisher domain and headline similarity. It does not prove that two publishers did not copy the same source.
@@ -78,7 +80,7 @@ Total cost about $5.16 for the 15 claims. SEZ errs on the cautious side: it conf
 - The article body channel (`src/govde.ts`) only produces "supports" decisions. A contradicting sentence in an article body is not processed; contradictions come from headlines only.
 - Every answered question is saved (`cikti/sorgu/`) and the same question text opens the saved run, with its evaluation date and a "saved" label; a spoken question opens a saved example when its places and year match. There is no re-scan button yet, so asking the same "this week" question a week later shows the earlier run until its file is deleted.
 - Contradicting headlines are counted as they come; they are not de-duplicated or filtered for aggregators the way supporting ones are.
-- A single contradicting source outweighs any number of supporting ones. This is deliberate caution, and it also hides real events (see Evaluation).
+- A single contradicting source outweighs any number of supporting ones. This is deliberate caution for a safety domain, and it also hides real events (see Evaluation).
 - Some publishers block automated requests (401/403); those sources are kept, not counted as deleted.
 - The Google News link resolution uses an undocumented Google endpoint. If it stops working, the check falls back to the Google link.
 - Runway water is measured from 10 m Sentinel-2 pixels; the two methods come from the same image, so they are not statistically independent.
