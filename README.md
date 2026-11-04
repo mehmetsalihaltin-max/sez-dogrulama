@@ -12,7 +12,7 @@ Everything in this repository was written during the building period. The first 
 
 ## How it works
 
-1. **Question → route.** Muse Spark reads the question (route, country, date). The route is drawn in code from real airport coordinates and, when available, a real flight track.
+1. **Question → route.** The question can be typed or spoken: "Ask by voice" records the microphone in the browser, Meta Muse Voice Transcribe turns it into text, and the audio is not stored. If the spoken question names the places and year of a saved example, the saved run opens at no cost. Muse Spark reads the question (route, country, date). The route is drawn in code from real airport coordinates and, when available, a real flight track.
 2. **Scan.** Muse Spark with web search lists events that could affect flights at or over the airports and countries on the route.
 3. **Evidence gate.** Each event becomes a checkable claim. The claim is searched in local languages on Google News. Muse Spark judges each headline in groups of 15 and must quote the exact words that prove it. Code then checks that the quote is really in the headline, the publish date is inside the window, and the place name appears. The level (confirmed by news, partial, single source, contradicted, no evidence) is decided in code, not by the model. Re-posted agency stories and aggregators are not counted as independent publishers.
 4. **Article body channel.** If headlines are not enough, Muse Spark web search brings sentences from article bodies. Code opens each page itself and searches for the sentence. The page text is never sent to the model.
@@ -31,6 +31,7 @@ Everything in this repository was written during the building period. The first 
 | Muse Spark 1.3 (vision) | `src/meydan.ts` | Reads Sentinel-2 images of airports and event sites |
 | SAM 3.1 | `src/sam.ts`, `src/pist.ts` | Runway segmentation from a single point prompt |
 | Muse Image 1.0 | `web/tehlike/` | One illustration per hazard type on the finding cards, labelled in code as "AI illustration, not evidence". No text or numbers come from the model. |
+| Muse Voice Transcribe 1.0 | `src/muse.ts` (`yaziyaDok`), `src/sunucu.ts` (`/api/ses`), `web/index.html` | Spoken questions from the operations team, with place-name keywords; returns text only |
 
 ## Run it
 

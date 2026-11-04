@@ -8,6 +8,12 @@ import { notamAnlat, notamGetir } from "./notam.ts";
 import { resmiOneri } from "./resmi.ts";
 import { IkiDilliHata, TEHLIKELER, sor, type Ilerleme } from "./rota.ts";
 import { sahneKur } from "./sahne.ts";
+import { yaziyaDok } from "./muse.ts";
+
+// Sesli soru en fazla ~60 sn (16 kHz, 16 bit, tek kanal = 32 KB/sn).
+const SES_AZAMI = 2_000_000;
+// Muse Voice Transcribe kelime yonlendirmesi: sik gecen yer ve terim adlari (yazimi garanti etmez).
+const SES_KELIMELER = ["SEZ", "NOTAM", "Singapore", "Bali", "Denpasar", "Los Angeles", "Dubai", "London", "Tokyo", "Lebanon", "Porto Alegre", "Istanbul"];
 
 const PORT = Number(process.env.PORT ?? 4173);
 const kok = (y: string) => new URL(`../${y}`, import.meta.url);
@@ -140,6 +146,17 @@ createServer(async (istek, yanit) => {
       }
       yanit.writeHead(200, { "Content-Type": "application/json" });
       yanit.end(JSON.stringify(govde));
+      return;
+    }
+    if (u.pathname === "/api/ses" && istek.method === "POST") {
+      // Sesli soru: WAV govdesi Muse Voice Transcribe'a gider, yalniz metin doner; ses diske yazilmaz.
+      const parcalar: Buffer[] = [];
+      let boyut = 0;
+      for await (const p of istek) { boyut += p.length; if (boyut > SES_AZAMI) break; parcalar.push(p as Buffer); }
+      const wav = new Uint8Array(Buffer.concat(parcalar));
+      if (boyut > SES_AZAMI || wav.length < 44 || Buffer.from(wav.subarray(0, 4)).toString("ascii") !== "RIFF" || Buffer.from(wav.subarray(8, 12)).toString("ascii") !== "WAVE") { yanit.writeHead(400).end(); return; }
+      yanit.writeHead(200, { "Content-Type": "application/json" });
+      yanit.end(JSON.stringify(await yaziyaDok(wav, SES_KELIMELER).catch((e) => ({ hata: e instanceof Error ? e.message : String(e) }))));
       return;
     }
     if (u.pathname === "/api/sor") {

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8">
+<style>
+@font-face{font-family:Switzer;src:url(../web/font/switzer-400.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Switzer;src:url(../web/font/switzer-600.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Clash;src:url(../web/font/clash-600.woff2) format("woff2");font-weight:600}
+:root{--murekkep:#152a38;--koyu:#0d1b24;--soluk:#5a6b76;--zemin:#fbfbf9;--cizgi:#e3e5e3;--sinyal:#a3362f;--onay:#2f6b4f;--orta:#7d5410;--orta-z:#f5ecd9;--yuzey2:#f4f4f1}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--zemin);color:var(--murekkep);font:400 22px/1.45 Switzer,system-ui,sans-serif;padding:56px 96px;display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-content:center}
+h1{margin:0 0 8px;font:600 64px/1.05 Clash,Switzer,sans-serif;color:var(--koyu)}
+.alt{margin:0 0 40px;color:var(--soluk);font-size:24px}
+table{border-collapse:collapse;width:100%}
+th{font:600 16px/1 Switzer;letter-spacing:.08em;text-transform:uppercase;color:var(--soluk);text-align:left;padding:0 0 12px;border-bottom:2px solid var(--murekkep)}
+td{padding:20px 0;border-bottom:1px solid var(--cizgi);font-size:26px}
+td.n{font:600 52px/1 Clash,Switzer;text-align:right}
+th:last-child{text-align:right}
+.iyi{color:var(--onay)}.kotu{color:var(--sinyal)}
+.sag h2{margin:0 0 20px;font:600 18px/1 Switzer;letter-spacing:.08em;text-transform:uppercase;color:var(--soluk)}
+.mod{display:grid;grid-template-columns:1fr;gap:0;border-top:2px solid var(--murekkep)}
+.mod div{display:grid;grid-template-columns:200px 1fr;padding:18px 0;border-bottom:1px solid var(--cizgi);align-items:baseline}
+.mod b{font:600 26px/1.2 Clash,Switzer}
+.mod span{color:var(--soluk);font-size:20px}
+.alt2{margin-top:36px;color:var(--soluk);font-size:17px}
+.sol>*,.sag>*{opacity:0;animation:gir .6s ease forwards}
+.sol>*:nth-child(1){animation-delay:.2s}.sol>*:nth-child(2){animation-delay:.5s}.sol>*:nth-child(3){animation-delay:1.0s}
+.sag>*:nth-child(1){animation-delay:9s}.sag>*:nth-child(2){animation-delay:9.6s}.sag>*:nth-child(3){animation-delay:9.6s}
+@keyframes gir{to{opacity:1}}
+</style>
+<body>
+<section class="sol">
+<h1>15 claims, 8 altered on purpose</h1>
+<p class="alt">Run of 4 November 2026, evidence memory off. Total cost $5.16.</p>
+<table>
+<tr><th>Claims</th><th>Result</th></tr>
+<tr><td>8 altered claims</td><td class="n iyi">0 confirmed</td></tr>
+<tr><td>7 real events</td><td class="n">4 supported</td></tr>
+<tr><td>Real events not supported</td><td class="n kotu">3</td></tr>
+</table>
+</section>
+<section class="sag">
+<h2>Built with Meta models</h2>
+<div class="mod">
+<div><b>Muse Spark</b><span>scan, claims, headline matching, satellite reading</span></div>
+<div><b>Muse Image</b><span>one illustration per hazard type</span></div>
+<div><b>SAM 3.1</b><span>runway outline from one point</span></div>
+<div><b>Muse Voice Transcribe</b><span>voice questions from the operations team</span></div>
+</div>
+<p class="alt2">SEZ errs on the cautious side: it confirmed none of the altered claims and failed to support three real ones.</p>
+</section>
+</body>

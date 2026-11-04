@@ -144,3 +144,20 @@ async function arkaPlandaBekle(govde: { model: string; [alan: string]: unknown }
   }
   throw new Error(`Meta API arka plan isi ${azamiSn} sn icinde bitmedi`);
 }
+
+// Muse Voice Transcribe: operasyon ekibi soruyu sesle sorar. Belge: https://dev.meta.ai/docs/speech-to-text
+// Ses kaydedilmez; yalniz yaziya dokum dondurulur. Fiyat saatte 0,18 $ (pricing-rate-limits).
+export const SES_MODELI = "muse-voice-transcribe-1.0";
+const SES_SAAT_FIYATI = 0.18;
+export async function yaziyaDok(wav: Uint8Array<ArrayBuffer>, keywords: string[]): Promise<{ metin: string; sn: number; dolar: number }> {
+  const f = new FormData();
+  f.append("request", new Blob([JSON.stringify({ mode: "ENDPOINTING", model: SES_MODELI, audioEncoding: "WAV", languageBias: ["English", "Turkish"], keywords })], { type: "application/json" }));
+  f.append("audio", new Blob([wav], { type: "audio/wav" }), "soru.wav");
+  const r = await fetch(`${TABAN}/asr/transcribe?sessionId=sez-${Date.now()}`, { method: "POST", headers: { Authorization: `Bearer ${anahtar()}` }, body: f, signal: AbortSignal.timeout(60_000) });
+  if (!r.ok) throw new Error(`Muse Voice Transcribe ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  const d = await r.json();
+  const sn = Math.floor((d.audioDurationMs ?? 0) / 1000);
+  const dolar = (sn / 3600) * SES_SAAT_FIYATI;
+  for (const s of [sayac, kapsam.getStore()]) if (s) { s.istek++; s.modelDolar += dolar; }
+  return { metin: String(d.transcript ?? "").trim(), sn, dolar };
+}

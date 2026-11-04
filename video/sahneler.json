@@ -1,0 +1,49 @@
+[
+  {
+    "id": "01",
+    "son": 0.8,
+    "ses": "May 2024. Floods closed the airport in Porto Alegre, in southern Brazil, for more than five months. When does an airline know about something like this, and how sure can it be?"
+  },
+  {
+    "id": "02",
+    "son": 0.6,
+    "ses": "Every airline runs an operations centre that watches its flights around the clock. Its evidence is scattered: news reports, official notices to pilots, satellite images. SEZ puts them into one answer. It never says a route is safe. It shows how strong the evidence is."
+  },
+  {
+    "id": "03",
+    "son": 0.6,
+    "ses": "Thirteen hazard types, from volcanic ash and floods to strikes, drones and GPS jamming."
+  },
+  {
+    "id": "04",
+    "basla": 7.6,
+    "son": 1.2,
+    "soru": true,
+    "ses": "The team can simply ask. Meta's Muse Voice Transcribe turns the spoken question into text, and SEZ opens the real route."
+  },
+  {
+    "id": "05",
+    "son": 0.8,
+    "ses": "Muse Spark searches the news in several languages, and for every headline it must quote the exact words. Our code then checks the quote, the date and the place. Three independent publishers make it confirmed by news. The screen also says what that is not: an official confirmation."
+  },
+  {
+    "id": "06",
+    "son": 2.2,
+    "ses": "The picture on top is drawn by Muse Image, and labelled as not evidence. The evidence is below: Sentinel-2 images of the volcano, before and after. Muse Spark reads them and sees a fresh ash veil. SEZ flies there. The image never raises the evidence level."
+  },
+  {
+    "id": "07",
+    "son": 2,
+    "ses": "NOTAMs are the official notices to pilots. Code reads which runway is closed, and until when. Muse Spark only rewrites the notice in plain language. Official websites block automated reading, so SEZ names the agencies to check before deciding."
+  },
+  {
+    "id": "08",
+    "son": 1,
+    "ses": "Now a harder call. Three imaginary flights have Porto Alegre as their backup airport. Meta's SAM 3.1 outlines the runway from a single point. We measure the water on it in two ways. April: zero percent. Sixth of May: seventy-nine percent. Porto Alegre drops out of the plan. Twenty-first of May: the two measurements split, eleven and a half, and forty. SEZ does not average them. It keeps the last reliable value, and points to the one thing that settles it: the airport's written runway notice."
+  },
+  {
+    "id": "09",
+    "son": 1.5,
+    "ses": "We tested SEZ on fifteen claims, and altered eight of them on purpose. It confirmed none of the altered ones. Four Meta models, each doing a real job inside SEZ."
+  }
+]

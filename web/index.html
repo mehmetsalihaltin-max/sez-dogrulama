@@ -51,6 +51,14 @@ button:hover{background:var(--koyu);box-shadow:var(--golge2);transform:translate
 button:disabled{opacity:.5;cursor:progress;transform:none}
 .sahne-ac{background:none;color:var(--murekkep);white-space:nowrap}
 .sahne-ac:hover{background:var(--yuzey2)}
+.ses{display:inline-flex;align-items:center;gap:var(--s1);background:none;color:var(--murekkep);white-space:nowrap;padding:0 var(--s2)}
+.ses:hover{background:var(--yuzey2)}
+.ses svg{width:18px;height:18px;flex:none}
+.ses[aria-pressed=true]{background:var(--sinyal);border-color:var(--sinyal);color:#fff}
+.ses[aria-pressed=true] svg{animation:nabiz 1s ease-in-out infinite}
+@keyframes nabiz{50%{opacity:.35}}
+.duyulan{position:fixed;left:50%;top:92px;transform:translateX(-50%);z-index:20;max-width:min(880px,90vw);background:var(--koyu);color:#fff;border-radius:6px;padding:14px 20px;box-shadow:var(--golge2);font:400 18px/1.4 var(--govde)}
+.duyulan small{display:block;margin-top:6px;color:var(--kiyi);font:600 11px/1 var(--govde);letter-spacing:.08em;text-transform:uppercase}
 .dil{display:flex;border:1px solid var(--cizgi);border-radius:4px;overflow:hidden}
 .dil button{height:46px;border:0;border-radius:0;background:none;color:var(--soluk);padding:0 var(--s2)}
 .dil button:hover{background:var(--yuzey2);box-shadow:none;transform:none}
@@ -265,6 +273,7 @@ summary:hover{color:var(--sinyal)}
       <div class="kutu"><label for="nereden" data-t="nereden"></label><input id="nereden" autocomplete="off" required maxlength="80"><ul id="neredenL" class="oneri" role="listbox"></ul></div>
       <div class="kutu" id="nereyeK"><label for="nereye" data-t="nereye"></label><input id="nereye" autocomplete="off" maxlength="80"><ul id="nereyeL" class="oneri" role="listbox"></ul></div>
       <div class="kutu tarih" id="tarihK"><label for="tarih" data-t="tarih"></label><input id="tarih" type="date"></div>
+      <button id="ses" class="ses" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11h-2z"/></svg><span data-t="sesDugme"></span></button>
       <button id="gonder" type="submit" data-t="kanitla"></button>
       <button id="sahneAc" class="sahne-ac" type="button" data-t="sahneDugme"></button>
     </form>
@@ -273,6 +282,7 @@ summary:hover{color:var(--sinyal)}
       <button type="button" data-dil="tr">TR</button>
     </div>
   </header>
+  <p class="duyulan" id="duyulan" role="status" hidden></p>
   <main class="harita" id="harita">
     <svg id="svg" role="img"></svg>
     <div id="kure3"></div>
@@ -309,6 +319,7 @@ const M = {
     olayUydu: "Satellite check", olayAra: "Looking for passes before and after the event", olayYok: "No usable pass around this date.", olaySonra: "AFTER", olayNot: (y) => `Muse reading of the images, independent of the news. Does not change the evidence level. Copernicus Sentinel data (${y}), processed.`,
     uyduBas: "Satellite · Sentinel-2", uyduModel: "Muse reading of the image. Not an evidence level.", uyduNot: "Not live: the last clear pass. Top: 20 km square of the surroundings. Bottom: 8 km square of the airport, about 10 m per pixel.", uyduAra: "Looking for the last clear pass", uyduYok: "No clear pass in the last 45 days.", uyduAlt: (i, t) => `Satellite image of ${i}, ${t}`, uyduKunye: (t, b) => `${t} UTC · cloud ${b}%`, uyduGecis: (t) => `Later pass on ${t} was cloudy or partial`, uyduHak: (y) => `Copernicus Sentinel data (${y}), processed`,
     notamAc: "Plain language", notamModel: "Model translation. The original above is the binding text.",
+    sesDugme: "Ask by voice", sesDur: "Stop", sesYazi: "Transcribing", duyulan: "Heard", sesKaynak: "Muse Voice Transcribe · audio is not stored", sesHata: "The voice question could not be transcribed.", sesIzin: "Microphone permission is needed.",
     kanitla: "Show evidence", sahneDugme: "New evidence scene", gTeyitli: "Confirmed by news", gZayif: "Partial or single source", gYok: "No evidence", gGenel: "Country-wide", gKapali: "Airspace reported closed",
     senaryo: "SCENARIO", cekim: "CAPTURE TIME", isleme: "PROCESSING TIME", copernicus: "Copernicus Sentinel data (2024), processed", harita: "Route and event map",
     soruBas: "Which event, on what evidence?",
@@ -371,6 +382,7 @@ const M = {
     olayUydu: "Uydu kontrolü", olayAra: "Olay öncesi ve sonrası geçişler aranıyor", olayYok: "Bu tarihlerde kullanılabilir geçiş yok.", olaySonra: "SONRA", olayNot: (y) => `Muse'un görüntü yorumu, haberlerden bağımsızdır. Kanıt seviyesini değiştirmez. Copernicus Sentinel verisi (${y}), işlenmiş.`,
     uyduBas: "Uydu · Sentinel-2", uyduModel: "Muse'un görüntü yorumu. Kanıt seviyesi değildir.", uyduNot: "Canlı değildir: son açık geçiştir. Üstte 20 km kare çevre, altta 8 km kare meydan, yaklaşık 10 m/piksel.", uyduAra: "Son açık geçiş aranıyor", uyduYok: "Son 45 günde açık geçiş yok.", uyduAlt: (i, t) => `${i} uydu görüntüsü, ${t}`, uyduKunye: (t, b) => `${t} UTC · bulut %${b}`, uyduGecis: (t) => `${t} tarihli sonraki geçiş bulutlu ya da yarım`, uyduHak: (y) => `Copernicus Sentinel verisi (${y}), işlenmiş`,
     notamAc: "Düz anlatım", notamModel: "Model çevirisi. Bağlayıcı metin yukarıdaki orijinaldir.",
+    sesDugme: "Sesle sor", sesDur: "Bitir", sesYazi: "Yazıya dökülüyor", duyulan: "Duyulan", sesKaynak: "Muse Voice Transcribe · ses saklanmaz", sesHata: "Sesli soru yazıya dökülemedi.", sesIzin: "Mikrofon izni gerekli.",
     kanitla: "Kanıtla", sahneDugme: "Yeni kanıt sahnesi", gTeyitli: "Haberle teyitli", gZayif: "Kısmen, tek kaynak", gYok: "Kanıt yok", gGenel: "Ülke geneli", gKapali: "Kapalı bildirilen hava sahası",
     senaryo: "SENARYO", cekim: "ÇEKİM ZAMANI", isleme: "İŞLEME ZAMANI", copernicus: "Copernicus Sentinel verisi (2024), işlenmiş", harita: "Hat ve olay haritası",
     soruBas: "Hangi olay, hangi kanıtla?",
@@ -1180,6 +1192,64 @@ function sorgula(s, anahtar = s) {
   };
   kaynak.onerror = () => { bitir(); ray.replaceChildren(el("p", "hata", T().baglanti)); };
 }
+
+// Sesli soru (Muse Voice Transcribe): mikrofon 16 kHz tek kanal WAV'a cevrilir, sunucu yalniz metni dondurur, ses saklanmaz.
+let sesKayit = null;
+function wavYap(parca, hz, hedef = 16000) {
+  const ham = new Float32Array(parca.reduce((t, p) => t + p.length, 0));
+  let o = 0; for (const p of parca) { ham.set(p, o); o += p.length; }
+  const n = Math.floor(ham.length * hedef / hz), v = new DataView(new ArrayBuffer(44 + n * 2));
+  const yaz = (k, s) => [...s].forEach((c, i) => v.setUint8(k + i, c.charCodeAt(0)));
+  yaz(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); yaz(8, "WAVE"); yaz(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, hedef, true); v.setUint32(28, hedef * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); yaz(36, "data"); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) {
+    const x = i * hz / hedef, a = Math.floor(x), f = x - a, d = ham[a] + ((ham[a + 1] ?? ham[a]) - ham[a]) * f;
+    v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, d)) * 0x7fff, true);
+  }
+  return v.buffer;
+}
+function duyulanGoster(metin, alt) {
+  const d = $("duyulan");
+  d.replaceChildren(document.createTextNode(metin));
+  if (alt) d.append(el("small", null, alt));
+  d.hidden = false;
+  clearTimeout(d.zaman); d.zaman = setTimeout(() => { d.hidden = true; }, 9000);
+}
+// Duyulan soru bir ornekle ayni yerleri ve yili tasiyorsa kayitli sonuc acilir, para harcanmaz; degilse soru oldugu gibi sorulur.
+function sesliSor(metin) {
+  const k = metin.toLocaleLowerCase(dil);
+  const ornek = ORNEKLER.find((o) => [o.a, o.b].filter(Boolean).every((y) => k.includes(y[dil].toLocaleLowerCase(dil))) && (!o.t || k.includes(o.t.slice(0, 4))));
+  if (ornek) { ornekSor(ornek); return; }
+  sonOrnek = null;
+  sorgula(metin);
+}
+async function sesDugme() {
+  const b = $("ses"), yazi = b.querySelector("span");
+  if (!sesKayit) {
+    try {
+      const akis = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true } });
+      const ac = new AudioContext(), kay = ac.createMediaStreamSource(akis), isl = ac.createScriptProcessor(4096, 1, 1), parca = [];
+      isl.onaudioprocess = (e) => parca.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+      kay.connect(isl); isl.connect(ac.destination);
+      sesKayit = { akis, ac, isl, parca };
+      b.setAttribute("aria-pressed", "true"); yazi.textContent = T().sesDur;
+    } catch { duyulanGoster(T().sesIzin); }
+    return;
+  }
+  const { akis, ac, isl, parca } = sesKayit;
+  sesKayit = null;
+  isl.disconnect(); akis.getTracks().forEach((t) => t.stop());
+  const hz = ac.sampleRate; await ac.close();
+  b.setAttribute("aria-pressed", "false"); b.disabled = true; yazi.textContent = T().sesYazi;
+  try {
+    const d = await (await fetch("/api/ses", { method: "POST", headers: { "Content-Type": "audio/wav" }, body: wavYap(parca, hz) })).json();
+    if (!d.metin) throw new Error(d.hata ?? "bos");
+    duyulanGoster(`“${d.metin}”`, `${T().duyulan} · ${T().sesKaynak}`);
+    sesliSor(d.metin);
+  } catch { duyulanGoster(T().sesHata); }
+  finally { b.disabled = false; yazi.textContent = T().sesDugme; }
+}
+$("ses").onclick = sesDugme;
 
 oneriBagla($("nereden"), $("neredenL"));
 oneriBagla($("nereye"), $("nereyeL"));

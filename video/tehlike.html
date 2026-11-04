@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8">
+<style>
+@font-face{font-family:Switzer;src:url(../web/font/switzer-400.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Switzer;src:url(../web/font/switzer-600.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Clash;src:url(../web/font/clash-600.woff2) format("woff2");font-weight:600}
+:root{--murekkep:#152a38;--koyu:#0d1b24;--soluk:#5a6b76;--zemin:#fbfbf9;--cizgi:#e3e5e3;--sinyal:#a3362f}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--zemin);color:var(--murekkep);font:400 18px/1.4 Switzer,system-ui,sans-serif;display:grid;grid-template-rows:auto 1fr;padding:48px 64px 88px}
+h1{margin:0;font:600 56px/1 Clash,Switzer,sans-serif;color:var(--koyu);letter-spacing:.01em}
+.alt{margin:16px 0 0;color:var(--soluk);font-size:22px}
+.izgara{display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(2,1fr);gap:24px;margin-top:40px;min-height:0}
+figure{margin:0;display:grid;grid-template-rows:1fr auto;min-height:0;opacity:0;transform:translateY(8px);animation:gir .5s ease forwards}
+figure img{width:100%;height:100%;min-height:0;object-fit:cover;border-radius:4px;box-shadow:0 2px 4px rgb(21 42 56/.06),0 8px 24px rgb(21 42 56/.08)}
+figcaption{padding-top:10px;font:600 17px/1.2 Switzer,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--murekkep)}
+.not{position:fixed;left:64px;bottom:20px;color:var(--soluk);font-size:15px}
+@keyframes gir{to{opacity:1;transform:none}}
+</style>
+<body>
+<header><h1>13 hazard types</h1><p class="alt">Each one is a claim the evidence gate can check.</p></header>
+<main class="izgara" id="g"></main>
+<p class="not">Illustrations: Muse Image 1.0. AI illustration, not evidence.</p>
+<script>
+const T=[["kul","Volcanic ash"],["sel","Flood"],["hava","Weather"],["deprem","Earthquake"],["grev","Strike"],["dron","Drone"],["gps","GPS interference"],["catisma","Conflict"],["saldiri","Security"],["yakit","Fuel"],["ariza","Fault"],["siber","Cyber"],["diger","Other"]];
+const g=document.getElementById("g");
+T.forEach(([k,a],i)=>{const f=document.createElement("figure");f.style.animationDelay=(0.25+i*0.42)+"s";f.innerHTML=`<img src="../web/tehlike/${k}.jpg" alt=""><figcaption>${a}</figcaption>`;g.append(f)});
+</script>
